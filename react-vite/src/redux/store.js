@@ -6,10 +6,11 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
-import songsReducer from './reducers/songReducer';
-import tracksReducer from './reducers/trackReducer';
-import friendsReducer from './reducers/friendReducer';
-import scoresReducer from './reducers/scoreReducer';
+import songsReducer from './songs';
+import tracksReducer from './tracks';
+import friendsReducer from './friends';
+import scoresReducer from './scores';
+import notesReducer from './notes';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   tracks: tracksReducer,
   friends: friendsReducer,
   scores: scoresReducer,
+  notes: notesReducer
 });
 
 let enhancer;

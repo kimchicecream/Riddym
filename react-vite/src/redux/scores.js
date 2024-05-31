@@ -1,13 +1,13 @@
 import { apiFetch } from './utils/apiFetch';
 
-const GET_ALL_SCORES = 'scores/getAllScores';
+const GET_SCORES_BY_TRACK = 'scores/getScoresByTrack';
 const GET_SCORES_BY_USER = 'scores/getScoresByUser';
 const ADD_SCORE = 'scores/addScore';
 const UPDATE_SCORE = 'scores/updateScore';
 const DELETE_SCORE = 'scores/deleteScore';
 
-const getAllScores = scores => ({
-    type: GET_ALL_SCORES,
+const getScoresByTrack = scores => ({
+    type: GET_SCORES_BY_TRACK,
     payload: scores,
 });
 
@@ -31,9 +31,9 @@ const deleteScore = scoreId => ({
     payload: scoreId,
 });
 
-// Get all scores thunk
-export const fetchAllScores = () => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/scores');
+// get scores by track thunk
+export const fetchScoresByTrack = trackId => async dispatch => {
+    const { data, errors, error } = await apiFetch(`/api/tracks/${trackId}/scores`);
 
     if (errors || error) {
       return { errors: errors || error };
@@ -44,11 +44,11 @@ export const fetchAllScores = () => async dispatch => {
       return acc;
     }, {});
 
-    dispatch(getAllScores(objectData));
+    dispatch(getScoresByTrack(objectData));
     return data;
 };
 
-// Fetch scores by user thunk
+// Get scores by user thunk
 export const fetchScoresByUser = userId => async dispatch => {
     const { data, errors, error } = await apiFetch(`/api/users/${userId}/scores`);
 

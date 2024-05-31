@@ -120,11 +120,11 @@ const initialState = {
 const friendsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        case FETCH_ALL_FRIENDS_SUCCESS: {
+        case GET_ALL_FRIENDS: {
             newState = { ...state, allFriends: action.payload };
             return newState;
         }
-        case FETCH_USER_FRIENDS_SUCCESS: {
+        case GET_USER_FRIENDS: {
             newState = { ...state, userFriends: action.payload };
             return newState;
         }

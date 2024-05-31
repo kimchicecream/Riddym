@@ -1,5 +1,31 @@
 /* TODO: Add sitewide styles */
+* {
+    font-family: 'Gilroy';
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    /* width: 100%; */
+}
+
 html, body {
     background-color: black;
     color: white;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../public/fonts/Gilroy-Thin.ttf') format('truetype');
+    font-weight: thin;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../public/fonts/Gilroy-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../public/fonts/Gilroy-Bold.ttf') format('truetype');
+    font-weight: bold;
 }

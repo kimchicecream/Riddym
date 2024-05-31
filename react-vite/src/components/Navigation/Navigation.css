@@ -2,6 +2,27 @@
   position: absolute;
 }
 
-ul {
-  border: 2px solid red;
+.navigation-container {
+  margin: 20px 100px;
+  padding: 0 30px;
+
+  position: fixed;
+  height: 80px;
+  width: calc(100vw - 200px);
+
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.353);
+  border: 1px solid rgb(44, 44, 44);
+
+  backdrop-filter: blur(20px);
+
+  z-index: 666;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation-container .logo-container img {
+  height: 40px;
 }

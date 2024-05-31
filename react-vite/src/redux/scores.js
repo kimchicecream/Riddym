@@ -119,7 +119,7 @@ const initialState = {
 const scoresReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        case GET_ALL_SCORES: {
+        case GET_SCORES_BY_TRACK: {
             newState = { ...state, allScores: action.payload };
             return newState;
         }

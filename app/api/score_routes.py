@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .models import db, Score
+from app.models import db, Score
 from flask_login import login_required, current_user
 
 score_routes = Blueprint('scores', __name__)

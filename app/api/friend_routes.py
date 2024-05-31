@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .models import db, Friend
+from app.models import db, Friend
 from flask_login import login_required, current_user
 
 friend_routes = Blueprint('friends', __name__)

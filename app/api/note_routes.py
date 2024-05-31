@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .models import db, Note
+from app.models import db, Note
 from flask_login import login_required, current_user
 
 note_routes = Blueprint('notes', __name__)

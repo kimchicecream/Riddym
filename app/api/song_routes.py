@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Song
+from app.models import db, Song
 from flask_login import login_required, current_user
 from app.forms.song_create import SongForm
 

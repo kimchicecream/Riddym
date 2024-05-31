@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models import Song
 from flask_login import login_required, current_user
+from app.forms.song_create import SongForm
 
 song_routes = Blueprint('songs, __name__')
 
@@ -8,18 +9,20 @@ song_routes = Blueprint('songs, __name__')
 @song_routes.route('/', methods=['POST'])
 @login_required
 def create_song():
-    data = request.get_json()
-    new_song = Song(
-        creator_id=current_user.id,
-        song_name=data['song_name'],
-        duration=data['duration'],
-        song_url=data['song_url'],
-        image_url=data.get('image_url', None),
-        artist_name=data['artist_name']
-    )
-    db.session.add(new_song)
-    db.session.commit()
-    return jsonify(new_song.to_dict()), 201
+    form = SongForm()
+    if form.validate_on_submit():
+        new_song = Song(
+            creator_id=current_user.id,
+                song_name=form.song_name.data,
+                duration=form.duration.data,
+                song_url=form.song_url.data,
+                image_url=form.image_url.data,
+                artist_name=form.artist_name.data
+        )
+        db.session.add(new_song)
+        db.session.commit()
+        return jsonify(new_song.to_dict()), 201
+    return form.errors, 401
 
 # Get all songs
 @song_routes.route('/', methods=['GET'])

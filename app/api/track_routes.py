@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from .models import db, Track
 from flask_login import login_required, current_user
+from app.forms.track_create import TrackForm
 
 track_routes = Blueprint('tracks', __name__)
 
@@ -8,16 +9,18 @@ track_routes = Blueprint('tracks', __name__)
 @track_routes.route('/', methods=['POST'])
 @login_required
 def create_track():
-    data = request.get_json()
-    new_track = Track(
-        creator_id=current_user.id,
-        song_id=data['song_id']
-        difficulty=data['difficulty'],
-        duration=data['duration']
-    )
-    db.session.add(new_track)
-    db.session.commit()
-    return jsonify(new_track.to_dict()), 201
+    form = TrackForm()
+    if form.validate_on_submit():
+        new_track = Track(
+            creator_id=current_user.id,
+            song_id=data['song_id']
+            difficulty=data['difficulty'],
+            duration=data['duration']
+        )
+        db.session.add(new_track)
+        db.session.commit()
+        return jsonify(new_track.to_dict()), 201
+    return jsonify(form.errors), 401
 
 # Get all tracks
 @track_routes.route('/', methods=['GET'])

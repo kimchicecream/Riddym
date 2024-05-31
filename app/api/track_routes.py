@@ -13,7 +13,7 @@ def create_track():
     if form.validate_on_submit():
         new_track = Track(
             creator_id=current_user.id,
-            song_id=data['song_id']
+            song_id=data['song_id'],
             difficulty=data['difficulty'],
             duration=data['duration']
         )

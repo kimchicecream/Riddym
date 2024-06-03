@@ -5,7 +5,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { fetchNotesByTrack, createNote, editNote } from '../../redux/notes';
+import { fetchNotesByTrack, createNote, editNote, removeNote } from '../../redux/notes';
 import './TrackCreator.css';
 
 function TrackCreator() {
@@ -20,7 +20,8 @@ function TrackCreator() {
     const wavesurferRef = useRef(null)
     const timelineRef = useRef(null);
     const lanesRef = useRef(null);
-    const minPxPerSec = 450;
+    const minPxPerSec = 300;
+    const snapThreshold = 0.04;
 
     // keep page static
     useEffect(() => {
@@ -212,16 +213,42 @@ function TrackCreator() {
     const handleDrop = async (e, laneNumber) => {
         e.preventDefault();
         const noteId = e.dataTransfer.getData('note-id');
-        const timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
+        let timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
         console.log(`Note dropped on lane ${laneNumber} at timestamp ${timestamp}`);
-        console.log(`Note ID from dataTransfer: ${noteId}`);
+
+        const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
+            if (
+                e.clientY < lanesBoundingBox.top ||
+                e.clientY > lanesBoundingBox.bottom
+            ) {
+                // If the drop is outside the lanes, remove the note
+                if (noteId !== 'new') {
+                    console.log(`Removing note with ID: ${noteId}`);
+                    dispatch(removeNote(noteId));
+                    return;
+                }
+        }
+
+        // note snapping to nearest note
+        for (let i = 1; i <= 5; i++) {
+            if (i !== laneNumber) {
+                const adjacentNotes = Object.values(notes).filter(note => note.lane === i);
+                for (let note of adjacentNotes) {
+                    if (Math.abs(note.time - timestamp) < snapThreshold) {
+                        timestamp = note.time;
+                        console.log(`Snapped to note at timestamp ${timestamp} on lane ${i}`);
+                        break;
+                    }
+                }
+            }
+        }
 
         if (noteId === 'new') {
             const newNote = {
                 track_id: songId,
                 time: timestamp,
                 lane: laneNumber,
-                note_type: 'note',
+                note_type: 'tap',
             };
 
             dispatch(createNote(newNote));
@@ -308,6 +335,9 @@ function TrackCreator() {
                             <div className='lane' id='lane-four'></div>
                             <div className='lane' id='lane-five'></div>
                         </div> */}
+                        <div className='keybinds'>
+
+                        </div>
                 </div>
             </div>
         </div>

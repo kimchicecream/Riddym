@@ -25,7 +25,7 @@ function Navigation() {
           <img src="../../../public/riddym-logo.png" />
       </div>
       <div className="nav-menu">
-        <button className="play-button">Play</button>
+        <button className="play-button"></button>
         <button className="explore-button">Explore Tracks</button>
       </div>
       {sessionUser ? (

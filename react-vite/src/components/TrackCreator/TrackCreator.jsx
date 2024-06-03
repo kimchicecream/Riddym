@@ -16,6 +16,7 @@ function TrackCreator() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [draggedNoteId, setDraggedNoteId] = useState(null);
     const waveformRef = useRef(null);
     const wavesurferRef = useRef(null)
     const timelineRef = useRef(null);
@@ -208,6 +209,7 @@ function TrackCreator() {
     const handleDragStart = (e, noteId) => {
         console.log(`Dragging note with ID: ${noteId}`);
         e.dataTransfer.setData('note-id', noteId);
+        setDraggedNoteId(noteId);
     };
 
     const handleDrop = async (e, laneNumber) => {
@@ -216,18 +218,18 @@ function TrackCreator() {
         let timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
         console.log(`Note dropped on lane ${laneNumber} at timestamp ${timestamp}`);
 
-        const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
-            if (
-                e.clientY < lanesBoundingBox.top ||
-                e.clientY > lanesBoundingBox.bottom
-            ) {
-                // If the drop is outside the lanes, remove the note
-                if (noteId !== 'new') {
-                    console.log(`Removing note with ID: ${noteId}`);
-                    dispatch(removeNote(noteId));
-                    return;
-                }
-        }
+        // const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
+        //     if (
+        //         e.clientY < lanesBoundingBox.top ||
+        //         e.clientY > lanesBoundingBox.bottom
+        //     ) {
+        //         // If the drop is outside the lanes, remove the note
+        //         if (noteId !== 'new') {
+        //             console.log(`Removing note with ID: ${noteId}`);
+        //             dispatch(removeNote(noteId));
+        //             return;
+        //         }
+        // }
 
         // note snapping to nearest note
         for (let i = 1; i <= 5; i++) {
@@ -263,10 +265,26 @@ function TrackCreator() {
 
             dispatch(editNote(noteId, updatedNote));
         }
+        setDraggedNoteId(null);
     };
 
     const handleDragOver = (e) => {
         e.preventDefault();
+    };
+
+    const handleDragEnd = (e) => {
+        const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
+        if (
+            e.clientY < lanesBoundingBox.top ||
+            e.clientY > lanesBoundingBox.bottom
+        ) {
+            // If the drag ends outside the lanes container, remove the note
+            if (draggedNoteId && draggedNoteId !== 'new') {
+                console.log(`Removing note with ID: ${draggedNoteId}`);
+                dispatch(removeNote(draggedNoteId));
+                setDraggedNoteId(null); // Reset the dragged note ID after deletion
+            }
+        }
     };
 
     if (!song) {
@@ -315,6 +333,7 @@ function TrackCreator() {
                                     id={`lane-${lane}`}
                                     onDrop={(e) => handleDrop(e, lane)}
                                     onDragOver={handleDragOver}
+                                    // onDragLeave={handleDragLeave}
                                 >
                                     {Object.values(notes).filter(note => note.lane === lane).map(note => (
                                     <div
@@ -323,6 +342,7 @@ function TrackCreator() {
                                         style={{ left: `${note.time * minPxPerSec}px` }}
                                         draggable
                                         onDragStart={(e) => handleDragStart(e, note.id)}
+                                        onDragEnd={handleDragEnd}
                                     ></div>
                                 ))}
                                 </div>

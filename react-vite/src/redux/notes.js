@@ -112,6 +112,7 @@ const notesReducer = (state = initialState, action) => {
         }
         case DELETE_NOTE: {
             newState = { ...state };
+            newState.trackNotes = { ...newState.trackNotes };
             delete newState.trackNotes[action.payload];
             return newState;
         }

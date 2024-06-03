@@ -21,7 +21,6 @@ function TrackCreator() {
     const timelineRef = useRef(null);
     const lanesRef = useRef(null);
     const minPxPerSec = 450;
-    const NEW_NOTE_ID = 'new-note-id';
 
     // keep page static
     useEffect(() => {
@@ -217,7 +216,7 @@ function TrackCreator() {
         console.log(`Note dropped on lane ${laneNumber} at timestamp ${timestamp}`);
         console.log(`Note ID from dataTransfer: ${noteId}`);
 
-        if (noteId === NEW_NOTE_ID) {
+        if (noteId === 'new') {
             const newNote = {
                 track_id: songId,
                 time: timestamp,
@@ -253,7 +252,7 @@ function TrackCreator() {
                     <button className='home-button'>Home</button>
             </div>
             <div className='track-creator'>
-            <div className='note' draggable onDragStart={(e) => handleDragStart(e, NEW_NOTE_ID)}></div>
+            <div className='note' draggable onDragStart={(e) => handleDragStart(e, 'new')}></div>
                 <div className='song-details-container'>
                     <div className='song-image'>
                         <img src={song.image_url} />

@@ -5,8 +5,8 @@ from app.forms.track_create import TrackForm
 
 track_routes = Blueprint('tracks', __name__)
 
-#Create a new track
-@track_routes.route('/', methods=['POST'])
+# Create a new track
+@track_routes.route('/create', methods=['POST'])
 @login_required
 def create_track():
     form = TrackForm()
@@ -23,13 +23,13 @@ def create_track():
     return jsonify(form.errors), 401
 
 # Get all tracks
-@track_routes.route('/', methods=['GET'])
+@track_routes.route('/all', methods=['GET'])
 def get_tracks():
     tracks = Track.query.all()
     return jsonify([track.to_dict() for track in tracks]), 200
 
 # Update a track by ID
-@track_routes.route('/<int:id>', methods=['PUT'])
+@track_routes.route('/<int:id>/edit', methods=['PUT'])
 @login_required
 def update_track(id):
     data = request.get_json()
@@ -43,7 +43,7 @@ def update_track(id):
     return jsonify(track.to_dict()), 200
 
 # Delete a track by ID
-@track_routes.route('/<int:id>', methods=['DELETE'])
+@track_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_track(id):
     track = Track.query.get_or_404(id)

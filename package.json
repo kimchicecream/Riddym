@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jsmediatags": "^3.9.7",
+    "wavesurfer.js": "^7.7.15"
+  }
+}

@@ -1,0 +1,122 @@
+.track-creator-page {
+    background-color: rgb(18, 23, 28);
+}
+
+.track-creator {
+    padding: 100px 40px 0 40px;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+
+    /* border: 2px solid red; */
+}
+
+.nav-bar {
+    height: 50px;
+    width: 100%;
+    background-color: rgba(34, 43, 52, 0.285);
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.529);
+    backdrop-filter: blur(10px);
+
+    position: fixed;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.track-creator .song-details-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+.track-creator .song-details-container .song-image {
+    height: 60px;
+    width: 60px;
+
+    border: 1px solid gray;
+
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.song-image img {
+    height: 100%;
+    width: 100%;
+}
+
+.track-creator .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.track-creator .controls .timestamp {
+    width: 80px;
+    font-family: monospace;
+    text-align: center;
+}
+
+.wavesurfer-track {
+    overflow: hidden;
+    overflow-x: auto;
+    height: 530px;
+    background-color: rgb(46, 46, 46);
+    position: relative;
+}
+
+#waveform {
+    height: 100px;
+    z-index: 0;
+}
+
+#timeline {
+    width: 100%;
+}
+
+.track-lanes {
+    /* width: 100%; */
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-x: scroll;
+    white-space: nowrap;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.lane {
+    height: 50px;
+    width: 100%;
+    border-bottom: 2px solid #B5FAE7;
+    background-color: rgba(51, 51, 51, 0.863);
+    position: relative;
+    overflow: hidden;
+    border-left: 2px solid #B5FAE7;
+    border-right: 5px solid #ff7f7f;
+}
+
+.lane:first-child {
+    border-top: 2px solid #B5FAE7;
+}
+
+.note {
+    width: 10px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0.5px solid rgb(255, 255, 255);
+    background-color: rgba(255, 0, 0, 0.495);
+    position: absolute;
+    cursor: move;
+}

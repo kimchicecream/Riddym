@@ -2,27 +2,41 @@ from flask import Blueprint, request, jsonify
 from app.models import db, Song
 from flask_login import login_required, current_user
 from app.forms.song_create import SongForm
+from app.api.aws_helper import upload_image_to_s3, upload_mp3_to_s3
 
 song_routes = Blueprint('songs', __name__)
 
 # Create a new song
-@song_routes.route('/', methods=['POST'])
+@song_routes.route('/create', methods=['POST'])
 @login_required
 def create_song():
     form = SongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        song_file = request.files.get('song_file')
+        song_upload = upload_mp3_to_s3(song_file)
+
+        if not form.data['image_file']:
+            image_file = request.files.get('image_file')
+            image_upload = upload_image_to_s3(image_file)
+            image_url = image_upload['url']
+        else:
+            image_url = 'https://riddym-img.s3.us-west-1.amazonaws.com/ef3674d16efb4566b8faadd148776825.png'
+
         new_song = Song(
             creator_id=current_user.id,
-                song_name=form.song_name.data,
-                duration=form.duration.data,
-                song_url=form.song_url.data,
-                image_url=form.image_url.data,
-                artist_name=form.artist_name.data
+            song_name=form.song_name.data,
+            duration=form.duration.data,
+            song_url=song_upload["url"],
+            image_url=image_url,
+            artist_name=form.artist_name.data
         )
         db.session.add(new_song)
         db.session.commit()
         return jsonify(new_song.to_dict()), 201
-    return form.errors, 401
+    else:
+        print("Form errors:", form.errors)
+    return jsonify(form.errors), 401
 
 # Get all songs
 @song_routes.route('/', methods=['GET'])

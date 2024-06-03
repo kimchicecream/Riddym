@@ -38,6 +38,7 @@ app.register_blueprint(score_routes, url_prefix='/api/scores')
 app.register_blueprint(song_routes, url_prefix='/api/songs')
 app.register_blueprint(note_routes, url_prefix='/api/notes')
 app.register_blueprint(friend_routes, url_prefix='/api/friends')
+
 db.init_app(app)
 Migrate(app, db)
 

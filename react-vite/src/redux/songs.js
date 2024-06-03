@@ -1,5 +1,3 @@
-import { apiFetch } from './utils/apiFetch';
-
 const GET_ALL_SONGS = 'songs/getAllSongs';
 const GET_ALL_SONGS_BY_USER = 'songs/getAllSongsByUser'
 const ADD_SONG = 'songs/addSong'
@@ -33,16 +31,17 @@ const deleteSong = songId => ({
 
 // Get all songs thunk
 export const fetchSongs = () => async dispatch =>{
-    const { data, errors, error } = await apiFetch('/api/songs');
-
-    if (errors || error) {
-        return { errors: errors || error};
+    const response = await fetch('/api/songs');
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
+    const data = await response.json();
 
     const objectData = data.reduce((acc, song) => {
         acc[song.id] = song;
         return acc;
-      }, {});
+    }, {});
 
     dispatch(getAllSongs(objectData));
     return data;
@@ -50,16 +49,17 @@ export const fetchSongs = () => async dispatch =>{
 
 // Get all songs by user thunk
 export const fetchSongsByUser = userId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/users/${userId}/songs`);
-
-    if (errors || error) {
-      return { errors: errors || error };
+    const response = await fetch(`/api/users/${userId}/songs`);
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
+    const data = await response.json();
 
     const objectData = data.reduce((acc, song) => {
         acc[song.id] = song;
         return acc;
-      }, {});
+    }, {});
 
     dispatch(getAllSongsByUser(objectData));
     return data;
@@ -67,15 +67,15 @@ export const fetchSongsByUser = userId => async dispatch => {
 
 // Create song thunk
 export const createSong = songData => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/songs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(songData),
+    const response = await fetch('/api/songs/create', {
+        method: 'POST',
+        body: songData,
     });
-
-    if (errors || error) {
-      return { errors: errors || error };
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
+    const data = await response.json();
 
     dispatch(addSong(data));
     return data;
@@ -83,15 +83,16 @@ export const createSong = songData => async dispatch => {
 
 // Edit song thunk
 export const editSong = (songId, songData) => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/songs/${songId}`, {
+    const response = await fetch(`/api/songs/${songId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(songData),
     });
-
-    if (errors || error) {
-        return { errors: errors || error };
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
+    const data = await response.json();
 
     dispatch(updateSong(data));
     return data;
@@ -99,12 +100,12 @@ export const editSong = (songId, songData) => async dispatch => {
 
 // Delete song thunk
 export const removeSong = songId => async dispatch => {
-    const { errors, error } = await apiFetch(`/api/songs/${songId}`, {
-      method: 'DELETE',
+    const response = await fetch(`/api/songs/${songId}`, {
+        method: 'DELETE',
     });
-
-    if (errors || error) {
-      return { errors: errors || error };
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
 
     dispatch(deleteSong(songId));

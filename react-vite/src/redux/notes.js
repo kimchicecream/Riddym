@@ -1,4 +1,3 @@
-import { apiFetch } from './utils/apiFetch';
 const GET_NOTES_BY_TRACK = 'notes/getNotesByTrack';
 const ADD_NOTE = 'notes/addNote';
 const UPDATE_NOTE = 'notes/updateNote';
@@ -26,65 +25,68 @@ const deleteNote = noteId => ({
 
 // Get notes by track thunk
 export const fetchNotesByTrack = trackId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/tracks/${trackId}/notes`);
+  const response = await fetch(`/api/tracks/${trackId}/notes`);
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, note) => {
+  const objectData = data.reduce((acc, note) => {
       acc[note.id] = note;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(getNotesByTrack(objectData));
-    return data;
+  dispatch(getNotesByTrack(objectData));
+  return data;
 };
 
 // Create note thunk
 export const createNote = noteData => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/notes', {
+  const response = await fetch('/api/notes/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(noteData),
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(addNote(data));
-    return data;
+  dispatch(addNote(data));
+  return data;
 };
 
 // Edit note thunk
 export const editNote = (noteId, noteData) => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/notes/${noteId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(noteData),
+    const response = await fetch(`/api/notes/${noteId}/edit`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(noteData),
     });
-
-    if (errors || error) {
-      return { errors: errors || error };
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
+    const data = await response.json();
 
     dispatch(updateNote(data));
     return data;
-};
+  };
 
 // Delete note thunk
 export const removeNote = noteId => async dispatch => {
-    const { errors, error } = await apiFetch(`/api/notes/${noteId}`, {
+  const response = await fetch(`/api/notes/${noteId}/delete`, {
       method: 'DELETE',
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(deleteNote(noteId));
-    return { success: true };
+  dispatch(deleteNote(noteId));
+  return { success: true };
 };
 
 const initialState = {

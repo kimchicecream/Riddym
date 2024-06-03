@@ -1,5 +1,3 @@
-import { apiFetch } from './utils/apiFetch';
-
 const GET_SCORES_BY_TRACK = 'scores/getScoresByTrack';
 const GET_SCORES_BY_USER = 'scores/getScoresByUser';
 const ADD_SCORE = 'scores/addScore';
@@ -31,84 +29,88 @@ const deleteScore = scoreId => ({
     payload: scoreId,
 });
 
-// get scores by track thunk
+// Get scores by track thunk
 export const fetchScoresByTrack = trackId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/tracks/${trackId}/scores`);
+  const response = await fetch(`/api/tracks/${trackId}/scores`);
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, score) => {
+  const objectData = data.reduce((acc, score) => {
       acc[score.id] = score;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(getScoresByTrack(objectData));
-    return data;
+  dispatch(getScoresByTrack(objectData));
+  return data;
 };
 
 // Get scores by user thunk
 export const fetchScoresByUser = userId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/users/${userId}/scores`);
+  const response = await fetch(`/api/users/${userId}/scores`);
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, score) => {
+  const objectData = data.reduce((acc, score) => {
       acc[score.id] = score;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(getScoresByUser(objectData));
-    return data;
+  dispatch(getScoresByUser(objectData));
+  return data;
 };
 
 // Create score thunk
 export const createScore = scoreData => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/scores', {
+  const response = await fetch('/api/scores', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(scoreData),
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(addScore(data));
-    return data;
+  dispatch(addScore(data));
+  return data;
 };
 
 // Edit score thunk
 export const editScore = (scoreId, scoreData) => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/scores/${scoreId}`, {
+  const response = await fetch(`/api/scores/${scoreId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(scoreData),
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(updateScore(data));
-    return data;
+  dispatch(updateScore(data));
+  return data;
 };
 
 // Delete score thunk
 export const removeScore = scoreId => async dispatch => {
-    const { errors, error } = await apiFetch(`/api/scores/${scoreId}`, {
+  const response = await fetch(`/api/scores/${scoreId}`, {
       method: 'DELETE',
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(deleteScore(scoreId));
-    return { success: true };
+  dispatch(deleteScore(scoreId));
+  return { success: true };
 };
 
 const initialState = {

@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
+import AddSongPage from '../components/AddSongPage/AddSongPage';
+import TrackCreator from '../components/TrackCreator/TrackCreator';
 
 export const router = createBrowserRouter([
   {
@@ -9,7 +11,15 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />
+      },
+      {
+        path: "/add-song",
+        element: <AddSongPage />
       }
     ],
+  },
+  {
+    path: "/track-creator/:songId",
+    element: <TrackCreator />
   },
 ]);

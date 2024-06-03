@@ -1,5 +1,3 @@
-import { apiFetch } from "./utils/apiFetch";
-
 const GET_ALL_FRIENDS = 'friends/getAllFriends'
 const GET_USER_FRIENDS = 'friends/getUserFriends'
 const ADD_FRIEND = 'friends/addFriend';
@@ -34,82 +32,86 @@ const deleteFriend = friendId => ({
 
 // Fetch all friends thunk
 export const fetchAllFriends = () => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/friends');
+  const response = await fetch('/api/friends');
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, friend) => {
+  const objectData = data.reduce((acc, friend) => {
       acc[friend.id] = friend;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(fetchAllFriends(objectData));
-    return data;
+  dispatch(getAllFriends(objectData));
+  return data;
 };
 
 // Fetch friends by user thunk
 export const fetchFriendsByUser = userId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/users/${userId}/friends`);
+  const response = await fetch(`/api/users/${userId}/friends`);
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, friend) => {
+  const objectData = data.reduce((acc, friend) => {
       acc[friend.id] = friend;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(fetchUserFriendsSuccess(objectData));
-    return data;
+  dispatch(getUserFriends(objectData));
+  return data;
 };
 
 // Create friend thunk
 export const createFriend = friendData => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/friends', {
+  const response = await fetch('/api/friends', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(friendData),
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(addFriend(data));
-    return data;
+  dispatch(addFriend(data));
+  return data;
 };
 
 // Edit friend thunk
 export const editFriend = (friendId, friendData) => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/friends/${friendId}`, {
+  const response = await fetch(`/api/friends/${friendId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(friendData),
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(updateFriend(data));
-    return data;
+  dispatch(updateFriend(data));
+  return data;
 };
 
 // Delete friend thunk
 export const removeFriend = friendId => async dispatch => {
-    const { errors, error } = await apiFetch(`/api/friends/${friendId}`, {
+  const response = await fetch(`/api/friends/${friendId}`, {
       method: 'DELETE',
-    });
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(deleteFriend(friendId));
-    return { success: true };
+  dispatch(deleteFriend(friendId));
+  return { success: true };
 };
 
 const initialState = {

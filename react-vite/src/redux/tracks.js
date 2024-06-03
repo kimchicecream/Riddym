@@ -1,5 +1,3 @@
-import { apiFetch } from './utils/apiFetch';
-
 const GET_ALL_TRACKS = 'tracks/getAllTracks';
 const GET_ALL_TRACKS_BY_USER = 'tracks/getAllTracksByUser';
 const ADD_TRACK = 'tracks/addTrack';
@@ -33,82 +31,85 @@ const deleteTrack = trackId => ({
 
 // Get all tracks thunk
 export const fetchTracks = () => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/tracks');
+  const response = await fetch('/api/tracks/all');
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, track) => {
+  const objectData = data.reduce((acc, track) => {
       acc[track.id] = track;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(getAllTracks(objectData));
-    return data;
+  dispatch(getAllTracks(objectData));
+  return data;
 };
 
 // Get all tracks by user thunk
 export const fetchTracksByUser = userId => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/users/${userId}/tracks`);
+  const response = await fetch(`/api/users/${userId}/tracks`);
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    const objectData = data.reduce((acc, track) => {
+  const objectData = data.reduce((acc, track) => {
       acc[track.id] = track;
       return acc;
-    }, {});
+  }, {});
 
-    dispatch(getAllTracksByUser(objectData));
-    return data;
+  dispatch(getAllTracksByUser(objectData));
+  return data;
 };
 
 // Create track thunk
 export const createTrack = trackData => async dispatch => {
-    const { data, errors, error } = await apiFetch('/api/tracks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(trackData),
-    });
+  const response = await fetch('/api/tracks/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(trackData),
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(addTrack(data));
-    return data;
+  dispatch(addTrack(data));
+  return data;
 };
 
 // Edit track thunk
 export const editTrack = (trackId, trackData) => async dispatch => {
-    const { data, errors, error } = await apiFetch(`/api/tracks/${trackId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(trackData),
-    });
+  const response = await fetch(`/api/tracks/${trackId}/edit`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(trackData),
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
+  const data = await response.json();
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(updateTrack(data));
-    return data;
-};
-
+  dispatch(updateTrack(data));
+  return data;
+}
 // Delete track thunk
 export const removeTrack = trackId => async dispatch => {
-    const { errors, error } = await apiFetch(`/api/tracks/${trackId}`, {
-      method: 'DELETE',
-    });
+  const response = await fetch(`/api/tracks/${trackId}/delete`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+      const errorData = await response.json();
+      return { errors: errorData.errors || errorData };
+  }
 
-    if (errors || error) {
-      return { errors: errors || error };
-    }
-
-    dispatch(deleteTrack(trackId));
-    return { success: true };
+  dispatch(deleteTrack(trackId));
+  return { success: true };
 };
 
 const initialState = {

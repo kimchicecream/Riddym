@@ -3,9 +3,14 @@ import botocore
 import os
 import uuid
 
-BUCKET_NAME = os.environ.get("S3_BUCKET_MP3")
-S3_LOCATION = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
-ALLOWED_EXTENSIONS = {"mp3"}
+BUCKET_NAME_MP3 = os.environ.get("S3_BUCKET_MP3")
+BUCKET_NAME_IMG = os.environ.get("S3_BUCKET_IMG")
+
+S3_LOCATION_MP3 = f"https://{BUCKET_NAME_MP3}.s3.amazonaws.com/"
+S3_LOCATION_IMG = f"https://{BUCKET_NAME_IMG}.s3.amazonaws.com/"
+
+ALLOWED_EXTENSIONS_MP3 = {"mp3"}
+ALLOWED_EXTENSIONS_IMG = {"jpg", "jpeg", "png", "gif"}
 
 s3 = boto3.client(
    "s3",
@@ -20,12 +25,13 @@ def get_unique_filename(filename):
     return f"{unique_filename}.{ext}"
 
 
-def upload_file_to_s3(file, acl="public-read"):
+def upload_file_to_s3(file, bucket_name, s3_location, acl="public-read"):
+    unique_filename = get_unique_filename(file.filename)
     try:
         s3.upload_fileobj(
             file,
-            BUCKET_NAME,
-            file.filename,
+            bucket_name,
+            unique_filename,
             ExtraArgs={
                 "ACL": acl,
                 "ContentType": file.content_type
@@ -35,19 +41,30 @@ def upload_file_to_s3(file, acl="public-read"):
         # in case the our s3 upload fails
         return {"errors": str(e)}
 
-    return {"url": f"{S3_LOCATION}{file.filename}"}
+    return {"url": f"{s3_location}{unique_filename}"}
 
 
-def remove_file_from_s3(image_url):
+def remove_file_from_s3(file_url, bucket_name):
     # AWS needs the image file name, not the URL,
     # so we split that out of the URL
     key = image_url.rsplit("/", 1)[1]
-    print(key)
     try:
         s3.delete_object(
-        Bucket=BUCKET_NAME,
+        Bucket=bucket_name,
         Key=key
         )
     except Exception as e:
         return { "errors": str(e) }
     return True
+
+def upload_mp3_to_s3(file):
+    return upload_file_to_s3(file, BUCKET_NAME_MP3, S3_LOCATION_MP3)
+
+def upload_image_to_s3(file):
+    return upload_file_to_s3(file, BUCKET_NAME_IMG, S3_LOCATION_IMG)
+
+def remove_mp3_from_s3(file_url):
+    return remove_file_from_s3(file_url, BUCKET_NAME_MP3)
+
+def remove_image_from_s3(file_url):
+    return remove_file_from_s3(file_url, BUCKET_NAME_IMG)

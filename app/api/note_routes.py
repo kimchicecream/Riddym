@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 note_routes = Blueprint('notes', __name__)
 
 # Create a new note
-@note_routes.route('/', methods=['POST'])
+@note_routes.route('/create', methods=['POST'])
 @login_required
 def create_note():
     data = request.get_json()
@@ -32,7 +32,7 @@ def get_note(id):
     return jsonify(note.to_dict()), 200
 
 # Update a note by ID
-@note_routes.route('/<int:id>', methods=['PUT'])
+@note_routes.route('/<int:id>/edit', methods=['PUT'])
 @login_required
 def update_note(id):
     data = request.get_json()
@@ -45,7 +45,7 @@ def update_note(id):
     return jsonify(note.to_dict()), 200
 
 # Delete a note by ID
-@note_routes.route('/<int:id>', methods=['DELETE'])
+@note_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_note(id):
     note = Note.query.get_or_404(id)

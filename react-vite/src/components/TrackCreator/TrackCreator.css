@@ -31,14 +31,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
 
     gap: 10px;
+
+    border: 2px solid red;
 }
 
 .track-creator .song-details-container .song-image {
-    height: 60px;
-    width: 60px;
+    height: 90px;
+    width: 80px;
 
     border: 1px solid gray;
 
@@ -53,9 +55,14 @@
 
 .track-creator .controls {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    padding: 10px 0;
+    padding: 10px 20px;
+
+    background-color: rgb(76, 76, 76);
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .track-creator .controls .timestamp {
@@ -67,9 +74,12 @@
 .wavesurfer-track {
     overflow: hidden;
     overflow-x: auto;
-    height: 490px;
+    height: 410px;
     background-color: rgb(46, 46, 46);
     position: relative;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 #waveform {
@@ -111,12 +121,27 @@
     border-top: 2px solid #B5FAE7;
 }
 
-.note {
+.track-creator-page .note-container {
+    height: 70px;
+    width: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid red;
+}
+
+.track-creator-page .note {
     width: 10px;
     height: 50px;
-    border-radius: 10px;
-    border: 0.5px solid rgb(255, 255, 255);
-    background-color: #f4f4f4;
+    border-radius: 2px;
+    /* border: 0.5px solid rgb(108, 255, 191); */
+    background-color: #ff8282;
     position: absolute;
     cursor: move;
+}
+
+.track-creator-page .nav-bar {
+    z-index: 400;
 }

@@ -1,16 +1,18 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { fetchNotesByTrack, createNote, editNote, removeNote } from '../../redux/notes';
+import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote } from '../../redux/notes';
+import { createTrack } from '../../redux/tracks';
 import './TrackCreator.css';
 
 function TrackCreator() {
     const { songId } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -35,7 +37,7 @@ function TrackCreator() {
 
     // fetch song
     useEffect(() => {
-        const controller = new AbortController();
+        const controller = new AbortController(); // helps prevent memory leaks
         const signal = controller.signal;
 
         const fetchSong = async () => {
@@ -62,11 +64,11 @@ function TrackCreator() {
     }, [songId]);
 
     // fetch notes by track
-    useEffect(() => {
-        if (song) {
-            dispatch(fetchNotesByTrack(songId));
-        }
-    }, [dispatch, songId, song]);
+    // useEffect(() => {
+    //     if (song) {
+    //         dispatch(fetchNotesByTrack(songId));
+    //     }
+    // }, [dispatch, songId, song]);
 
     // ****** wavesurfer ******
     useEffect(() => {
@@ -89,7 +91,7 @@ function TrackCreator() {
                     }),
                     HoverPlugin.create(),
                     Minimap.create({
-                        height: 230,
+                        height: 150,
                         waveColor: '#d9dcff',
                         progressColor: '#4353ff',
                         cursorColor: '#ff6347',
@@ -131,13 +133,14 @@ function TrackCreator() {
             wavesurferRef.current.on('finish', () => {
                 setIsPlaying(false);
             });
-        }
 
-        return () => {
-            if (wavesurferRef.current) {
-                wavesurferRef.current.destroy();
-            }
-        };
+            return () => {
+                if (wavesurferRef.current) {
+                    wavesurferRef.current.destroy();
+                    wavesurferRef.current = null;
+                }
+            };
+        }
     }, [song]);
 
     // play button
@@ -212,18 +215,17 @@ function TrackCreator() {
         setDraggedNoteId(noteId);
     };
 
+    // actions for where the note is dropped
     const handleDrop = async (e, laneNumber) => {
         e.preventDefault();
         const noteId = e.dataTransfer.getData('note-id');
         let timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
         console.log(`Note dropped on lane ${laneNumber} at timestamp ${timestamp}`);
 
-        // const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
-        //     if (
-        //         e.clientY < lanesBoundingBox.top ||
-        //         e.clientY > lanesBoundingBox.bottom
-        //     ) {
-        //         // If the drop is outside the lanes, remove the note
+        // this dont work
+        // const lanesBorderBox = lanesRef.current.getBorderClientRect();
+        //     if (e.clientY < lanesBorderBox.top || e.clientY > lanesBorderBox.bottom) {
+
         //         if (noteId !== 'new') {
         //             console.log(`Removing note with ID: ${noteId}`);
         //             dispatch(removeNote(noteId));
@@ -272,20 +274,48 @@ function TrackCreator() {
         e.preventDefault();
     };
 
+    // recognizes when a note is dragged outside the lanes
     const handleDragEnd = (e) => {
         const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
-        if (
-            e.clientY < lanesBoundingBox.top ||
-            e.clientY > lanesBoundingBox.bottom
-        ) {
+        if (e.clientY < lanesBoundingBox.top || e.clientY > lanesBoundingBox.bottom) {
             // If the drag ends outside the lanes container, remove the note
             if (draggedNoteId && draggedNoteId !== 'new') {
                 console.log(`Removing note with ID: ${draggedNoteId}`);
                 dispatch(removeNote(draggedNoteId));
-                setDraggedNoteId(null); // Reset the dragged note ID after deletion
+                setDraggedNoteId(null);
             }
         }
     };
+
+    // format to mm:ss
+    const formatDuration = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    };
+
+    // when publish-button is clicked
+    const handlePublish = async () => {
+        console.log('this button got pressed.')
+        const trackData = {
+            song_id: songId,
+            notes: Object.values(notes),
+            duration: duration
+        };
+
+        const result = await dispatch(createTrack(trackData));
+
+        if (result.errors) {
+            console.error('Errors:', result.errors);
+        } else {
+            console.log('Track created:', result);
+            navigate(`/track-overview/${result.id}`);
+        }
+    };
+
+    const handleHome = async () => {
+        console.log('Home button got pressed.')
+    }
 
     if (!song) {
         return <div>Loading song details...</div>;
@@ -294,20 +324,24 @@ function TrackCreator() {
     return (
         <div className='track-creator-page'>
             <div className='nav-bar'>
-                    <button className='home-button'>Home</button>
+                    <button onClick={handleHome}>Home</button>
+                    <button onClick={handlePublish}>Publish</button>
             </div>
             <div className='track-creator'>
-            <div className='note' draggable onDragStart={(e) => handleDragStart(e, 'new')}></div>
                 <div className='song-details-container'>
                     <div className='song-image'>
                         <img src={song.image_url} />
                     </div>
                     <div className='song-details'>
                         <h2>{song.song_name}</h2>
-                        <p>{song.artist_name}</p>
+                        <h3>{song.artist_name}</h3>
+                        <p>{formatDuration(song.duration)}</p>
                     </div>
                 </div>
                 <div className='controls'>
+                    <div className='note-container'>
+                        <div className='note' draggable onDragStart={(e) => handleDragStart(e, 'new')}></div>
+                    </div>
                     <div className='play-pause'>
                         <button onClick={handleRestart}>
                             <i className="fa-solid fa-undo"></i>
@@ -322,6 +356,7 @@ function TrackCreator() {
                     <div className='timestamp'>
                         <p>{formatTime(currentTime)}</p>
                     </div>
+                    <p>{Object.values(notes).length} note(s)</p>
                 </div>
                 <div className='wavesurfer-track'>
                     <div ref={waveformRef} id="waveform"></div>

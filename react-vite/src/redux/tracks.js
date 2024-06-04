@@ -1,5 +1,6 @@
 const GET_ALL_TRACKS = 'tracks/getAllTracks';
 const GET_ALL_TRACKS_BY_USER = 'tracks/getAllTracksByUser';
+const GET_TRACK_BY_ID = 'tracks/getTrackById';
 const ADD_TRACK = 'tracks/addTrack';
 const UPDATE_TRACK = 'tracks/updateTrack';
 const DELETE_TRACK = 'tracks/deleteTrack';
@@ -12,6 +13,11 @@ const getAllTracks = tracks => ({
 const getAllTracksByUser = tracks => ({
     type: GET_ALL_TRACKS_BY_USER,
     payload: tracks,
+});
+
+const getTrackById = track => ({
+    type: GET_TRACK_BY_ID,
+    payload: track,
 });
 
 const addTrack = track => ({
@@ -65,6 +71,17 @@ export const fetchTracksByUser = userId => async dispatch => {
   return data;
 };
 
+export const fetchTrackById = trackId => async dispatch => {
+    const response = await fetch(`/api/tracks/${trackId}`);
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+    const data = await response.json();
+    dispatch(getTrackById(data));
+    return data;
+  };
+
 // Create track thunk
 export const createTrack = trackData => async dispatch => {
   const response = await fetch('/api/tracks/create', {
@@ -114,7 +131,7 @@ export const removeTrack = trackId => async dispatch => {
 
 const initialState = {
     allTracks: {},
-    userTracks: {},
+    userTracks: {}
 };
 
 const tracksReducer = (state = initialState, action) => {
@@ -125,8 +142,14 @@ const tracksReducer = (state = initialState, action) => {
             return newState;
         }
         case GET_ALL_TRACKS_BY_USER: {
-        newState = { ...state, userTracks: action.payload };
-        return newState;
+            newState = { ...state, userTracks: action.payload };
+            return newState;
+        }
+        case GET_TRACK_BY_ID: {
+            newState = { ...state };
+            newState.allTracks[action.payload.id] = action.payload;
+            newState.userTracks[action.payload.id] = action.payload;
+            return newState;
         }
         case ADD_TRACK: {
             newState = { ...state };

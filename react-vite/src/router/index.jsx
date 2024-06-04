@@ -3,6 +3,7 @@ import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
 import AddSongPage from '../components/AddSongPage/AddSongPage';
 import TrackCreator from '../components/TrackCreator/TrackCreator';
+import TrackOverview from '../components/TrackOverview/TrackOverview';
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ export const router = createBrowserRouter([
       {
         path: "/add-song",
         element: <AddSongPage />
+      },
+      {
+        path: '/track-overview/:trackId',
+        element: <TrackOverview />
       }
     ],
   },

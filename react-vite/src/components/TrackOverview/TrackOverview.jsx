@@ -26,19 +26,25 @@ function TrackOverview() {
         return <div>Loading track details...</div>;
     }
 
+    const { song } = track;
+
     return (
         <div className='track-overview-page'>
             <h1>Your track is now available to play.</h1>
             <div className='track-details'>
                 <div className='song-image'>
-                    <img src={track.song?.image_url} />
+                    <img src={song?.image_url} />
                 </div>
                 <div className='song-details'>
-                    <h2>{track.song?.song_name}</h2>
-                    <h3>{track.song?.artist_name}</h3>
-                    <p>{formatDuration(track.duration)}</p>
+                    <h2>{song?.song_name}</h2>
+                    <h3>{song?.artist_name}</h3>
+                    <h4>{formatDuration(track.duration)}</h4>
                     <p>{track.notes?.length} notes</p>
                 </div>
+            </div>
+            <div className='buttons-container'>
+                <button className='overview-button'>Account Overview</button>
+                <button className='play-button'><h2>Play</h2></button>
             </div>
         </div>
     )

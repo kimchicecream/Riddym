@@ -45,10 +45,11 @@ function LoginFormModal() {
         <label>
           Password
           <input
-            type="password"
+            type="text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </label>
         {errors.password && <p>{errors.password}</p>}

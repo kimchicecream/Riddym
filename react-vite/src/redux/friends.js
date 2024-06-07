@@ -10,7 +10,7 @@ const getAllFriends = friends => ({
     payload: friends,
 });
 
-const gethUserFriends = friends => ({
+const getUserFriends = friends => ({
     type: GET_USER_FRIENDS,
     payload: friends,
 });

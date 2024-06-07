@@ -19,7 +19,7 @@ class Song(db.Model):
     tracks = relationship('Track', backref='song', cascade='all, delete-orphan', lazy=True)
 
     def to_dict(self):
-            return {
+        return {
             'id': self.id,
             'creator_id': self.creator_id,
             'song_name': self.song_name,
@@ -27,4 +27,4 @@ class Song(db.Model):
             'song_url': self.song_url,
             'image_url': self.image_url,
             'artist_name': self.artist_name
-            }
+        }

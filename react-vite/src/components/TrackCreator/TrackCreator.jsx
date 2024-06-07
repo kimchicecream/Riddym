@@ -24,7 +24,7 @@ function TrackCreator() {
     const timelineRef = useRef(null);
     const lanesRef = useRef(null);
     const minPxPerSec = 300;
-    const snapThreshold = 0.04;
+    const snapThreshold = 0.08;
 
     // keep page static
     useEffect(() => {

@@ -70,6 +70,7 @@ function SignupFormModal() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
@@ -80,6 +81,7 @@ function SignupFormModal() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}

@@ -19,9 +19,9 @@ function Gameplay() {
     const startTimeRef = useRef(null);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
-    const HIT_ZONE_HEIGHT = 30; // Height of the hit zone
-    const NOTE_HEIGHT = 30; // Height of a note
-    const HIT_OFFSET = 25; // Amount of note that must be above the hit zone to count as a hit
+    const HIT_ZONE_HEIGHT = 30; // height of the hit zone
+    const NOTE_HEIGHT = 30; // height of a note
+    const HIT_OFFSET = 25; // amount of note that must be above the hit zone to count as a hit
 
     // keep page static
     useEffect(() => {

@@ -28,7 +28,8 @@ function TrackOverview() {
         return <div>Loading track details...</div>;
     }
 
-    const { song } = track;
+    const { song, notes } = track;
+    const noteCount = notes ? Object.keys(notes).length : 0;
 
     return (
         <div className='track-overview-page'>
@@ -41,7 +42,7 @@ function TrackOverview() {
                     <h2>{song?.song_name}</h2>
                     <h3>{song?.artist_name}</h3>
                     <h4>{formatDuration(track.duration)}</h4>
-                    <p>{track.notes?.length} notes</p>
+                    <p>{noteCount} {noteCount === 1 ? 'note' : 'notes'}</p>
                 </div>
             </div>
             <div className='buttons-container'>

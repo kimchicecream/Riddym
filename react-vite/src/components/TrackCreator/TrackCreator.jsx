@@ -296,7 +296,7 @@ function TrackCreator() {
 
     // when publish-button is clicked
     const handlePublish = async () => {
-        console.log('this button got pressed.')
+        console.log('Publishing track with notes:', Object.values(notes));
         const trackData = {
             song_id: songId,
             notes: Object.values(notes),

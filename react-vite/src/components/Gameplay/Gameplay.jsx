@@ -50,13 +50,12 @@ function Gameplay() {
     useEffect(() => {
         if (gameStarted && track && track.notes) {
             const startTime = Date.now();
-            startTimeRef.current = startTime;
-            setFallingNotes(track.notes.map(note => ({
+            startTimeRef.current = startTime + 1065;
+            setFallingNotes(Object.values(track.notes).map(note => ({
                 ...note,
                 uniqueId: `${note.id}-${Date.now()}`
             })));
 
-            // Start the animation loop
             requestAnimationFrame(updateNotesPosition);
         }
     }, [gameStarted, track]);
@@ -67,7 +66,7 @@ function Gameplay() {
 
         setFallingNotes(prevNotes => prevNotes.map(note => ({
             ...note,
-            position: (elapsedTime - note.time) * 100 // adjust multiplier as needed
+            position: (elapsedTime - note.time) * 100 // Adjust multiplier as needed
         })));
 
         if (gameStarted) {
@@ -77,7 +76,10 @@ function Gameplay() {
 
     const handleStartGame = async () => {
         setGameStarted(true);
-        waveSurferRef.current.play();
+        startTimeRef.current = Date.now();
+        setTimeout(() => {
+            waveSurferRef.current.play();
+        }, 2000); // 2 second buffer
     };
 
     const handleKeyPress = (laneIndex) => {

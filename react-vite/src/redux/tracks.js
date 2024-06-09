@@ -94,6 +94,7 @@ export const createTrack = trackData => async dispatch => {
       return { errors: errorData.errors || errorData };
   }
   const data = await response.json();
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Track created on server:', data);
 
   dispatch(addTrack(data));
   return data;
@@ -153,8 +154,8 @@ const tracksReducer = (state = initialState, action) => {
         }
         case ADD_TRACK: {
             newState = { ...state };
-            newState.allTracks = { ...newState.allTracks, [action.payload.id]: { ...action.payload } };
-            newState.userTracks = { ...newState.userTracks, [action.payload.id]: { ...action.payload } };
+            newState.allTracks = { ...newState.allTracks, [action.payload.id]: { ...action.payload, notes: action.payload.notes || {} } };
+            newState.userTracks = { ...newState.userTracks, [action.payload.id]: { ...action.payload, notes: action.payload.notes || {} } };
             return newState;
         }
         case UPDATE_TRACK: {

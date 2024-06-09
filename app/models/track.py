@@ -25,5 +25,5 @@ class Track(db.Model):
             'difficulty': self.difficulty,
             'duration': self.duration,
             'song': self.song.to_dict() if self.song else None,
-            'notes': [note.to_dict() for note in self.notes]
+            'notes': {note.id: note.to_dict() for note in self.notes}
         }

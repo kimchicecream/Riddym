@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Track
+from app.models import db, Track, Note
 from flask_login import login_required, current_user
 # from app.forms.track_create import TrackForm
 
@@ -20,6 +20,20 @@ def create_track():
     )
     db.session.add(new_track)
     db.session.commit()
+
+    # Create and add notes to the track
+    notes_data = data.get('notes', [])
+    for note_data in notes_data:
+        new_note = Note(
+            track_id=new_track.id,
+            time=note_data['time'],
+            lane=note_data['lane'],
+            note_type=note_data['note_type']
+        )
+        db.session.add(new_note)
+
+    db.session.commit()  # Commit the notes
+
     return jsonify(new_track.to_dict()), 201
     # return jsonify(form.errors), 401
 

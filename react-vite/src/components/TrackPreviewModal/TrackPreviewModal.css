@@ -1,0 +1,32 @@
+.track-preview-modal {
+    display: flex;
+}
+
+.track-preview-modal .song-details {
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: 2px solid red;
+}
+
+.track-preview-modal .song-details .song-image {
+    height: 100px;
+    width: 100px;
+}
+
+.track-preview-modal .song-details .buttons-container {
+    width: 100%;
+}
+
+.track-preview-modal .song-details .play-button {
+    width: 100%;
+}
+
+.track-preview-modal .scoreboard {
+    width: 500px;
+
+    border: 2px solid red;
+}

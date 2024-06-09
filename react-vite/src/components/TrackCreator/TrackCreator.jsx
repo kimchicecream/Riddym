@@ -33,7 +33,7 @@ function TrackCreator() {
         return () => {
           document.body.style.overflow = "auto";
         };
-      }, []);
+    }, []);
 
     // fetch song
     useEffect(() => {

@@ -22,5 +22,10 @@
 
 #modal-content {
   position: absolute;
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.421);
+  backdrop-filter: blur(10px);
+
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(127, 255, 212, 0.355);
 }

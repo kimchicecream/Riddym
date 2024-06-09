@@ -1,0 +1,101 @@
+.gameplay {
+    display: flex;
+    height: 100vh;
+}
+
+.gameplay .start-game-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    backdrop-filter: blur(5px);
+}
+
+.gameplay .start-game-modal button {
+    all: unset;
+
+    font-weight: bold;
+    font-size: 40px;
+    color: black;
+    padding: 10px 20px;
+    background-color: aquamarine;
+    border-radius: 10px;
+}
+
+.gameplay .left,
+.gameplay .center,
+.gameplay .right {
+    flex: 1;
+    height: 100%;
+    border: 2px solid red;
+}
+
+.gameplay .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(0, 4, 255);
+    position: relative; /* Ensure relative positioning for child elements */
+}
+
+.gameplay .center .track-lanes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.gameplay .center .track-lanes .lanes {
+    width: 70px;
+    border: 2px solid red;
+    position: relative; /* Relative positioning for notes */
+    overflow: hidden; /* Hide notes after they pass the bottom */
+}
+
+/* .note {
+    width: 100%;
+    height: 30px;
+    background-color: yellow;
+    position: absolute;
+    top: -30px;
+    animation: fall linear forwards;
+} */
+
+.gameplay .note {
+    width: 100%;
+    height: 30px;
+    background-color: yellow;
+    position: absolute; /* Absolute positioning for animation */
+    top: -30px; /* Start position above the lane */
+}
+
+.hit-zone {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Height of the hit zone */
+    border-top: 2px solid green; /* Visual indication */
+    background-color: rgba(0, 255, 0, 0.2); /* Slightly transparent green */
+}
+
+
+.hit-zone.active {
+    background-color: rgba(255, 0, 0, 0.5); /* Change color when active */
+}
+
+@keyframes fall {
+    0% {
+        top: -30px;
+    }
+    100% {
+        top: 100%;
+    }
+}

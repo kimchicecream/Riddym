@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
 import './TrackOverview.css';
+import OpenModalButton from '../OpenModalButton';
+import TrackPreviewModal from '../TrackPreviewModal';
 
 function TrackOverview() {
     const { trackId } = useParams();
@@ -44,7 +46,11 @@ function TrackOverview() {
             </div>
             <div className='buttons-container'>
                 <button className='overview-button'>Account Overview</button>
-                <button className='play-button'><h2>Play</h2></button>
+                <OpenModalButton
+                    buttonText='Play'
+                    modalComponent={<TrackPreviewModal />}
+                    className="play-button"
+                />
             </div>
         </div>
     )

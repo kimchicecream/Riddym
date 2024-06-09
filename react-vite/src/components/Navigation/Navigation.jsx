@@ -4,10 +4,13 @@ import SignupFormModal from "../SignupFormModal";
 import ProfileButton from "./ProfileButton";
 import { useSelector, useDispatch } from "react-redux";
 import { thunkLogin } from "../../redux/session";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 import "./Navigation.css";
 
 function Navigation() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.session.user);
 
   const handleDemoLogin = async () => {
@@ -17,7 +20,15 @@ function Navigation() {
         password: "password",
       })
     );
+
+    navigate(`/session-overview/${sessionUser.username}`);
   };
+
+  useEffect(() => {
+    if (sessionUser) {
+      navigate(`/session-overview/${sessionUser.username}`);
+    }
+  }, [sessionUser, navigate]);
 
   return (
     <div className="navigation-container">
@@ -25,7 +36,7 @@ function Navigation() {
           <img src="../../../public/riddym-logo.png" />
       </div>
       <div className="nav-menu">
-        <button className="play-button"></button>
+        {sessionUser && ( <button className="overview-button">Session Overview</button> )}
         <button className="explore-button">Explore Tracks</button>
       </div>
       {sessionUser ? (

@@ -42,7 +42,7 @@
     justify-content: center;
     align-items: center;
     border: 2px solid rgb(0, 4, 255);
-    position: relative; /* Ensure relative positioning for child elements */
+    position: relative;
 }
 
 .gameplay .center .track-lanes {
@@ -56,8 +56,8 @@
 .gameplay .center .track-lanes .lanes {
     width: 70px;
     border: 2px solid red;
-    position: relative; /* Relative positioning for notes */
-    overflow: hidden; /* Hide notes after they pass the bottom */
+    position: relative;
+    overflow: hidden;
 }
 
 /* .note {
@@ -73,22 +73,24 @@
     width: 100%;
     height: 30px;
     background-color: yellow;
-    position: absolute; /* Absolute positioning for animation */
-    top: -30px; /* Start position above the lane */
+    position: absolute;
+    top: -30px;
 }
 
 .hit-zone {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px; /* Height of the hit zone */
-    border-top: 2px solid green; /* Visual indication */
-    background-color: rgba(0, 255, 0, 0.2); /* Slightly transparent green */
+    height: 30px;
+    border-top: 2px solid green;
+    background-color: rgba(0, 255, 0, 0.2);
+
+    margin-bottom: 40px;
 }
 
 
 .hit-zone.active {
-    background-color: rgba(255, 0, 0, 0.5); /* Change color when active */
+    background-color: rgba(255, 0, 0, 0.5);
 }
 
 @keyframes fall {

@@ -12,8 +12,16 @@ function Gameplay() {
     const [activeZones, setActiveZones] = useState([false, false, false, false, false]);
     const [gameStarted, setGameStarted] = useState(false);
     const [hitNotes, setHitNotes] = useState(new Set());
+    const [score, setScore] = useState(0);
+    const [multiplier, setMultiplier] = useState(1);
+    const [missedNotes, setMissedNotes] = useState(new Set());
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
+
+    const HIT_ZONE_POSITION = 90; // 90% from the top
+    const HIT_ZONE_HEIGHT = 30; // Height of the hit zone
+    const NOTE_HEIGHT = 30; // Height of a note
+    const HIT_OFFSET = 20; // Amount of note that must be above the hit zone to count as a hit
 
     // keep page static
     useEffect(() => {
@@ -24,12 +32,14 @@ function Gameplay() {
         };
     }, []);
 
+    // get all track info
     useEffect(() => {
         if (trackId) {
             dispatch(fetchTrackById(trackId));
         }
     }, [dispatch, trackId]);
 
+    // the song
     useEffect(() => {
         if (track && track.song && track.song.song_url && !waveSurferRef.current) {
             waveSurferRef.current = WaveSurfer.create({
@@ -47,10 +57,11 @@ function Gameplay() {
         }
     }, [track]);
 
+    // the notes & when they start falling
     useEffect(() => {
         if (gameStarted && track && track.notes) {
             const startTime = Date.now();
-            startTimeRef.current = startTime + 1065;
+            startTimeRef.current = startTime + 1070;
             setFallingNotes(Object.values(track.notes).map(note => ({
                 ...note,
                 uniqueId: `${note.id}-${Date.now()}`
@@ -64,10 +75,21 @@ function Gameplay() {
         const currentTime = Date.now();
         const elapsedTime = (currentTime - startTimeRef.current) / 1000; // in seconds
 
-        setFallingNotes(prevNotes => prevNotes.map(note => ({
-            ...note,
-            position: (elapsedTime - note.time) * 100 // Adjust multiplier as needed
-        })));
+        setFallingNotes(prevNotes => {
+            const updatedNotes = prevNotes.map(note => ({
+                ...note,
+                position: (elapsedTime - note.time) * 100
+            }));
+
+            const hitZoneBottom = HIT_ZONE_POSITION;
+            updatedNotes.forEach(note => {
+                if (note.position > hitZoneBottom + HIT_ZONE_HEIGHT && !hitNotes.has(note.uniqueId) && !missedNotes.has(note.uniqueId)) {
+                    setMissedNotes(prevMissedNotes => new Set(prevMissedNotes).add(note.uniqueId));
+                }
+            });
+
+            return updatedNotes;
+        });
 
         if (gameStarted) {
             requestAnimationFrame(updateNotesPosition);
@@ -83,12 +105,24 @@ function Gameplay() {
     };
 
     const handleKeyPress = (laneIndex) => {
-        // Check if there is a note in the hit zone
-        const hitZonePosition = 90; // Adjust this value based on the actual position of the hit zone
-        const hitNote = fallingNotes.find(note => note.lane === laneIndex && Math.abs(note.position - hitZonePosition) < 5);
+        const hitZoneTop = HIT_ZONE_POSITION;
+        const hitZoneBottom = HIT_ZONE_POSITION + HIT_ZONE_HEIGHT;
+        const hitNote = fallingNotes.find(note =>
+            note.lane === laneIndex &&
+            note.position + NOTE_HEIGHT >= hitZoneTop + HIT_OFFSET &&
+            note.position <= hitZoneBottom &&
+            !hitNotes.has(note.uniqueId)
+        );
 
         if (hitNote) {
             setHitNotes(prevHitNotes => new Set(prevHitNotes).add(hitNote.uniqueId));
+            setScore(prevScore => prevScore + 300 * multiplier);
+            setMultiplier(prevMultiplier => prevMultiplier + 1);
+            console.log(`Hit note in lane ${laneIndex}`);
+            setFallingNotes(prevNotes => prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId));
+        } else {
+            console.log(`Missed note in lane ${laneIndex}`);
+            setMultiplier(1); // Reset multiplier on miss
         }
 
         // Activate hit zone
@@ -137,7 +171,7 @@ function Gameplay() {
         return () => {
             window.removeEventListener('keydown', keyHandler);
         };
-    }, [gameStarted]);
+    }, [gameStarted, fallingNotes, hitNotes, multiplier]);
 
     return (
         <div className='gameplay'>
@@ -150,7 +184,7 @@ function Gameplay() {
             <div className='left'>
                 <i className="fa-solid fa-chevron-left"></i>
                 <div className='multiplier'>
-
+                    Multiplier: x{multiplier}
                 </div>
             </div>
             <div className='center'>
@@ -158,7 +192,11 @@ function Gameplay() {
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
                             {fallingNotes.filter(note => note.lane === laneIndex).map(note => (
-                                <div className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : ''}`} key={note.uniqueId} style={{ top: `${note.position}%` }}></div>
+                                <div
+                                    className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
+                                    key={note.uniqueId}
+                                    style={{ top: `${note.position}%` }}
+                                ></div>
                             ))}
                             <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
                         </div>
@@ -167,7 +205,7 @@ function Gameplay() {
             </div>
             <div className='right'>
                 <div className='score'>
-
+                    Score: {score}
                 </div>
             </div>
         </div>

@@ -16,7 +16,13 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [imageFile, setImageFile] = useState(null);
   const { closeModal } = useModal();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,15 +34,17 @@ function SignupFormModal() {
       });
     }
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        email,
-        username,
-        first_name: firstName,
-        last_name: lastName,
-        password,
-      })
-    );
+    const formData = new FormData();
+
+    formData.append('email', email);
+    formData.append('username', username);
+    formData.append('first_name', firstName);
+    formData.append('last_name', lastName);
+    formData.append('password', password);
+
+    if (imageFile) formData.append('image_file', imageFile);
+
+    const serverResponse = await dispatch(thunkSignup(formData));
 
     if (serverResponse) {
       setErrors(serverResponse);
@@ -55,9 +63,9 @@ function SignupFormModal() {
     <>
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <label>
-          Email
+          <p>EMAIL</p> {errors.email && <p>{errors.email}</p>}
           <input
             type="text"
             value={email}
@@ -65,9 +73,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
         <label>
-          Username
+          <p>USERNAME</p> {errors.username && <p>{errors.username}</p>}
           <input
             type="text"
             value={username}
@@ -75,9 +82,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
         <label>
-          First Name
+          <p>FIRST NAME</p> {errors.first_name && <p>{errors.first_name}</p>}
           <input
             type="text"
             value={firstName}
@@ -85,9 +91,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.first_name && <p>{errors.first_name}</p>}
         <label>
-          Last Name
+          <p>LAST NAME</p> {errors.last_name && <p>{errors.last_name}</p>}
           <input
             type="text"
             value={lastName}
@@ -95,9 +100,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.last_name && <p>{errors.last_name}</p>}
         <label>
-          Password
+          <p>PASSWORD</p> {errors.password && <p>{errors.password}</p>}
           <input
             type="password"
             value={password}
@@ -106,9 +110,8 @@ function SignupFormModal() {
             autoComplete="current-password"
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
         <label>
-          Confirm Password
+          <p>CONFIRM PASSWORD</p> {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
           <input
             type="password"
             value={confirmPassword}
@@ -117,7 +120,14 @@ function SignupFormModal() {
             autoComplete="current-password"
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        <label>
+          <p>PROFILE IMAGE</p>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </label>
         <button type="submit">Sign Up</button>
       </form>
     </>

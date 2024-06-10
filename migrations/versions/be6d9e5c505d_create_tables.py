@@ -1,7 +1,7 @@
 """create tables
 
 Revision ID: be6d9e5c505d
-Revises: 
+Revises:
 Create Date: 2024-06-09 20:14:32.494825
 
 """
@@ -68,7 +68,8 @@ def upgrade():
     sa.Column('lane', sa.Integer(), nullable=False),
     sa.Column('note_type', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['track_id'], ['tracks.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('temp_track_id')
     )
     op.create_table('scores',
     sa.Column('id', sa.Integer(), nullable=False),

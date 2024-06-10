@@ -2,6 +2,7 @@ const GET_NOTES_BY_TRACK = 'notes/getNotesByTrack';
 const ADD_NOTE = 'notes/addNote';
 const UPDATE_NOTE = 'notes/updateNote';
 const DELETE_NOTE = 'notes/deleteNote';
+const UPDATE_TRACK_ID = 'notes/updateTrackId';
 
 const getNotesByTrack = notes => ({
     type: GET_NOTES_BY_TRACK,
@@ -21,6 +22,11 @@ const updateNote = note => ({
 const deleteNote = noteId => ({
     type: DELETE_NOTE,
     payload: noteId,
+});
+
+const updateTrackIdAction = (tempTrackId, trackId) => ({
+    type: UPDATE_TRACK_ID,
+    payload: { tempTrackId, trackId },
 });
 
 // Get notes by track thunk
@@ -90,22 +96,20 @@ export const removeNote = noteId => async dispatch => {
 };
 
 // Update track ID thunk
-export const updateTrackId = data => async dispatch => {
+export const updateTrackIdThunk = (data) => async dispatch => {
     const response = await fetch('/api/notes/update-track-id', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      return { errors: error.errors || error };
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
     }
 
-    const resData = await response.json();
-    return resData;
+    dispatch(updateTrackIdAction(data.temp_track_id, data.track_id));
+    return { success: true };
 };
 
 const initialState = {
@@ -133,6 +137,15 @@ const notesReducer = (state = initialState, action) => {
             newState = { ...state };
             newState.trackNotes = { ...newState.trackNotes };
             delete newState.trackNotes[action.payload];
+            return newState;
+        }
+        case UPDATE_TRACK_ID: {
+            newState = { ...state };
+            Object.values(newState.trackNotes).forEach(note => {
+                if (note.temp_track_id === action.payload.tempTrackId) {
+                    note.track_id = action.payload.trackId;
+                }
+            });
             return newState;
         }
         default:

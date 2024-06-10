@@ -7,7 +7,7 @@ import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote } from '../../redux/notes';
 import { createTrack } from '../../redux/tracks';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'uuid/v4';
 import './TrackCreator.css';
 
 function TrackCreator() {
@@ -26,7 +26,7 @@ function TrackCreator() {
     const lanesRef = useRef(null);
     const minPxPerSec = 300;
     const snapThreshold = 0.08;
-    const [tempTrackId] = useState(uuidv4());
+    const [tempTrackId] = useState(uuid.v4());
 
     // keep page static
     useEffect(() => {
@@ -304,7 +304,7 @@ function TrackCreator() {
             song_id: songId,
             notes: Object.values(notes),
             duration: duration,
-            temp_track_id: tempTrackId
+            // temp_track_id: tempTrackId
         };
 
         const result = await dispatch(createTrack(trackData));
@@ -313,7 +313,7 @@ function TrackCreator() {
             console.error('Errors:', result.errors);
         } else {
             console.log('Track created:', result);
-            await dispatch(updateTrackId({ temp_track_id: tempTrackId, actual_track_id: result.id }));
+            await dispatch(updateTrackId({ temp_track_id: tempTrackId, track_id: result.id }));
             navigate(`/track-overview/${result.id}`);
         }
     };

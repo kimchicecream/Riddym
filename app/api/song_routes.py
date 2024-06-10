@@ -16,9 +16,17 @@ def create_song():
         song_file = request.files.get('song_file')
         song_upload = upload_mp3_to_s3(song_file)
 
-        if not form.data['image_file']:
-            image_file = request.files.get('image_file')
+         if "errors" in song_upload:
+            print("Song upload error:", song_upload["errors"])
+            return jsonify(song_upload), 400
+        print("Song uploaded successfully:", song_upload)
+
+        image_file = request.files.get('image_file')
+        if image_file:
             image_upload = upload_image_to_s3(image_file)
+            if "errors" in image_upload:
+                print("Image upload error:", image_upload["errors"])
+                return jsonify(image_upload), 400
             image_url = image_upload['url']
         else:
             image_url = 'https://riddym-img.s3.us-west-1.amazonaws.com/ef3674d16efb4566b8faadd148776825.png'

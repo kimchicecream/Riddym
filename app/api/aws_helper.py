@@ -37,7 +37,9 @@ def upload_file_to_s3(file, bucket_name, s3_location, acl="public-read"):
                 "ContentType": file.content_type
             }
         )
+        print(f"File uploaded successfully: {unique_filename}")
     except Exception as e:
+        print(f"Error uploading file to S3: {str(e)}")
         # in case the our s3 upload fails
         return {"errors": str(e)}
 

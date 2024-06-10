@@ -39,6 +39,14 @@ function Gameplay() {
         }
     }, [dispatch, trackId]);
 
+    useEffect(() => {
+        if (track) {
+            console.log("Track data:", track);
+            console.log("Notes data type:", typeof track.notes);
+            console.log("Notes data:", track.notes);
+        }
+    }, [track]);
+
     // the song
     useEffect(() => {
         if (track && track.song && track.song.song_url && !waveSurferRef.current) {
@@ -66,7 +74,7 @@ function Gameplay() {
                 ...note,
                 uniqueId: `${note.id}-${Date.now()}`
             })));
-
+            console.log("Falling notes initialized:", Object.values(track.notes));
             requestAnimationFrame(updateNotesPosition);
         }
     }, [gameStarted, track]);
@@ -76,6 +84,11 @@ function Gameplay() {
         const elapsedTime = (currentTime - startTimeRef.current) / 1000; // in seconds
 
         setFallingNotes(prevNotes => {
+            if (!Array.isArray(prevNotes)) {
+                console.error("prevNotes is not an array:", prevNotes);
+                return prevNotes; // return early if prevNotes is not an array
+            }
+
             const updatedNotes = prevNotes.map(note => ({
                 ...note,
                 position: (elapsedTime - note.time) * 100
@@ -189,18 +202,18 @@ function Gameplay() {
             </div>
             <div className='center'>
                 <div className='track-lanes'>
-                {[...Array(5)].map((_, laneIndex) => (
-                    <div className='lanes' key={laneIndex}>
-                        {Object.values(fallingNotes).filter(note => note.lane === laneIndex).map(note => (
-                            <div
-                                className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
-                                key={note.uniqueId}
-                                style={{ top: `${note.position}%` }}
-                            ></div>
-                        ))}
-                        <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
-                    </div>
-                ))}
+                    {[...Array(5)].map((_, laneIndex) => (
+                        <div className='lanes' key={laneIndex}>
+                            {fallingNotes.filter(note => note.lane === laneIndex).map(note => (
+                                <div
+                                    className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
+                                    key={note.uniqueId}
+                                    style={{ top: `${note.position}%` }}
+                                ></div>
+                            ))}
+                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className='right'>

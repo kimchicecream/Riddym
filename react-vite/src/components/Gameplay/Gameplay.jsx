@@ -59,17 +59,17 @@ function Gameplay() {
 
     // the notes & when they start falling
     useEffect(() => {
-    if (gameStarted && track && track.notes) {
-        const startTime = Date.now();
-        startTimeRef.current = startTime + 1070;
-        setFallingNotes(Object.values(track.notes).map(note => ({
-            ...note,
-            uniqueId: `${note.id}-${Date.now()}`
-        })));
+        if (gameStarted && track && track.notes) {
+            const startTime = Date.now();
+            startTimeRef.current = startTime + 1070;
+            setFallingNotes(Object.values(track.notes).map(note => ({
+                ...note,
+                uniqueId: `${note.id}-${Date.now()}`
+            })));
 
-        requestAnimationFrame(updateNotesPosition);
-    }
-}, [gameStarted, track]);
+            requestAnimationFrame(updateNotesPosition);
+        }
+    }, [gameStarted, track]);
 
     const updateNotesPosition = () => {
         const currentTime = Date.now();
@@ -189,18 +189,18 @@ function Gameplay() {
             </div>
             <div className='center'>
                 <div className='track-lanes'>
-                    {[...Array(5)].map((_, laneIndex) => (
-                        <div className='lanes' key={laneIndex}>
-                            {fallingNotes.filter(note => note.lane === laneIndex).map(note => (
-                                <div
-                                    className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
-                                    key={note.uniqueId}
-                                    style={{ top: `${note.position}%` }}
-                                ></div>
-                            ))}
-                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
-                        </div>
-                    ))}
+                {[...Array(5)].map((_, laneIndex) => (
+                    <div className='lanes' key={laneIndex}>
+                        {Object.values(fallingNotes).filter(note => note.lane === laneIndex).map(note => (
+                            <div
+                                className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
+                                key={note.uniqueId}
+                                style={{ top: `${note.position}%` }}
+                            ></div>
+                        ))}
+                        <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
+                    </div>
+                ))}
                 </div>
             </div>
             <div className='right'>

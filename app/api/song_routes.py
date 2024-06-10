@@ -14,9 +14,8 @@ def create_song():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         song_file = request.files.get('song_file')
-
         if song_file:
-            print(f"Song file received: {song_file.filename}")
+            print(f"Song file received: {song_file.filename}, type: {type(song_file)}")
         else:
             print("No song file received")
 
@@ -50,6 +49,7 @@ def create_song():
         return jsonify(new_song.to_dict()), 201
     else:
         print("Form errors:", form.errors)
+    return jsonify(form.errors), 401rs)
     return jsonify(form.errors), 401
 
 # Get all songs

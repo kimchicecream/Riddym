@@ -204,7 +204,7 @@ function Gameplay() {
                 <div className='track-lanes'>
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
-                            {fallingNotes.filter(note => note.lane === laneIndex).map(note => (
+                            {Object.values(fallingNotes).filter(note => note.lane === laneIndex).map(note => (
                                 <div
                                     className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
                                     key={note.uniqueId}

@@ -34,6 +34,8 @@ def create_track():
 
     db.session.commit()  # Commit the notes
 
+    print(f"Created track with ID {new_track.id} and {len(notes_data)} notes")
+
     return jsonify(new_track.to_dict()), 201
     # return jsonify(form.errors), 401
 
@@ -47,6 +49,10 @@ def get_tracks():
 @track_routes.route('/<int:id>', methods=['GET'])
 def get_track_by_id(id):
     track = Track.query.get_or_404(id)
+
+    notes_count = Note.query.filter_by(track_id=id).count()
+    print(f"Fetched track with ID {id} with {notes_count} notes")
+
     return jsonify(track.to_dict()), 200
 
 # Update a track by ID

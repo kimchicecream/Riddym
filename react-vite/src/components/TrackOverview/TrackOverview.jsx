@@ -18,6 +18,14 @@ function TrackOverview() {
         }
     }, [dispatch, trackId]);
 
+    useEffect(() => {
+        if (track) {
+            console.log("Track data:", track);
+            console.log("Notes data type:", typeof track.notes);
+            console.log("Notes data:", track.notes);
+        }
+    }, [track]);
+
     const formatDuration = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);

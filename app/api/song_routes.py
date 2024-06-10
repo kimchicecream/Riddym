@@ -14,8 +14,13 @@ def create_song():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         song_file = request.files.get('song_file')
-        song_upload = upload_mp3_to_s3(song_file)
 
+        if song_file:
+            print(f"Song file received: {song_file.filename}")
+        else:
+            print("No song file received")
+
+        song_upload = upload_mp3_to_s3(song_file)
         if "errors" in song_upload:
             print("Song upload error:", song_upload["errors"])
             return jsonify(song_upload), 400
@@ -23,6 +28,7 @@ def create_song():
 
         image_file = request.files.get('image_file')
         if image_file:
+            print(f"Image file received: {image_file.filename}")
             image_upload = upload_image_to_s3(image_file)
             if "errors" in image_upload:
                 print("Image upload error:", image_upload["errors"])

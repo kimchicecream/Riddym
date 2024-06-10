@@ -39,14 +39,6 @@ function Gameplay() {
         }
     }, [dispatch, trackId]);
 
-    useEffect(() => {
-        if (track) {
-            console.log("Track data:", track);
-            console.log("Notes data type:", typeof track.notes);
-            console.log("Notes data:", track.notes);
-        }
-    }, [track]);
-
     // the song
     useEffect(() => {
         if (track && track.song && track.song.song_url && !waveSurferRef.current) {
@@ -121,7 +113,7 @@ function Gameplay() {
         const hitZoneTop = HIT_ZONE_POSITION;
         const hitZoneBottom = HIT_ZONE_POSITION + HIT_ZONE_HEIGHT;
         const hitNote = fallingNotes.find(note =>
-            note.lane === laneIndex &&
+            note.lane === laneIndex + 1 &&
             note.position + NOTE_HEIGHT >= hitZoneTop + HIT_OFFSET &&
             note.position <= hitZoneBottom &&
             !hitNotes.has(note.uniqueId)
@@ -131,10 +123,10 @@ function Gameplay() {
             setHitNotes(prevHitNotes => new Set(prevHitNotes).add(hitNote.uniqueId));
             setScore(prevScore => prevScore + 300 * multiplier);
             setMultiplier(prevMultiplier => prevMultiplier + 1);
-            console.log(`Hit note in lane ${laneIndex}`);
+            console.log(`Hit note in lane ${laneIndex + 1}`);
             setFallingNotes(prevNotes => prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId));
         } else {
-            console.log(`Missed note in lane ${laneIndex}`);
+            console.log(`Missed note in lane ${laneIndex + 1}`);
             setMultiplier(1); // Reset multiplier on miss
         }
 
@@ -204,7 +196,7 @@ function Gameplay() {
                 <div className='track-lanes'>
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
-                            {Object.values(fallingNotes).filter(note => note.lane === laneIndex).map(note => (
+                            {Object.values(fallingNotes).filter(note => note.lane === laneIndex + 1).map(note => (
                                 <div
                                     className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
                                     key={note.uniqueId}

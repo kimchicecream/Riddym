@@ -24,12 +24,6 @@ function Navigation() {
     navigate(`/session-overview/${sessionUser.username}`);
   };
 
-  useEffect(() => {
-    if (sessionUser) {
-      navigate(`/session-overview/${sessionUser.username}`);
-    }
-  }, [sessionUser, navigate]);
-
   return (
     <div className="navigation-container">
       <div className="logo-container">

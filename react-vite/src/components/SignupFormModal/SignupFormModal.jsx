@@ -53,12 +53,6 @@ function SignupFormModal() {
     }
   };
 
-  useEffect(() => {
-    if (sessionUser) {
-      navigate(`/session-overview/${sessionUser.username}`);
-    }
-  }, [sessionUser, navigate]);
-
   return (
     <>
       <h1>Sign Up</h1>

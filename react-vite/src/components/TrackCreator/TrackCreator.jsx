@@ -5,7 +5,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote } from '../../redux/notes';
+import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote, updateTrackIdThunk } from '../../redux/notes';
 import { createTrack } from '../../redux/tracks';
 import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
@@ -312,7 +312,7 @@ function TrackCreator() {
             console.error('Errors:', result.errors);
         } else {
             console.log('Track created:', result);
-            await dispatch(updateTrackId({ temp_track_id: tempTrackId, track_id: result.id }));
+            await dispatch(updateTrackIdThunk({ temp_track_id: tempTrackId, track_id: result.id }));
             navigate(`/track-overview/${result.id}`);
         }
     };

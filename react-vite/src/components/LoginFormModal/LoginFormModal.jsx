@@ -35,12 +35,6 @@ function LoginFormModal() {
     }
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate(`/session-overview/${currentUser.username}`);
-    }
-  }, [currentUser, navigate]);
-
   return (
     <>
       <h1>Log In</h1>

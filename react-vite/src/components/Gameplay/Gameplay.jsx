@@ -59,17 +59,17 @@ function Gameplay() {
 
     // the notes & when they start falling
     useEffect(() => {
-        if (gameStarted && track && track.notes) {
-            const startTime = Date.now();
-            startTimeRef.current = startTime + 1070;
-            setFallingNotes(Object.values(track.notes).map(note => ({
-                ...note,
-                uniqueId: `${note.id}-${Date.now()}`
-            })));
+    if (gameStarted && track && track.notes) {
+        const startTime = Date.now();
+        startTimeRef.current = startTime + 1070;
+        setFallingNotes(Object.values(track.notes).map(note => ({
+            ...note,
+            uniqueId: `${note.id}-${Date.now()}`
+        })));
 
-            requestAnimationFrame(updateNotesPosition);
-        }
-    }, [gameStarted, track]);
+        requestAnimationFrame(updateNotesPosition);
+    }
+}, [gameStarted, track]);
 
     const updateNotesPosition = () => {
         const currentTime = Date.now();

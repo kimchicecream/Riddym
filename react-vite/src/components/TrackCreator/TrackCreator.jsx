@@ -407,9 +407,6 @@ function TrackCreator() {
                             <div className='lane' id='lane-four'></div>
                             <div className='lane' id='lane-five'></div>
                         </div> */}
-                        <div className='keybinds'>
-
-                        </div>
                 </div>
             </div>
         </div>

@@ -55,7 +55,7 @@ function TrackPreviewModal() {
             <div id='divider'></div>
             <div className='scoreboard'>
                 <div className='tabs'>
-                    <button
+                    {/* <button
                         className={activeTab === 'global' ? 'active' : ''}
                         onClick={() => handleTabChange('global')}
                     >
@@ -66,18 +66,18 @@ function TrackPreviewModal() {
                         onClick={() => handleTabChange('friends')}
                     >
                         Friends
-                    </button>
+                    </button> */}
                 </div>
                 <div className='tab-content'>
-                    {activeTab === 'global' ? (
+                    {/* {activeTab === 'global' ? (
                         <div className='global'>
-                            {/* Render global high scores */}
+                            Render global high scores
                         </div>
                     ) : (
                         <div className='friends'>
-                            {/* Render friends' high scores */}
+                            Render friends' high scores
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

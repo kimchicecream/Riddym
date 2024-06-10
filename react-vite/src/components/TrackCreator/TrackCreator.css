@@ -35,7 +35,9 @@
 
     gap: 10px;
 
-    border: 2px solid red;
+    margin-bottom: 20px;
+
+    /* border: 2px solid red; */
 }
 
 .track-creator .song-details-container .song-image {
@@ -63,6 +65,8 @@
 
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+
+    gap: 10px;
 }
 
 .track-creator .controls .timestamp {
@@ -129,7 +133,9 @@
     justify-content: center;
     align-items: center;
 
-    border: 2px solid red;
+    border: 2px solid aquamarine;
+
+    border-radius: 5px;
 }
 
 .track-creator-page .note {
@@ -144,4 +150,15 @@
 
 .track-creator-page .nav-bar {
     z-index: 400;
+}
+
+.track-creator-page .nav-bar button {
+    all: unset;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: 0.2s ease;
+}
+
+.track-creator-page .nav-bar button:hover {
+    background-color: rgba(128, 128, 128, 0.468);
 }

@@ -9,7 +9,9 @@
     flex-direction: column;
     align-items: center;
 
-    border: 2px solid red;
+    padding: 10px;
+
+    border: 1px solid aquamarine;
 }
 
 .track-preview-modal .song-details .song-image {
@@ -28,5 +30,19 @@
 .track-preview-modal .scoreboard {
     width: 500px;
 
-    border: 2px solid red;
+    border: 1px solid aquamarine;
+}
+
+.track-preview-modal .play-button {
+    all: unset;
+
+    margin-top: 10px;
+
+    padding: 10px 0px;
+
+    display: flex;
+    justify-content: center;
+
+    background-color: aquamarine;
+    color: black
 }

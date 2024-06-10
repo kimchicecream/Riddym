@@ -23,6 +23,8 @@ function Gameplay() {
     const NOTE_HEIGHT = 30; // height of a note
     const HIT_OFFSET = 25; // amount of note that must be above the hit zone to count as a hit
 
+    const KEY_LABELS = ['A', 'S', 'J', 'K', 'L'];
+
     // keep page static
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -208,6 +210,7 @@ function Gameplay() {
                                 ></div>
                             ))}
                             <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
+                            <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}
                 </div>

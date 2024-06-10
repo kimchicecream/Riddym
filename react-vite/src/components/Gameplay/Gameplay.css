@@ -109,3 +109,24 @@
         top: 100%;
     }
 }
+
+.key-label {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 10px;
+    color: #fff;
+}
+
+.multiplier {
+    font-weight: bold;
+    font-size: 50px;
+
+    color: aquamarine;
+}
+
+.gameplay .score {
+    font-weight: bold;
+    font-size: 50px;
+
+    color: aquamarine;
+}

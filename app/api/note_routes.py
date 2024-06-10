@@ -10,14 +10,8 @@ note_routes = Blueprint('notes', __name__)
 @login_required
 def create_note():
     data = request.get_json()
-    print("Data received:", data)
-
-    track_id = data.get('track_id')
-    temp_track_id = data.get('temp_track_id', str(uuid.uuid4()))
-
     new_note = Note(
-        track_id=track_id,
-        temp_track_id=temp_track_id if not track_id else None,
+        temp_track_id=data['temp_track_id'],
         time=data['time'],
         lane=data['lane'],
         note_type=data['note_type']

@@ -5,6 +5,9 @@ import uuid
 BUCKET_NAME_MP3 = os.environ.get("S3_BUCKET_MP3")
 BUCKET_NAME_IMG = os.environ.get("S3_BUCKET_IMG")
 
+print(f"BUCKET_NAME_MP3: {BUCKET_NAME_MP3}")
+print(f"BUCKET_NAME_IMG: {BUCKET_NAME_IMG}")
+
 S3_LOCATION_MP3 = f"https://{BUCKET_NAME_MP3}.s3.amazonaws.com/"
 S3_LOCATION_IMG = f"https://{BUCKET_NAME_IMG}.s3.amazonaws.com/"
 

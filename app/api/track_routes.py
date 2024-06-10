@@ -10,6 +10,8 @@ track_routes = Blueprint('tracks', __name__)
 @login_required
 def create_track():
     data = request.get_json()
+    print('Received track data:', data)
+
     new_track = Track(
         creator_id=current_user.id,
         song_id=data['song_id'],
@@ -19,8 +21,9 @@ def create_track():
     db.session.add(new_track)
     db.session.commit()
 
-    # create and add notes to the track
+    # Create and add notes to the track
     notes_data = data.get('notes', [])
+    print('Received notes data:', notes_data)
     unique_notes = {f"{note['time']}-{note['lane']}": note for note in notes_data}.values()
 
     for note_data in unique_notes:
@@ -32,9 +35,11 @@ def create_track():
         )
         db.session.add(new_note)
 
-    db.session.commit()
+    db.session.commit()  # Commit the notes
 
     print(f"Created track with ID {new_track.id} and {len(unique_notes)} unique notes")
+    print(f"Track notes after creation: {[note.to_dict() for note in new_track.notes]}")
+
     return jsonify(new_track.to_dict()), 201
 
 # Get all tracks

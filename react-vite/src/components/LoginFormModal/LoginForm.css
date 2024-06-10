@@ -1,0 +1,98 @@
+.login-modal-container {
+    width: 400px;
+}
+
+.login-modal-container form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.login-modal-container h1 {
+    margin-bottom: 20px;
+}
+
+.login-modal-container form input {
+    all: unset;
+    background-color: rgb(0, 0, 0);
+    border: 1px solid aquamarine;
+    border-radius: 5px;
+    width: 377px;
+    padding: 10px;
+}
+
+.login-modal-container form button {
+    all: unset;
+
+    display: flex;
+    justify-content: center;
+
+    margin-top: 10px;
+    padding: 10px 0;
+
+    width: 100%;
+
+    background-color: aquamarine;
+    color: black;
+    font-weight: bold;
+
+    border-radius: 10px;
+}
+
+.login-modal-container .bottom-divider {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px 0;
+
+    gap: 15px;
+    width: 100%
+}
+
+.login-modal-container .bottom-divider span {
+    display: block;
+    height: 2px;
+    width: 190px;
+    background-color: aquamarine;
+}
+
+.login-modal-container .bottom-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.login-modal-container .bottom-button-container button {
+    all: unset;
+
+    padding: 10px 0;
+
+    background-color: white;
+    color: black;
+    font-weight: bold;
+
+    border-radius: 10px;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+.login-modal-container .dont-have-account p {
+    font-size: 15px;
+}
+
+.login-modal-container .dont-have-account {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.login-modal-container .signup-letters {
+    color: rgb(138, 43, 226);
+    all: unset;
+    text-decoration: underline;
+}

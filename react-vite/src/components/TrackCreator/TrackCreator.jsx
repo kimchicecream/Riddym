@@ -123,7 +123,6 @@ function TrackCreator() {
             });
 
             wavesurferRef.current.on('seek', (progress) => {
-                console.log('Seek event triggered', progress);
                 const newTime = wavesurferRef.current.getDuration() * progress;
                 setCurrentTime(newTime);
             });
@@ -222,27 +221,13 @@ function TrackCreator() {
         e.preventDefault();
         const noteId = e.dataTransfer.getData('note-id');
         let timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
-        console.log(`Note dropped on lane ${laneNumber} at timestamp ${timestamp}`);
 
-        // this dont work
-        // const lanesBorderBox = lanesRef.current.getBorderClientRect();
-        //     if (e.clientY < lanesBorderBox.top || e.clientY > lanesBorderBox.bottom) {
-
-        //         if (noteId !== 'new') {
-        //             console.log(`Removing note with ID: ${noteId}`);
-        //             dispatch(removeNote(noteId));
-        //             return;
-        //         }
-        // }
-
-        // note snapping to nearest note
         for (let i = 1; i <= 5; i++) {
             if (i !== laneNumber) {
-                const adjacentNotes = Object.values(notes).filter(note => note.lane === i);
+                const adjacentNotes = Object.values(notes).filter((note) => note.lane === i);
                 for (let note of adjacentNotes) {
                     if (Math.abs(note.time - timestamp) < snapThreshold) {
                         timestamp = note.time;
-                        console.log(`Snapped to note at timestamp ${timestamp} on lane ${i}`);
                         break;
                     }
                 }
@@ -251,7 +236,7 @@ function TrackCreator() {
 
         if (noteId === 'new') {
             const newNote = {
-                temp_track_id: tempTrackId,  // temporary track ID
+                temp_track_id: tempTrackId,
                 time: timestamp,
                 lane: laneNumber,
                 note_type: 'tap',
@@ -259,7 +244,6 @@ function TrackCreator() {
 
             dispatch(createNote(newNote));
         } else {
-            console.log(`Updating note with ID: ${noteId}`);
             const existingNote = notes[noteId];
             const updatedNote = {
                 ...existingNote,
@@ -298,7 +282,10 @@ function TrackCreator() {
 
     // when publish-button is clicked
     const handlePublish = async () => {
-        // ensures notes are unique
+        // Log current notes in state before publishing
+        console.log('Current notes in state before publishing:', notes);
+
+        // Ensure notes are unique
         const uniqueNotes = Object.values(notes).reduce((acc, note) => {
             const key = `${note.time}-${note.lane}`;
             if (!acc[key]) {
@@ -307,13 +294,12 @@ function TrackCreator() {
             return acc;
         }, {});
 
-        console.log('Unique notes before publishing:', Object.values(uniqueNotes));
+        console.log('Unique notes to be published:', uniqueNotes);
 
         const trackData = {
             song_id: songId,
             notes: Object.values(uniqueNotes),
             duration: duration,
-            // temp_track_id: tempTrackId
         };
 
         const result = await dispatch(createTrack(trackData));
@@ -328,7 +314,7 @@ function TrackCreator() {
     };
 
     const handleHome = async () => {
-        console.log('Home button got pressed.')
+        navigate('/');
     }
 
     if (!song) {

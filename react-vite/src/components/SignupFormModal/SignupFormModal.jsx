@@ -54,12 +54,12 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div className="signup-modal-container">
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <label>
-          <p>EMAIL</p> {errors.email && <p>{errors.email}</p>}
+          <h4>EMAIL</h4> {errors.email && <p>{errors.email}</p>}
           <input
             type="text"
             value={email}
@@ -68,7 +68,7 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          <p>USERNAME</p> {errors.username && <p>{errors.username}</p>}
+          <h4>USERNAME</h4> {errors.username && <p>{errors.username}</p>}
           <input
             type="text"
             value={username}
@@ -77,7 +77,7 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          <p>FIRST NAME</p> {errors.first_name && <p>{errors.first_name}</p>}
+          <h4>FIRST NAME</h4> {errors.first_name && <p>{errors.first_name}</p>}
           <input
             type="text"
             value={firstName}
@@ -86,7 +86,7 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          <p>LAST NAME</p> {errors.last_name && <p>{errors.last_name}</p>}
+          <h4>LAST NAME</h4> {errors.last_name && <p>{errors.last_name}</p>}
           <input
             type="text"
             value={lastName}
@@ -95,7 +95,7 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          <p>PASSWORD</p> {errors.password && <p>{errors.password}</p>}
+          <h4>PASSWORD</h4> {errors.password && <p>{errors.password}</p>}
           <input
             type="password"
             value={password}
@@ -105,7 +105,7 @@ function SignupFormModal() {
           />
         </label>
         <label>
-          <p>CONFIRM PASSWORD</p> {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+          <h4>CONFIRM PASSWORD</h4> {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
           <input
             type="password"
             value={confirmPassword}
@@ -114,17 +114,17 @@ function SignupFormModal() {
             autoComplete="current-password"
           />
         </label>
-        <label>
-          <p>PROFILE IMAGE</p>
+        {/* <label>
+          <h4>PROFILE IMAGE</h4>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
           />
-        </label>
+        </label> */}
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

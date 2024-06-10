@@ -88,6 +88,14 @@
     margin-bottom: 40px;
 }
 
+.gameplay .note.hit {
+    display: none;
+}
+
+.gameplay .note.missed {
+    background-color: red;
+}
+
 
 .hit-zone.active {
     background-color: rgba(255, 0, 0, 0.5);

@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
-    image_url = Column(String)
+    # image_url = Column(String)
 
     tracks = relationship('Track', backref='creator', cascade='all, delete-orphan', lazy=True)
     scores = relationship('Score', backref='user', cascade='all, delete-orphan', lazy=True)
@@ -43,5 +43,5 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'image_url': self.image_url
+            # 'image_url': self.image_url
         }

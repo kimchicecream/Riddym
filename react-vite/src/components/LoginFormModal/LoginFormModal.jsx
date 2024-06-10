@@ -3,6 +3,8 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useNavigate } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
+import SignupFormModal from "../SignupFormModal";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -35,12 +37,23 @@ function LoginFormModal() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    await dispatch(
+      thunkLogin({
+        email: "demo@aa.io",
+        password: "password",
+      })
+    );
+
+    navigate(`/session-overview/${sessionUser.username}`);
+  };
+
   return (
-    <>
+    <div className="login-modal-container">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Email
+          <h4>EMAIL</h4> {errors.email && <p>{errors.email}</p>}
           <input
             type="text"
             value={email}
@@ -48,9 +61,8 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
         <label>
-          Password
+          <h4>PASSWORD</h4> {errors.password && <p>{errors.password}</p>}
           <input
             type="text"
             value={password}
@@ -59,10 +71,22 @@ function LoginFormModal() {
             autoComplete="current-password"
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
-    </>
+      <div className='bottom-divider'>
+        <span></span>
+        <p>or</p>
+        <span></span>
+      </div>
+      <div className="bottom-button-container">
+        <button className='demo-button' onClick={handleDemoLogin}>Log in as demo</button>
+      </div>
+      <div className='dont-have-account'>
+            <p>
+                Don&apos;t have an account? <OpenModalButton className='signup-letters' buttonText=' Sign up here' modalComponent={<SignupFormModal />} />.
+            </p>
+        </div>
+    </div>
   );
 }
 

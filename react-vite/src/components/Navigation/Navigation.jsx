@@ -30,7 +30,12 @@ function Navigation() {
           <img src="../../../public/riddym-logo.png" />
       </div>
       <div className="nav-menu">
-        {sessionUser && ( <button className="overview-button">Session Overview</button> )}
+        {sessionUser && (
+          <>
+            <button className="overview-button">Session Overview</button>
+            <button className="creator-button">Track Creator</button>
+          </>
+        )}
         <button className="explore-button">Explore Tracks</button>
       </div>
       {sessionUser ? (

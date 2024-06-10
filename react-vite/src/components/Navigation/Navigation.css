@@ -26,3 +26,154 @@
 .navigation-container .logo-container img {
   height: 40px;
 }
+
+.navigation-container .nav-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.navigation-container .nav-menu button {
+  all: unset;
+  padding: 10px;
+
+  border-radius: 10px;
+}
+
+.navigation-container .nav-menu button:hover {
+  background-color: rgba(128, 128, 128, 0.263);
+}
+
+.icon-container button {
+  all: unset;
+}
+
+.icon-container i {
+  font-size: 30px;
+  border: 1px solid rgb(127, 255, 212);
+  color: rgb(255, 255, 255);
+  border-radius: 50%;
+}
+
+.icon-container button:hover i {
+  color: aquamarine;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 85px;
+  right: 0px;
+  background-color: rgba(60, 60, 60, 0.321);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(127, 255, 212, 0.483);
+
+  z-index: 1010;
+  width: 250px;
+  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.52);
+  border-radius: 15px;
+  padding: 10px 0;
+  color: rgb(255, 255, 255);
+  overflow: hidden;
+}
+
+.username-and-email {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 15px;
+}
+
+.username-and-email h4 {
+  font-size: 25px;
+}
+
+.divider {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(127, 255, 212, 0.115);
+  margin: 5px 0;
+}
+
+.account a {
+  all: unset;
+}
+
+.account a p {
+  padding: 5px 0px 5px 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.account a p:hover {
+  background-color: rgba(127, 255, 212, 0.215);
+  backdrop-filter: blur(10px);
+}
+
+.bottom button {
+  all: unset;
+  width: 100%;
+  padding: 5px 0px 5px 15px;
+}
+
+.bottom button:hover {
+  background-color: rgba(127, 255, 212, 0.215);
+  backdrop-filter: blur(10px);
+}
+
+.bottom button p {
+  font-size: 20px;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom a {
+  all: unset;
+}
+
+.bottom a p {
+  padding: 5px 0px 5px 15px;
+  font-size: 20px;
+}
+
+.bottom a p:hover {
+  background-color: aquamarine;
+  backdrop-filter: blur(10px);
+}
+
+.signup-login-container {
+  display: flex;
+  gap: 10px;
+}
+
+.signup-login-container button {
+  all: unset;
+}
+
+.signup-login-container .signup-button {
+  padding: 10px;
+  background-color: rgba(59, 255, 190, 0.717);
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+
+  transition: 0.2s ease;
+}
+
+.signup-login-container .signup-button:hover {
+  background-color: aquamarine;
+  color: black;
+}
+
+.signup-login-container .login-button {
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.signup-login-container .login-button:hover {
+  background-color: rgba(128, 128, 128, 0.273);
+}

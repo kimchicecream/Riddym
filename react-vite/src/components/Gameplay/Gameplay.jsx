@@ -64,7 +64,7 @@ function Gameplay() {
             startTimeRef.current = startTime + 1070;
             setFallingNotes(Object.values(track.notes).map(note => ({
                 ...note,
-                uniqueId: `${note.id}-${Date.now()}`
+                uniqueId: `${note.id}-${Date.now()}-${Math.random()}`
             })));
             console.log("Falling notes initialized:", Object.values(track.notes));
             requestAnimationFrame(updateNotesPosition);
@@ -124,7 +124,11 @@ function Gameplay() {
             setScore(prevScore => prevScore + 300 * multiplier);
             setMultiplier(prevMultiplier => prevMultiplier + 1);
             console.log(`Hit note in lane ${laneIndex + 1}`);
-            setFallingNotes(prevNotes => prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId));
+            setFallingNotes(prevNotes => {
+                const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
+                console.log('Updated falling notes after hit:', updatedNotes); // Logging updated notes
+                return updatedNotes;
+            });
         } else {
             console.log(`Missed note in lane ${laneIndex + 1}`);
             setMultiplier(1); // Reset multiplier on miss
@@ -196,7 +200,7 @@ function Gameplay() {
                 <div className='track-lanes'>
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
-                            {Object.values(fallingNotes).filter(note => note.lane === laneIndex + 1).map(note => (
+                            {fallingNotes.filter(note => note.lane === laneIndex + 1).map(note => (
                                 <div
                                     className={`note ${hitNotes.has(note.uniqueId) ? 'hit' : missedNotes.has(note.uniqueId) ? 'missed' : ''}`}
                                     key={note.uniqueId}

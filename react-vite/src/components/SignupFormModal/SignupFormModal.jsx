@@ -19,10 +19,10 @@ function SignupFormModal() {
   const [imageFile, setImageFile] = useState(null);
   const { closeModal } = useModal();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setImageFile(file);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,8 +41,6 @@ function SignupFormModal() {
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
     formData.append('password', password);
-
-    if (imageFile) formData.append('image_file', imageFile);
 
     const serverResponse = await dispatch(thunkSignup(formData));
 

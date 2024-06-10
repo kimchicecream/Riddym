@@ -12,7 +12,7 @@ function LandingPage() {
         </div>
         <div className="video-container">
           <video
-            src="../../../public/background-video.mov"
+            src="../../../background-video.mov"
             className="background-video"
             autoPlay
             muted

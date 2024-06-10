@@ -27,7 +27,7 @@ function Navigation() {
   return (
     <div className="navigation-container">
       <div className="logo-container">
-          <img src="../../../public/riddym-logo.png" />
+          <img src="../../../riddym-logo.png" />
       </div>
       <div className="nav-menu">
         {sessionUser && (

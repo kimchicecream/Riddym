@@ -14,18 +14,18 @@ html, body {
 
 @font-face {
     font-family: 'Gilroy';
-    src: url('../public/fonts/Gilroy-Thin.ttf') format('truetype');
+    src: url('../fonts/Gilroy-Thin.ttf') format('truetype');
     font-weight: thin;
 }
 
 @font-face {
     font-family: 'Gilroy';
-    src: url('../public/fonts/Gilroy-Regular.ttf') format('truetype');
+    src: url('../fonts/Gilroy-Regular.ttf') format('truetype');
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Gilroy';
-    src: url('../public/fonts/Gilroy-Bold.ttf') format('truetype');
+    src: url('../fonts/Gilroy-Bold.ttf') format('truetype');
     font-weight: bold;
 }

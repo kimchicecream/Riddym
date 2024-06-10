@@ -7,7 +7,7 @@ import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote } from '../../redux/notes';
 import { createTrack } from '../../redux/tracks';
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
 
 function TrackCreator() {
@@ -26,7 +26,7 @@ function TrackCreator() {
     const lanesRef = useRef(null);
     const minPxPerSec = 300;
     const snapThreshold = 0.08;
-    const [tempTrackId] = useState(uuid.v4());
+    const [tempTrackId] = useState(uuidv4());
 
     // keep page static
     useEffect(() => {
@@ -251,8 +251,7 @@ function TrackCreator() {
 
         if (noteId === 'new') {
             const newNote = {
-                track_id: songId,
-                temp_track_id: tempTrackId,
+                temp_track_id: tempTrackId,  // use the temporary track ID
                 time: timestamp,
                 lane: laneNumber,
                 note_type: 'tap',

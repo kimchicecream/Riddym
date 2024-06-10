@@ -26,20 +26,21 @@ def create_note():
     db.session.commit()
     return jsonify(new_note.to_dict()), 201
 
+# Update notes with actual track ID
 @note_routes.route('/update-track-id', methods=['POST'])
 @login_required
 def update_track_id():
     data = request.get_json()
     temp_track_id = data['temp_track_id']
-    actual_track_id = data['actual_track_id']
+    track_id = data['track_id']
 
     notes = Note.query.filter_by(temp_track_id=temp_track_id).all()
     for note in notes:
-        note.track_id = actual_track_id
-        note.temp_track_id = None
+        note.track_id = track_id
+        note.temp_track_id = None  # clear the temp_track_id
 
     db.session.commit()
-    return jsonify({"message": "Track ID updated successfully"}), 200
+    return jsonify({'message': 'Track ID updated successfully'}), 200
 
 # Get all notes for a specific track
 @note_routes.route('/track/<int:track_id>', methods=['GET'])

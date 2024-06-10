@@ -9,14 +9,18 @@ note_routes = Blueprint('notes', __name__)
 @login_required
 def create_note():
     data = request.get_json()
+    print("Data received:", data)
+
     track_id = data.get('track_id') or data.get('song_id')
+    print("Track ID:", track_id)
 
     track = Track.query.get(track_id)
     if not track:
+        print("Track ID does not exist")  # Add logging here
         return jsonify({"error": "Track ID does not exist"}), 400
 
     new_note = Note(
-        track_id=data['track_id'],
+        track_id=track_id,
         time=data['time'],
         lane=data['lane'],
         note_type=data['note_type']

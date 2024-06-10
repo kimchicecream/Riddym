@@ -23,18 +23,24 @@ function TrackModal({ track }) {
     //     setActiveTab(tab);
     // };
 
+    const handlePlay = async (e) => {
+        e.preventDefault();
+        navigate(`/play/${track.id}`);
+        closeModal();
+    }
+
+    const handleEdit = (e) => {
+        e.preventDefault();
+        navigate(`/track-creator/edit/${track.id}`);
+        closeModal();
+    };
+
     if (!track) {
         return null
     }
 
     const { song, notes } = track;
     const noteCount = notes ? Object.keys(notes).length : 0;
-
-    const handlePlay = async (e) => {
-        e.preventDefault();
-        navigate(`/play/${track.id}`);
-        closeModal();
-    }
 
     return (
         <div className='track-modal-container'>
@@ -51,11 +57,7 @@ function TrackModal({ track }) {
                 <div className='buttons-container'>
                     <button className='play-button' onClick={handlePlay}>Play</button>
                     <div className='update-delete'>
-                        <OpenModalButton
-                            buttonText="Edit"
-                            modalComponent={<TrackCreator />}
-                            className="update-button"
-                        />
+                        <button className="update-button" onClick={handleEdit}>Edit</button>
                         <OpenModalButton
                             buttonText="Delete"
                             modalComponent={<ConfirmDelete track={track} />}

@@ -6,15 +6,16 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote, updateTrackIdThunk } from '../../redux/notes';
-import { createTrack } from '../../redux/tracks';
+import { createTrack, fetchTrackById, editTrack } from '../../redux/tracks';
 import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
 
 function TrackCreator() {
-    const { songId } = useParams();
+    const { songId, trackId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
+    const track = useSelector(state => state.tracks.userTracks[trackId]);
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -27,6 +28,7 @@ function TrackCreator() {
     const minPxPerSec = 300;
     const snapThreshold = 0.08;
     const [tempTrackId] = useState(uuidv4());
+    const [isEditMode, setIsEditMode] = useState(false);
 
     // keep page static
     useEffect(() => {
@@ -58,12 +60,26 @@ function TrackCreator() {
             }
         };
 
-        fetchSong();
+        if (trackId) {
+            dispatch(fetchTrackById(trackId)).then((trackData) => {
+                setIsEditMode(true);
+                const songDetails = trackData.song;
+                setSong(songDetails);
+                // Set notes in the state
+                dispatch(setTrackNotes(trackData.notes));
+            });
+        } else {
+            fetchSong(songId);
+        }
+
+        // if (trackId) {
+        //     dispatch(fetchTrackById(trackId)).then(() => setIsEditMode(true));
+        // }
 
         return () => {
             controller.abort();
         };
-    }, [songId]);
+    }, [songId, trackId, dispatch]);
 
     // fetch notes by track
     // useEffect(() => {
@@ -282,10 +298,6 @@ function TrackCreator() {
 
     // when publish-button is clicked
     const handlePublish = async () => {
-        // Log current notes in state before publishing
-        console.log('Current notes in state before publishing:', notes);
-
-        // Ensure notes are unique
         const uniqueNotes = Object.values(notes).reduce((acc, note) => {
             const key = `${note.time}-${note.lane}`;
             if (!acc[key]) {
@@ -294,22 +306,27 @@ function TrackCreator() {
             return acc;
         }, {});
 
-        console.log('Unique notes to be published:', uniqueNotes);
-
         const trackData = {
             song_id: songId,
             notes: Object.values(uniqueNotes),
             duration: duration,
         };
 
-        const result = await dispatch(createTrack(trackData));
-
-        if (result.errors) {
-            console.error('Errors:', result.errors);
+        if (isEditMode) {
+            const result = await dispatch(editTrack(trackId, trackData)); // Update track if in edit mode
+            if (result.errors) {
+                console.error('Errors:', result.errors);
+            } else {
+                navigate(`/track-overview/${trackId}`);
+            }
         } else {
-            console.log('Track created:', result);
-            await dispatch(updateTrackIdThunk({ temp_track_id: tempTrackId, track_id: result.id }));
-            navigate(`/track-overview/${result.id}`);
+            const result = await dispatch(createTrack(trackData)); // Create new track
+            if (result.errors) {
+                console.error('Errors:', result.errors);
+            } else {
+                await dispatch(updateTrackIdThunk({ temp_track_id: tempTrackId, track_id: result.id }));
+                navigate(`/track-overview/${result.id}`);
+            }
         }
     };
 
@@ -325,7 +342,7 @@ function TrackCreator() {
         <div className='track-creator-page'>
             <div className='nav-bar'>
                     <button onClick={handleHome}>Home</button>
-                    <button onClick={handlePublish}>Publish</button>
+                    <button onClick={handlePublish}>{isEditMode ? 'Confirm Changes' : 'Publish'}</button>
             </div>
             <div className='track-creator'>
                 <div className='song-details-container'>
@@ -368,18 +385,17 @@ function TrackCreator() {
                                     id={`lane-${lane}`}
                                     onDrop={(e) => handleDrop(e, lane)}
                                     onDragOver={handleDragOver}
-                                    // onDragLeave={handleDragLeave}
                                 >
                                     {Object.values(notes).filter(note => note.lane === lane).map(note => (
-                                    <div
-                                        key={note.id}
-                                        className='note'
-                                        style={{ left: `${note.time * minPxPerSec}px` }}
-                                        draggable
-                                        onDragStart={(e) => handleDragStart(e, note.id)}
-                                        onDragEnd={handleDragEnd}
-                                    ></div>
-                                ))}
+                                        <div
+                                            key={note.id}
+                                            className='note'
+                                            style={{ left: `${note.time * minPxPerSec}px` }}
+                                            draggable
+                                            onDragStart={(e) => handleDragStart(e, note.id)}
+                                            onDragEnd={handleDragEnd}
+                                        ></div>
+                                    ))}
                                 </div>
                             ))}
                         </div>

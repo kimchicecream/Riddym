@@ -34,6 +34,10 @@ export const router = createBrowserRouter([
     element: <TrackCreator />
   },
   {
+    path: '/track-creator/edit/:trackId',
+    element: <TrackCreator />
+  },
+  {
     path: '/play/:trackId',
     element: <Gameplay />
   }

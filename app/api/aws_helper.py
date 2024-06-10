@@ -1,7 +1,6 @@
 import boto3
 import os
 import uuid
-from werkzeug.utils import secure_filename
 
 BUCKET_NAME_MP3 = os.environ.get("S3_BUCKET_MP3")
 BUCKET_NAME_IMG = os.environ.get("S3_BUCKET_IMG")
@@ -27,16 +26,15 @@ def allowed_file(filename, allowed_extensions):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 def upload_file_to_s3(file, bucket_name, s3_location, acl="public-read"):
-    unique_filename = get_unique_filename(secure_filename(file.filename))
+    unique_filename = get_unique_filename(file.filename)
     try:
-        s3.upload_fileobj(
-            file,
-            bucket_name,
-            unique_filename,
-            ExtraArgs={
-                "ACL": acl,
-                "ContentType": file.content_type
-            }
+        file_content = file.read()
+        s3.put_object(
+            Bucket=bucket_name,
+            Key=unique_filename,
+            Body=file_content,
+            ACL=acl,
+            ContentType=file.content_type
         )
         print(f"File uploaded successfully: {unique_filename}")
     except Exception as e:

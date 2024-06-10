@@ -28,7 +28,10 @@ def allowed_file(filename, allowed_extensions):
 def upload_file_to_s3(file, bucket_name, s3_location, acl="public-read"):
     unique_filename = get_unique_filename(file.filename)
     try:
+        # Read the file content
         file_content = file.read()
+
+        # Upload the file to S3
         s3.put_object(
             Bucket=bucket_name,
             Key=unique_filename,

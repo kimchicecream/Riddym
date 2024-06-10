@@ -49,7 +49,6 @@ def create_song():
         return jsonify(new_song.to_dict()), 201
     else:
         print("Form errors:", form.errors)
-    return jsonify(form.errors), 401rs)
     return jsonify(form.errors), 401
 
 # Get all songs

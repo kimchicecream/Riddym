@@ -8,7 +8,8 @@ class Note(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = Column(Integer, primary_key=True)
-    track_id = Column(Integer, ForeignKey(add_prefix_for_prod('tracks.id'), ondelete='CASCADE'), nullable=False)
+    track_id = Column(Integer, ForeignKey(add_prefix_for_prod('tracks.id'), ondelete='CASCADE'), nullable=true)
+    temp_track_id = Column(String, nullable=True, default=str(uuid4())) # temporary track id
     time = Column(Float, nullable=False)
     lane = Column(Integer, nullable=False)
     note_type = Column(String, nullable=False)

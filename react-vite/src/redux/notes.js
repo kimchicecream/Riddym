@@ -89,6 +89,25 @@ export const removeNote = noteId => async dispatch => {
   return { success: true };
 };
 
+// Update track ID thunk
+export const updateTrackId = data => async dispatch => {
+    const response = await fetch('/api/notes/update-track-id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { errors: error.errors || error };
+    }
+
+    const resData = await response.json();
+    return resData;
+};
+
 const initialState = {
     trackNotes: {},
 };

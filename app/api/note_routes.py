@@ -11,16 +11,12 @@ def create_note():
     data = request.get_json()
     print("Data received:", data)
 
-    track_id = data.get('track_id') or data.get('song_id')
-    print("Track ID:", track_id)
-
-    track = Track.query.get(track_id)
-    if not track:
-        print("Track ID does not exist")  # Add logging here
-        return jsonify({"error": "Track ID does not exist"}), 400
+    track_id = data.get('track_id')
+    temp_track_id = data.get('temp_track_id', str(uuid.uuid4()))
 
     new_note = Note(
         track_id=track_id,
+        temp_track_id=temp_track_id if not track_id else None,
         time=data['time'],
         lane=data['lane'],
         note_type=data['note_type']
@@ -28,6 +24,21 @@ def create_note():
     db.session.add(new_note)
     db.session.commit()
     return jsonify(new_note.to_dict()), 201
+
+@note_routes.route('/update-track-id', methods=['POST'])
+@login_required
+def update_track_id():
+    data = request.get_json()
+    temp_track_id = data['temp_track_id']
+    actual_track_id = data['actual_track_id']
+
+    notes = Note.query.filter_by(temp_track_id=temp_track_id).all()
+    for note in notes:
+        note.track_id = actual_track_id
+        note.temp_track_id = None
+
+    db.session.commit()
+    return jsonify({"message": "Track ID updated successfully"}), 200
 
 # Get all notes for a specific track
 @note_routes.route('/track/<int:track_id>', methods=['GET'])

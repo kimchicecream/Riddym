@@ -16,7 +16,7 @@ def create_song():
         song_file = request.files.get('song_file')
         song_upload = upload_mp3_to_s3(song_file)
 
-         if "errors" in song_upload:
+        if "errors" in song_upload:
             print("Song upload error:", song_upload["errors"])
             return jsonify(song_upload), 400
         print("Song uploaded successfully:", song_upload)

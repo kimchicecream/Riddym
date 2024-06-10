@@ -44,7 +44,7 @@ function Navigation() {
             <button className="creator-button" onClick={handleCreateTrack}>Create a Track</button>
           </>
         )}
-        <button className="explore-button">Explore Tracks</button>
+        {/* <button className="explore-button">Explore Tracks</button> */}
       </div>
       {sessionUser ? (
           <div className="logged-in">

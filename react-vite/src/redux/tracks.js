@@ -4,6 +4,8 @@ const GET_TRACK_BY_ID = 'tracks/getTrackById';
 const ADD_TRACK = 'tracks/addTrack';
 const UPDATE_TRACK = 'tracks/updateTrack';
 const DELETE_TRACK = 'tracks/deleteTrack';
+export const CLEAR_TRACK_NOTES = 'notes/clearTrackNotes';
+export const SET_TRACK_NOTES = 'notes/setTrackNotes';
 
 const getAllTracks = tracks => ({
     type: GET_ALL_TRACKS,
@@ -33,6 +35,15 @@ const updateTrack = track => ({
 const deleteTrack = trackId => ({
     type: DELETE_TRACK,
     payload: trackId,
+});
+
+export const clearTrackNotes = () => ({
+    type: CLEAR_TRACK_NOTES,
+});
+
+export const setTrackNotes = (notes) => ({
+    type: SET_TRACK_NOTES,
+    payload: notes,
 });
 
 // Get all tracks thunk
@@ -176,6 +187,16 @@ const tracksReducer = (state = initialState, action) => {
             delete newState.userTracks[action.payload];
             return newState;
         }
+        case CLEAR_TRACK_NOTES:
+            return {
+                ...state,
+                trackNotes: {},
+            };
+        case SET_TRACK_NOTES:
+            return {
+                ...state,
+                trackNotes: action.payload,
+            };
         default:
             return state;
     }

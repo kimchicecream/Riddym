@@ -4,5 +4,36 @@
     align-items: center;
     justify-content: center;
 
-    height: 500px;
+    height: 700px;
+}
+
+.add-song-page form {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-song-page button {
+    all: unset;
+
+    padding: 10px;
+
+    background-color: aquamarine;
+    color: black;
+    font-weight: bold;
+
+    border-radius: 10px;
+}
+
+.add-song-page input {
+    all: unset;
+    padding: 5px;
+    background-color: gray;
+    border-radius: 5px;
+}
+
+.add-song-page p {
+    color: rgb(255, 106, 106);
 }

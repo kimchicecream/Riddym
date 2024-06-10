@@ -1,11 +1,7 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchTrackById } from '../../redux/tracks';
+import { useNavigate } from 'react-router-dom';
 import './TrackModal.css';
 import OpenModalButton from '../OpenModalButton';
 import ConfirmDelete from '../ConfirmDelete';
-import TrackCreator from '../TrackCreator';
 import { useModal } from "../../context/Modal";
 
 function TrackModal({ track }) {

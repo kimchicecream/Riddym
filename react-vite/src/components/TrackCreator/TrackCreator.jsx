@@ -307,6 +307,8 @@ function TrackCreator() {
             return acc;
         }, {});
 
+        console.log('Unique notes before publishing:', Object.values(uniqueNotes));
+
         const trackData = {
             song_id: songId,
             notes: Object.values(uniqueNotes),

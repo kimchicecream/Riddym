@@ -54,7 +54,7 @@ function TrackPreviewModal() {
                     <h2>{song?.song_name}</h2>
                     <h3>{song?.artist_name}</h3>
                     <h4>{formatDuration(track.duration)}</h4>
-                    <p>{noteCount} {noteCount === 1 ? 'note' : 'notes'}</p>
+                    <p>{noteCount / 2} {noteCount === 1 ? 'note' : 'notes'}</p>
                 </div>
                 <div className='buttons-container'>
                     <button className='play-button' onClick={handlePlay}>Play</button>

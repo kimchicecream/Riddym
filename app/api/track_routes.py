@@ -19,9 +19,9 @@ def create_track():
     db.session.add(new_track)
     db.session.commit()
 
-    # Create and add notes to the track
+    # create and add notes to the track
     notes_data = data.get('notes', [])
-    unique_notes = {(note['time'], note['lane']): note for note in notes_data}.values()
+    unique_notes = {f"{note['time']}-{note['lane']}": note for note in notes_data}.values()
 
     for note_data in unique_notes:
         new_note = Note(
@@ -32,12 +32,10 @@ def create_track():
         )
         db.session.add(new_note)
 
-    db.session.commit()  # Commit the notes
+    db.session.commit()
 
-    print(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Created track with ID {new_track.id} and {len(unique_notes)} notes")
-
+    print(f"Created track with ID {new_track.id} and {len(unique_notes)} unique notes")
     return jsonify(new_track.to_dict()), 201
-    # return jsonify(form.errors), 401
 
 # Get all tracks
 @track_routes.route('/all', methods=['GET'])

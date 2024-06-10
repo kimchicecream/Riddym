@@ -251,7 +251,7 @@ function TrackCreator() {
 
         if (noteId === 'new') {
             const newNote = {
-                temp_track_id: tempTrackId,  // use the temporary track ID
+                temp_track_id: tempTrackId,  // temporary track ID
                 time: timestamp,
                 lane: laneNumber,
                 note_type: 'tap',
@@ -298,10 +298,18 @@ function TrackCreator() {
 
     // when publish-button is clicked
     const handlePublish = async () => {
-        console.log('Publishing track with notes:', Object.values(notes));
+        // ensures notes are unique
+        const uniqueNotes = Object.values(notes).reduce((acc, note) => {
+            const key = `${note.time}-${note.lane}`;
+            if (!acc[key]) {
+                acc[key] = note;
+            }
+            return acc;
+        }, {});
+
         const trackData = {
             song_id: songId,
-            notes: Object.values(notes),
+            notes: Object.values(uniqueNotes),
             duration: duration,
             // temp_track_id: tempTrackId
         };

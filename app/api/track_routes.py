@@ -9,8 +9,6 @@ track_routes = Blueprint('tracks', __name__)
 @track_routes.route('/create', methods=['POST'])
 @login_required
 def create_track():
-    # form = TrackForm()
-    # if form.validate_on_submit():
     data = request.get_json()
     new_track = Track(
         creator_id=current_user.id,
@@ -23,7 +21,9 @@ def create_track():
 
     # Create and add notes to the track
     notes_data = data.get('notes', [])
-    for note_data in notes_data:
+    unique_notes = {(note['time'], note['lane']): note for note in notes_data}.values()
+
+    for note_data in unique_notes:
         new_note = Note(
             track_id=new_track.id,
             time=note_data['time'],
@@ -34,7 +34,7 @@ def create_track():
 
     db.session.commit()  # Commit the notes
 
-    print(f"Created track with ID {new_track.id} and {len(notes_data)} notes")
+    print(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Created track with ID {new_track.id} and {len(unique_notes)} notes")
 
     return jsonify(new_track.to_dict()), 201
     # return jsonify(form.errors), 401

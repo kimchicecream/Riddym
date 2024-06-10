@@ -1,0 +1,29 @@
+.confirm-delete-modal button {
+    all: unset;
+}
+
+.confirm-delete-modal .buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirm-delete-modal .delete-button {
+    background-color: rgb(255, 68, 68);
+    padding: 10px;
+
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+
+    border-radius: 10px;
+}
+
+.confirm-delete-modal .delete-button:hover {
+    background-color: red;
+}
+
+.confirm-delete-modal .cancel-button:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,78 @@
+.track-modal-container {
+    display: flex;
+}
+
+.track-modal-container .song-details {
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px;
+
+    border: 1px solid aquamarine;
+}
+
+.track-modal-container .song-details .song-image {
+    height: 100px;
+    width: 100px;
+}
+
+.track-modal-container .song-details .buttons-container {
+    width: 100%;
+}
+
+.track-modal-container .song-details .play-button {
+    width: 100%;
+}
+
+.track-modal-container .scoreboard {
+    width: 500px;
+
+    padding: 10px;
+
+    border: 1px solid aquamarine;
+}
+
+.track-modal-container .play-button {
+    all: unset;
+
+    margin-top: 10px;
+
+    padding: 10px 0px;
+
+    display: flex;
+    justify-content: center;
+
+    background-color: aquamarine;
+    color: black
+}
+
+.track-modal-container .buttons-container .update-delete button {
+    all: unset;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 10px;
+
+    width: 100%;
+}
+
+.track-modal-container .buttons-container .update-delete .update-button {
+    background-color: greenyellow;
+    color: black;
+    padding: 10px 0;
+
+    display: flex;
+    align-items: center;
+}
+
+.track-modal-container .buttons-container .update-delete .delete-button {
+    background-color: red;
+    padding: 10px 0;
+
+    display: flex;
+    align-items: center;
+}

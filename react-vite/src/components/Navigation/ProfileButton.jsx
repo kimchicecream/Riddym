@@ -43,6 +43,12 @@ function ProfileButton() {
     navigate('/');
   };
 
+  const handleAccountClick = (e) => {
+    e.preventDefault();
+    navigate(`/session-overview/${user.username}`);
+    closeMenu();
+  };
+
   return (
     <>
       <div className='icon-container'>
@@ -65,7 +71,7 @@ function ProfileButton() {
             <div className='divider'></div>
 
             <div className='account'>
-              <Link to='' onClick={(e) => noFeature(e)}>
+              <Link to='#' onClick={handleAccountClick}>
                 <p>Account</p>
               </Link>
             </div>

@@ -92,7 +92,10 @@
 }
 
 .login-modal-container .signup-letters {
-    color: rgb(138, 43, 226);
     all: unset;
     text-decoration: underline;
+}
+
+.signup-modal-container p {
+    color: rgb(255, 103, 103);
 }

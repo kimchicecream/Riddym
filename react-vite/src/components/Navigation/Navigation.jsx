@@ -13,15 +13,23 @@ function Navigation() {
   const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.session.user);
 
-  const handleDemoLogin = async () => {
-    await dispatch(
-      thunkLogin({
-        email: "demo@aa.io",
-        password: "password",
-      })
-    );
+  // const handleDemoLogin = async () => {
+  //   await dispatch(
+  //     thunkLogin({
+  //       email: "demo@aa.io",
+  //       password: "password",
+  //     })
+  //   );
 
+  //   navigate(`/session-overview/${sessionUser.username}`);
+  // };
+
+  const handleSessionOverview = () => {
     navigate(`/session-overview/${sessionUser.username}`);
+  };
+
+  const handleCreateTrack = () => {
+    navigate(`/add-song`);
   };
 
   return (
@@ -32,8 +40,8 @@ function Navigation() {
       <div className="nav-menu">
         {sessionUser && (
           <>
-            <button className="overview-button">Session Overview</button>
-            <button className="creator-button">Track Creator</button>
+            <button className="overview-button" onClick={handleSessionOverview}>Session Overview</button>
+            <button className="creator-button" onClick={handleCreateTrack}>Create a Track</button>
           </>
         )}
         <button className="explore-button">Explore Tracks</button>
@@ -44,9 +52,6 @@ function Navigation() {
           </div>
       ) : (
           <div className="signup-login-container">
-              <button onClick={handleDemoLogin}>
-                  Demo
-              </button>
               <OpenModalButton
                   buttonText="Log In"
                   modalComponent={<LoginFormModal />}

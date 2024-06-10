@@ -8,7 +8,7 @@ function LandingPage() {
           <h4>Now in Beta</h4>
           <h1 id="introducing">Feel the Riddym</h1>
           {/* <img src=""></img> */}
-          {/* <h2>Your favorite rhythm game reimagined.</h2> */}
+          <h2>Your favorite rhythm game, reimagined.</h2>
         </div>
         <div className="video-container">
           <video

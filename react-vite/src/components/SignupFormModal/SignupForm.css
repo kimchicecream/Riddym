@@ -39,3 +39,7 @@
 
     border-radius: 10px;
 }
+
+.signup-modal-container p {
+    color: rgb(255, 103, 103);
+}

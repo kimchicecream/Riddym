@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Track, Note
+from app.models import db, Track, Note, User
 from flask_login import login_required, current_user
 # from app.forms.track_create import TrackForm
 
@@ -82,3 +82,11 @@ def delete_track(id):
     db.session.delete(track)
     db.session.commit()
     return jsonify({'message': 'Track deleted'}), 200
+
+# Get all tracks by a specific user
+@track_routes.route('/user/<int:user_id>', methods=['GET'])
+@login_required
+def get_user_tracks(user_id):
+    user = User.query.get_or_404(user_id)
+    tracks = Track.query.filter_by(creator_id=user.id).all()
+    return jsonify([track.to_dict() for track in tracks]), 200

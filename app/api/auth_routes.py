@@ -48,6 +48,7 @@ def sign_up():
     """
     Creates a new user and logs them in
     """
+
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
@@ -56,14 +57,13 @@ def sign_up():
             email=form.data['email'],
             password=form.data['password'],
             first_name=form.data['first_name'],
-            last_name=form.data['last_name']
+            last_name=form.data["last_name"]
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
         return user.to_dict()
     return form.errors, 401
-
 
 @auth_routes.route('/unauthorized')
 def unauthorized():

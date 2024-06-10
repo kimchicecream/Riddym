@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import db, Song
+from app.models import db, Song, User
 from flask_login import login_required, current_user
 from app.forms.song_create import SongForm
 from app.api.aws_helper import upload_image_to_s3, upload_mp3_to_s3
@@ -89,3 +89,11 @@ def delete_song(id):
     db.session.delete(song)
     db.session.commit()
     return jsonify({'message': 'Song deleted'}), 200
+
+# Get all songs by a specific user
+@song_routes.route('/user/<int:user_id>', methods=['GET'])
+@login_required
+def get_user_songs(user_id):
+    user = User.query.get_or_404(user_id)
+    songs = Song.query.filter_by(creator_id=user.id).all()
+    return jsonify([song.to_dict() for song in songs]), 200

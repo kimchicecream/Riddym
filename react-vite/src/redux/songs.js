@@ -49,7 +49,7 @@ export const fetchSongs = () => async dispatch =>{
 
 // Get all songs by user thunk
 export const fetchSongsByUser = userId => async dispatch => {
-    const response = await fetch(`/api/users/${userId}/songs`);
+    const response = await fetch(`/api/songs/user/${userId}`);
     if (!response.ok) {
         const errorData = await response.json();
         return { errors: errorData.errors || errorData };
@@ -130,8 +130,8 @@ const songsReducer = (state = initialState, action) => {
         }
         case ADD_SONG: {
             newState = { ...state };
-            newState.allSongs = { ...newState.allSongs, [action.payload.id]: { ...action.payload } };
-            newState.userSongs = { ...newState.allSongs, [action.payload.id]: { ...action.payload } };
+            newState.allSongs = { ...newState.allSongs, [action.payload.id]: action.payload };
+            newState.userSongs = { ...newState.userSongs, [action.payload.id]: action.payload };
             return newState;
         }
         case UPDATE_SONG: {

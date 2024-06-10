@@ -16,7 +16,7 @@ function SignupFormModal() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [imageFile, setImageFile] = useState(null);
+  // const [imageFile, setImageFile] = useState(null);
   const { closeModal } = useModal();
 
   // const handleImageChange = (e) => {
@@ -27,6 +27,15 @@ function SignupFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const newuser = {
+      email,
+      username,
+      first_name: firstName,
+      last_name: lastName,
+      password
+    };
+    console.log(newuser);
+
     if (password !== confirmPassword) {
       return setErrors({
         confirmPassword:
@@ -34,20 +43,13 @@ function SignupFormModal() {
       });
     }
 
-    const formData = new FormData();
+    const serverResponse = await dispatch(thunkSignup(newuser));
 
-    formData.append('email', email);
-    formData.append('username', username);
-    formData.append('first_name', firstName);
-    formData.append('last_name', lastName);
-    formData.append('password', password);
-
-    const serverResponse = await dispatch(thunkSignup(formData));
-
-    if (serverResponse) {
-      setErrors(serverResponse);
+    if (serverResponse.errors) {
+      setErrors(serverResponse.errors);
     } else {
       closeModal();
+      navigate(`/session-overview/${sessionUser.username}`);
     }
   };
 
@@ -55,7 +57,7 @@ function SignupFormModal() {
     <div className="signup-modal-container">
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit}>
         <label>
           <h4>EMAIL</h4> {errors.email && <p>{errors.email}</p>}
           <input
@@ -112,14 +114,6 @@ function SignupFormModal() {
             autoComplete="current-password"
           />
         </label>
-        {/* <label>
-          <h4>PROFILE IMAGE</h4>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </label> */}
         <button type="submit">Sign Up</button>
       </form>
     </div>

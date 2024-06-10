@@ -1,21 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import './TrackPreviewModal.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
+import './TrackModal.css';
+import OpenModalButton from '../OpenModalButton';
+import ConfirmDelete from '../ConfirmDelete';
+import TrackCreator from '../TrackCreator';
+import { useModal } from "../../context/Modal";
 
-function TrackPreviewModal() {
-    const { trackId } = useParams();
-    const dispatch = useDispatch();
-    const track = useSelector(state => state.tracks.userTracks[trackId]);
-    const [activeTab, setActiveTab] = useState('global');
+function TrackModal({ track }) {
+    // const [activeTab, setActiveTab] = useState('global');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (trackId) {
-            dispatch(fetchTrackById(trackId));
-        }
-    }, [dispatch, trackId]);
+    const { closeModal } = useModal();
 
     const formatDuration = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -23,21 +19,25 @@ function TrackPreviewModal() {
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
 
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-    };
+    // const handleTabChange = (tab) => {
+    //     setActiveTab(tab);
+    // };
+
+    if (!track) {
+        return null
+    }
 
     const { song, notes } = track;
     const noteCount = notes ? Object.keys(notes).length : 0;
 
     const handlePlay = async (e) => {
         e.preventDefault();
-
-        navigate(`/play/${trackId}`)
+        navigate(`/play/${track.id}`);
+        closeModal();
     }
 
     return (
-        <div className='track-preview-modal'>
+        <div className='track-modal-container'>
             <div className='song-details'>
                 <div className='song-image'>
                     <img src={song?.image_url} />
@@ -50,12 +50,24 @@ function TrackPreviewModal() {
                 </div>
                 <div className='buttons-container'>
                     <button className='play-button' onClick={handlePlay}>Play</button>
+                    <div className='update-delete'>
+                        <OpenModalButton
+                            buttonText="Edit"
+                            modalComponent={<TrackCreator />}
+                            className="update-button"
+                        />
+                        <OpenModalButton
+                            buttonText="Delete"
+                            modalComponent={<ConfirmDelete track={track} />}
+                            className="delete-button"
+                        />
+                    </div>
                 </div>
             </div>
             <div id='divider'></div>
             <div className='scoreboard'>
                 <div className='tabs'>
-                    <button
+                    {/* <button
                         className={activeTab === 'global' ? 'active' : ''}
                         onClick={() => handleTabChange('global')}
                     >
@@ -66,22 +78,22 @@ function TrackPreviewModal() {
                         onClick={() => handleTabChange('friends')}
                     >
                         Friends
-                    </button>
+                    </button> */}
                 </div>
                 <div className='tab-content'>
-                    {activeTab === 'global' ? (
+                    {/* {activeTab === 'global' ? (
                         <div className='global'>
-                            {/* Render global high scores */}
+                            Render global high scores
                         </div>
                     ) : (
                         <div className='friends'>
-                            {/* Render friends' high scores */}
+                            Render friends' high scores
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>
     )
 }
 
-export default TrackPreviewModal;
+export default TrackModal;

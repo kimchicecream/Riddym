@@ -55,20 +55,20 @@ export const fetchTracks = () => async dispatch => {
 
 // Get all tracks by user thunk
 export const fetchTracksByUser = userId => async dispatch => {
-  const response = await fetch(`/api/users/${userId}/tracks`);
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+    const response = await fetch(`/api/tracks/user/${userId}`);
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+    const data = await response.json();
 
-  const objectData = data.reduce((acc, track) => {
-      acc[track.id] = track;
-      return acc;
-  }, {});
+    const objectData = data.reduce((acc, track) => {
+        acc[track.id] = track;
+        return acc;
+    }, {});
 
-  dispatch(getAllTracksByUser(objectData));
-  return data;
+    dispatch(getAllTracksByUser(objectData));
+    return data;
 };
 
 export const fetchTrackById = trackId => async dispatch => {

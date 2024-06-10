@@ -45,6 +45,7 @@ function LoginFormModal() {
       })
     );
 
+    closeModal();
     navigate(`/session-overview/${sessionUser.username}`);
   };
 

@@ -30,6 +30,8 @@ def upload_file_to_s3(file, bucket_name, s3_location, acl="public-read"):
     try:
         # Read the file content
         file_content = file.read()
+        print(f"File content type: {type(file_content)}, length: {len(file_content)}")
+        print(f"Uploading file: {unique_filename} to bucket: {bucket_name}")
 
         # Upload the file to S3
         s3.put_object(

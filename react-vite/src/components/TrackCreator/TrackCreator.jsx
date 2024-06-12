@@ -5,7 +5,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { /*fetchNotesByTrack,*/ createNote, editNote, removeNote, updateTrackIdThunk } from '../../redux/notes';
+import { createNote, editNote, removeNote, updateTrackIdThunk } from '../../redux/notes';
 import { createTrack, fetchTrackById, editTrack, clearTrackNotes, setTrackNotes } from '../../redux/tracks';
 import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
@@ -44,9 +44,9 @@ function TrackCreator() {
         const controller = new AbortController(); // helps prevent memory leaks
         const signal = controller.signal;
 
-        const fetchSong = async () => {
+        const fetchSong = async (id) => {
             try {
-                const response = await fetch(`/api/songs/${songId}`, { signal });
+                const response = await fetch(`/api/songs/${id}`, { signal });
                 if (response.ok) {
                     const data = await response.json();
                     setSong(data);
@@ -62,36 +62,31 @@ function TrackCreator() {
 
         if (trackId) {
             dispatch(fetchTrackById(trackId)).then((trackData) => {
+                console.log('Fetched track data:', trackData);
+
                 setIsEditMode(true);
-                const songDetails = trackData.song;
-                setSong(songDetails);
-                // Set notes in the state
-                dispatch(setTrackNotes(trackData.notes));
+                if (trackData && trackData.song) {
+                    const songDetails = trackData.song;
+                    setSong(songDetails);
+                    // Set notes in the state
+                    dispatch(setTrackNotes(trackData.notes));
+                } else {
+                    console.error('Failed to get song details from track data');
+                }
             });
         } else {
             dispatch(clearTrackNotes());
             fetchSong(songId);
         }
 
-        // if (trackId) {
-        //     dispatch(fetchTrackById(trackId)).then(() => setIsEditMode(true));
-        // }
-
         return () => {
             controller.abort();
         };
     }, [songId, trackId, dispatch]);
 
-    // fetch notes by track
-    // useEffect(() => {
-    //     if (song) {
-    //         dispatch(fetchNotesByTrack(songId));
-    //     }
-    // }, [dispatch, songId, song]);
-
     // ****** wavesurfer ******
     useEffect(() => {
-        if (song && waveformRef.current) {
+        if (song && waveformRef.current && !wavesurferRef.current) {
             wavesurferRef.current = WaveSurfer.create({
                 container: waveformRef.current,
                 waveColor: '#d9dcff',
@@ -106,7 +101,7 @@ function TrackCreator() {
                 barGap: 1.5,
                 plugins: [
                     TimelinePlugin.create({
-                    container: timelineRef.current
+                        container: timelineRef.current
                     }),
                     HoverPlugin.create(),
                     Minimap.create({
@@ -145,19 +140,12 @@ function TrackCreator() {
             });
 
             wavesurferRef.current.on('error', (e) => {
-                console.error('WaveSurfer error:', e);
+                console.error('WaveSurfer error:', e); // Log errors properly
             });
 
             wavesurferRef.current.on('finish', () => {
                 setIsPlaying(false);
             });
-
-            return () => {
-                if (wavesurferRef.current) {
-                    wavesurferRef.current.destroy();
-                    wavesurferRef.current = null;
-                }
-            };
         }
     }, [song]);
 
@@ -378,35 +366,28 @@ function TrackCreator() {
                 </div>
                 <div className='wavesurfer-track'>
                     <div ref={waveformRef} id="waveform"></div>
-                        <div className='track-lanes' ref={lanesRef}>
-                            {[1, 2, 3, 4, 5].map(lane => (
-                                <div
-                                    key={lane}
-                                    className='lane'
-                                    id={`lane-${lane}`}
-                                    onDrop={(e) => handleDrop(e, lane)}
-                                    onDragOver={handleDragOver}
-                                >
-                                    {Object.values(notes).filter(note => note.lane === lane).map(note => (
-                                        <div
-                                            key={note.id}
-                                            className='note'
-                                            style={{ left: `${note.time * minPxPerSec}px` }}
-                                            draggable
-                                            onDragStart={(e) => handleDragStart(e, note.id)}
-                                            onDragEnd={handleDragEnd}
-                                        ></div>
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                        {/* <div className='track-lanes' ref={lanesRef}>
-                            <div className='lane' id='lane-one'></div>
-                            <div className='lane' id='lane-two'></div>
-                            <div className='lane' id='lane-three'></div>
-                            <div className='lane' id='lane-four'></div>
-                            <div className='lane' id='lane-five'></div>
-                        </div> */}
+                    <div className='track-lanes' ref={lanesRef}>
+                        {[1, 2, 3, 4, 5].map(lane => (
+                            <div
+                                key={lane}
+                                className='lane'
+                                id={`lane-${lane}`}
+                                onDrop={(e) => handleDrop(e, lane)}
+                                onDragOver={handleDragOver}
+                            >
+                                {Object.values(notes).filter(note => note.lane === lane).map(note => (
+                                    <div
+                                        key={note.id}
+                                        className='note'
+                                        style={{ left: `${note.time * minPxPerSec}px` }}
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, note.id)}
+                                        onDragEnd={handleDragEnd}
+                                    ></div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

@@ -69,7 +69,7 @@ function SessionOverview() {
                                         <div className='track-details'>
                                             <h4>{track.song?.song_name}</h4>
                                             <p>{formatDuration(track.duration)}</p>
-                                            <p>{Object.values(track.notes).length / 2} {Object.values(track.notes).length === 1 ? 'note' : 'notes'}</p>
+                                            <p>{Object.values(track.notes).length} {Object.values(track.notes).length === 1 ? 'note' : 'notes'}</p>
                                         </div>
                                     </div>
                                 }

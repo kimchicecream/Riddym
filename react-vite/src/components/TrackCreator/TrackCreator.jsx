@@ -62,14 +62,12 @@ function TrackCreator() {
 
         if (trackId) {
             dispatch(fetchTrackById(trackId)).then((trackData) => {
-                console.log('Fetched track data:', trackData);
-
                 setIsEditMode(true);
                 if (trackData && trackData.song) {
                     const songDetails = trackData.song;
                     setSong(songDetails);
-                    // Set notes in the state
-                    dispatch(setTrackNotes(trackData.notes));
+                    // Set track notes into state as an array
+                    dispatch(setTrackNotes(Object.values(trackData.notes)));
                 } else {
                     console.error('Failed to get song details from track data');
                 }
@@ -362,7 +360,7 @@ function TrackCreator() {
                     <div className='timestamp'>
                         <p>{formatTime(currentTime)}</p>
                     </div>
-                    <p>{Object.values(notes).length} note(s)</p>
+                    <p>{Object.keys(notes).length} note{Object.keys(notes).length !== 1 ? 's' : ''}</p>
                 </div>
                 <div className='wavesurfer-track'>
                     <div ref={waveformRef} id="waveform"></div>

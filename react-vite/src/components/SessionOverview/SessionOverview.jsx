@@ -23,9 +23,9 @@ function SessionOverview() {
     }, [dispatch, userId]);
 
     const formatDuration = (duration) => {
-        // Assuming duration is in seconds
-        const minutes = Math.floor(duration / 60);
-        const seconds = duration % 60;
+        const roundedDuration = Math.floor(duration); // Round down to the nearest second
+        const minutes = Math.floor(roundedDuration / 60);
+        const seconds = roundedDuration % 60;
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 

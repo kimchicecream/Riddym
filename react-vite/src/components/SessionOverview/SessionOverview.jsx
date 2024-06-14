@@ -13,7 +13,6 @@ function SessionOverview() {
     const songs = useSelector(state => state.songs.userSongs);
     const tracks = useSelector(state => state.tracks.userTracks);
     const userId = useSelector(state => state.session.user.id);
-    // const [selectedTrack, setSelectedTrack] = useState(null);
 
     useEffect(() => {
         if (userId) {
@@ -23,19 +22,11 @@ function SessionOverview() {
     }, [dispatch, userId]);
 
     const formatDuration = (duration) => {
-        const roundedDuration = Math.floor(duration); // Round down to the nearest second
+        const roundedDuration = Math.floor(duration);
         const minutes = Math.floor(roundedDuration / 60);
         const seconds = roundedDuration % 60;
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
-
-    // const handleTrackClick = (trackId) => {
-    //     setSelectedTrack(tracks[trackId]);
-    // };
-
-    // const closeModal = () => {
-    //     setSelectedTrack(null);
-    // };
 
     return (
         <div className='session-overview-page'>
@@ -50,6 +41,7 @@ function SessionOverview() {
                                 <div className='song-details'>
                                     <h4>{song.song_name}</h4>
                                     <p>{song.artist_name}</p>
+                                    <p>{formatDuration(song.duration)}</p>
                                 </div>
                             </div>
                         ))}

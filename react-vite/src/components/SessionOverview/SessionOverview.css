@@ -1,5 +1,7 @@
 .session-overview-page {
     padding: 120px 100px;
+
+    overflow: hidden;
 }
 
 .session-overview-page h3 {
@@ -14,15 +16,51 @@
 }
 
 .session-overview-page .your-songs img {
-    height: 90px;
+    height: 120px;
+    width: 120px;
+    display: flex;
+    align-self: center;
+    border-radius: 5px;
+}
+
+.session-overview-page .your-songs h4 {
+    overflow-x: auto;
 }
 
 .session-overview-page .your-songs .song-card-container {
     display: flex;
 
-    gap: 20px;
+    width: 100vw;
 
-    overflow-y: auto;
+    gap: 10px;
+
+    overflow-x: auto;
+
+    position: relative;
+    right: 0;
+
+    padding: 20px;
+    padding-right: 120px;
+    background-color: rgb(35, 43, 45);
+    border-radius: 10px;
+
+    border: 1px solid aquamarine;
+}
+
+.session-overview-page .your-songs .song-card-container .song-card {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+
+    gap: 10px;
+
+    width: 200px;
+
+    background-color: black;
+    border-radius: 10px;
+
+    /* border: 1px solid red; */
 }
 
 .session-overview-page .track-open-modal {

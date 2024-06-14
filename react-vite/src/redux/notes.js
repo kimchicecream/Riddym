@@ -125,7 +125,9 @@ const notesReducer = (state = initialState, action) => {
         }
         case ADD_NOTE: {
             newState = { ...state };
-            newState.trackNotes = { ...newState.trackNotes, [action.payload.id]: { ...action.payload } };
+            if (!newState.trackNotes[action.payload.id]) {
+                newState.trackNotes = { ...newState.trackNotes, [action.payload.id]: { ...action.payload } };
+            }
             return newState;
         }
         case UPDATE_NOTE: {

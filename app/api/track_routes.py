@@ -38,7 +38,7 @@ def create_track():
     db.session.commit()  # Commit the notes
 
     print(f"Created track with ID {new_track.id} and {len(unique_notes)} unique notes")
-    print(f"Track notes after creation: {[note.to_dict() for note in new_track.notes]}")
+    print(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Track notes after creation: {[note.to_dict() for note in new_track.notes]}")
 
     return jsonify(new_track.to_dict()), 201
 

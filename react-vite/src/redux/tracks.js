@@ -95,38 +95,38 @@ export const fetchTrackById = trackId => async dispatch => {
 
 // Create track thunk
 export const createTrack = trackData => async dispatch => {
-  const response = await fetch('/api/tracks/create', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(trackData),
-  });
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Track created on server:', data);
+    const response = await fetch('/api/tracks/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(trackData),
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+    const data = await response.json();
 
-  dispatch(addTrack(data));
-  return data;
+    dispatch(addTrack(data));
+    return data;
 };
 
 // Edit track thunk
 export const editTrack = (trackId, trackData) => async dispatch => {
-  const response = await fetch(`/api/tracks/${trackId}/edit`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(trackData),
-  });
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+    const response = await fetch(`/api/tracks/${trackId}/edit`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(trackData),
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+    const data = await response.json();
 
-  dispatch(updateTrack(data));
-  return data;
-}
+    dispatch(updateTrack(data));
+    return data;
+};
+
 // Delete track thunk
 export const removeTrack = trackId => async dispatch => {
   const response = await fetch(`/api/tracks/${trackId}/delete`, {
@@ -165,14 +165,8 @@ const tracksReducer = (state = initialState, action) => {
         }
         case ADD_TRACK: {
             newState = { ...state };
-            // Avoid merging duplicate notes
-            const trackId = action.payload.id;
-            const existingNotes = newState.allTracks[trackId]?.notes || {};
-            const newNotes = action.payload.notes || {};
-            const mergedNotes = { ...existingNotes, ...newNotes };
-
-            newState.allTracks = { ...newState.allTracks, [trackId]: { ...action.payload, notes: mergedNotes } };
-            newState.userTracks = { ...newState.userTracks, [trackId]: { ...action.payload, notes: mergedNotes } };
+            newState.allTracks[action.payload.id] = action.payload;
+            newState.userTracks[action.payload.id] = action.payload;
             return newState;
         }
         case UPDATE_TRACK: {
@@ -187,16 +181,6 @@ const tracksReducer = (state = initialState, action) => {
             delete newState.userTracks[action.payload];
             return newState;
         }
-        case CLEAR_TRACK_NOTES:
-            return {
-                ...state,
-                trackNotes: {},
-            };
-        case SET_TRACK_NOTES:
-            return {
-                ...state,
-                trackNotes: action.payload,
-            };
         default:
             return state;
     }

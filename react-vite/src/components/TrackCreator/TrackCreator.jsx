@@ -7,7 +7,7 @@ import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { createNote, editNote, removeNote, updateTrackIdThunk } from '../../redux/notes';
 import { createTrack, fetchTrackById, editTrack, clearTrackNotes, setTrackNotes } from '../../redux/tracks';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
 
 function TrackCreator() {
@@ -15,7 +15,7 @@ function TrackCreator() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
-    const track = useSelector(state => state.tracks.userTracks[trackId]);
+    // const track = useSelector(state => state.tracks.userTracks[trackId]);
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -27,7 +27,7 @@ function TrackCreator() {
     const lanesRef = useRef(null);
     const minPxPerSec = 300;
     const snapThreshold = 0.08;
-    const [tempTrackId] = useState(uuidv4());
+    // const [tempTrackId] = useState(uuidv4());
     const [isEditMode, setIsEditMode] = useState(false);
 
     // keep page static
@@ -239,7 +239,6 @@ function TrackCreator() {
 
         if (noteId === 'new') {
             const newNote = {
-                temp_track_id: tempTrackId,
                 time: timestamp,
                 lane: laneNumber,
                 note_type: 'tap',
@@ -285,33 +284,24 @@ function TrackCreator() {
 
     // when publish-button is clicked
     const handlePublish = async () => {
-        const uniqueNotes = Object.values(notes).reduce((acc, note) => {
-            const key = `${note.time}-${note.lane}`;
-            if (!acc[key]) {
-                acc[key] = note;
-            }
-            return acc;
-        }, {});
-
         const trackData = {
             song_id: songId,
-            notes: Object.values(uniqueNotes),
+            notes: Object.values(notes),
             duration: duration,
         };
 
         if (isEditMode) {
-            const result = await dispatch(editTrack(trackId, trackData)); // Update track if in edit mode
+            const result = await dispatch(editTrack(trackId, trackData));
             if (result.errors) {
                 console.error('Errors:', result.errors);
             } else {
                 navigate(`/track-overview/${trackId}`);
             }
         } else {
-            const result = await dispatch(createTrack(trackData)); // Create new track
+            const result = await dispatch(createTrack(trackData));
             if (result.errors) {
                 console.error('Errors:', result.errors);
             } else {
-                await dispatch(updateTrackIdThunk({ temp_track_id: tempTrackId, track_id: result.id }));
                 navigate(`/track-overview/${result.id}`);
             }
         }

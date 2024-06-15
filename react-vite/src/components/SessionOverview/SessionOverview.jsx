@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTracksByUser } from '../../redux/tracks';
 import { fetchSongsByUser } from '../../redux/songs';

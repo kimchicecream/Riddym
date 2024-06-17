@@ -21,6 +21,8 @@ function SessionOverview() {
         }
     }, [dispatch, userId]);
 
+    // testing
+
     const formatDuration = (duration) => {
         const roundedDuration = Math.floor(duration);
         const minutes = Math.floor(roundedDuration / 60);

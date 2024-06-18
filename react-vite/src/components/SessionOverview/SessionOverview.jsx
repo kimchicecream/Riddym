@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTracksByUser } from '../../redux/tracks';
@@ -10,6 +10,7 @@ import './SessionOverview.css';
 function SessionOverview() {
     const { username } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const songs = useSelector(state => state.songs.userSongs);
     const tracks = useSelector(state => state.tracks.userTracks);
     const userId = useSelector(state => state.session.user.id);
@@ -30,6 +31,10 @@ function SessionOverview() {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const handleAddSongClick = () => {
+        navigate('/add-song');
+    };
+
     return (
         <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>
@@ -37,6 +42,10 @@ function SessionOverview() {
                 <div className='your-songs'>
                     <h3>Your Songs</h3>
                     <div className='song-card-container'>
+                    <div className='add-song-button' onClick={handleAddSongClick}>
+                            <i class="fa-solid fa-plus"></i>
+                            <span className='tooltip'>Add a new song</span>
+                        </div>
                         {Object.values(songs).map(song => (
                             <div className='song-card' key={song.id}>
                                 <img src={song.image_url} />

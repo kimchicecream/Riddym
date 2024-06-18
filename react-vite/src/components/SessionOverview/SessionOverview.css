@@ -40,11 +40,17 @@
     right: 0;
 
     padding: 20px;
-    padding-right: 120px;
+    padding-right: 150px;
     background-color: rgb(35, 43, 45);
     border-radius: 10px;
 
     border: 1px solid aquamarine;
+
+    align-items: center;
+}
+
+.session-overview-page .your-songs .song-card-container::-webkit-scrollbar {
+    display: none;
 }
 
 .session-overview-page .your-songs .song-card-container .song-card {
@@ -101,4 +107,68 @@
 .session-overview-page .your-tracks img {
     height: 120px;
     width: 120px;
+}
+
+.session-overview-page .add-song-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+
+    border-radius: 50%;
+    background-color: gray;
+    margin-left: 30px;
+    margin-right: 40px;
+
+    transition: 0.2s ease;
+}
+
+.session-overview-page .add-song-button i {
+    color: aquamarine;
+    font-size: 20px;
+
+    transition: 0.2s ease;
+}
+
+.session-overview-page .add-song-button:hover {
+    border-radius: 35%;
+    background-color: aquamarine;
+}
+
+.session-overview-page .add-song-button:hover i {
+    color: black;
+}
+
+.session-overview-page .add-song-button .tooltip {
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    bottom: 125%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.session-overview-page .add-song-button .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%; /* Bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.session-overview-page .add-song-button:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }

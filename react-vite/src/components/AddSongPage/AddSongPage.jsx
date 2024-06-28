@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createSong } from '../../redux/songs';
 import { useNavigate } from 'react-router-dom';
 import './AddSongPage.css';
@@ -13,6 +13,7 @@ function AddSongPage() {
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const sessionUser = useSelector(state => state.session.user);
 
     const handleMP3Change = (e) => {
         const file = e.target.files[0];
@@ -35,13 +36,13 @@ function AddSongPage() {
         const validationErrors = {};
 
         if (!songName) {
-            validationErrors.songName = 'Song name must be at least 1 character long.';
+            validationErrors.songName = "Song name field can't be empty.";
         }
         if (!songFile) {
-            validationErrors.songFile = 'MP3 must be uploaded.';
+            validationErrors.songFile = 'An MP3 file is required.';
         }
         if (!artistName) {
-            validationErrors.artistName = 'Song artist must be at least 1 character long.';
+            validationErrors.artistName = "Song name field can't be empty.";
         }
 
         if (Object.keys(validationErrors).length > 0) {
@@ -63,67 +64,78 @@ function AddSongPage() {
             console.error('Errors:', result.errors);
         } else {
             console.log('Song created:', result);
-            navigate(`/track-creator/${result.id}`);
+            if (navigateToTrackCreator) {
+                navigate(`/track-creator/${result.id}`);
+            } else {
+                navigate(`/session-overview/${sessionUser.username}`);
+            }
         }
     }
 
     return (
         <div className='add-song-page'>
-            <h2>First, let's add a new song to play over.</h2>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <label>
-                    <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
-                    <input
-                        type='text'
-                        placeholder='Song Name'
-                        value={songName}
-                        onChange={(e) => setSongName(e.target.value)}
-                        required
-                    />
-                </label>
+            <div className='add-song-section'>
+                <h1>Add a new song <i className="fa-solid fa-angle-down"></i></h1>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className='art'>
+                        <label className='cover-art'>
+                            <h4>UPLOAD COVER ART</h4>
+                            <input
+                                type='file'
+                                accept='image/*'
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                            />
+                        </label>
+                    </div>
+                    <div className='name-artist'>
+                        <label className='name'>
+                            <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
+                            <input
+                                type='text'
+                                value={songName}
+                                onChange={(e) => setSongName(e.target.value)}
+                                required
+                            />
+                        </label>
+                        <label className='artist'>
+                            <h4>ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
+                            <input
+                                type='text'
+                                value={artistName}
+                                onChange={(e) => setArtistName(e.target.value)}
+                                required
+                            />
+                        </label>
+                    </div>
+                    <div className='file-duration'>
+                        <label className='file'>
+                            <h4>UPLOAD MP3</h4> {errors.songFile && <p className="error">{errors.songFile}</p>}
+                            <input
+                                type='file'
+                                accept='audio/mp3'
+                                onChange={handleMP3Change}
+                                required
+                            />
+                        </label>
+                        <label className='duration'>
+                            <h4>DURATION</h4>
+                            <input
+                                type='number'
+                                value={duration}
+                                onChange={(e) => setDuration(e.target.value)}
+                                readOnly
+                            />
+                        </label>
+                    </div>
+                </form>
+                <button className='add-song-button' type='button' onClick={(e) => handleSubmit(e, false)}>
+                    Only Add Song
+                </button>
+                <button type='submit'>Continue to Track Creator</button>
+            </div>
+            <div className='pick-song-section'>
 
-                <label>
-                    <h4>UPLOAD MP3</h4> {errors.songFile && <p className="error">{errors.songFile}</p>}
-                    <input
-                        type='file'
-                        accept='audio/mp3'
-                        onChange={handleMP3Change}
-                        required
-                    />
-                </label>
-
-                <label>
-                    <h4>DURATION</h4>
-                    <input
-                        type='number'
-                        placeholder='Duration (seconds)'
-                        value={duration}
-                        onChange={(e) => setDuration(e.target.value)}
-                        readOnly
-                    />
-                </label>
-
-                <label>
-                    <h4>UPLOAD COVER ART</h4>
-                    <input
-                        type='file'
-                        accept='image/*'
-                        onChange={(e) => setImageFile(e.target.files[0])}
-                    />
-                </label>
-
-                <label>
-                    <h4>SONG ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
-                    <input
-                        type='text'
-                        placeholder='Artist Name'
-                        value={artistName}
-                        onChange={(e) => setArtistName(e.target.value)}
-                        required
-                    />
-                </label>
-                <button type='submit'>Submit</button>
-            </form>
+            </div>
         </div>
     )
 }

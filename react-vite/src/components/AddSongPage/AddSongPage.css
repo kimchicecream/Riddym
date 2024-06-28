@@ -1,18 +1,22 @@
 .add-song-page {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
 
-    height: 700px;
+    padding-top: 120px;
+    /* height: 700px; */
+
+    border: 2px solid red;
 }
 
 .add-song-page form {
     margin-top: 20px;
 
     display: flex;
-    flex-direction: column;
     gap: 20px;
+
+    padding: 10px;
 }
 
 .add-song-page button {
@@ -36,4 +40,16 @@
 
 .add-song-page p {
     color: rgb(255, 106, 106);
+}
+
+.add-song-page .add-song-section {
+    padding: 10px;
+    border: 2px solid red;
+}
+
+.add-song-page .add-song-section h1 {
+    display: flex;
+    justify-content: space-between;
+
+
 }

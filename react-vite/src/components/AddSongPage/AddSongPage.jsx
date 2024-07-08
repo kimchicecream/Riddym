@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSong } from '../../redux/songs';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ function AddSongPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const sessionUser = useSelector(state => state.session.user);
+    const fileInputRef = useRef(null);
+    const [isImageUploaded, setIsImageUploaded] = useState(false);
 
     const handleMP3Change = (e) => {
         const file = e.target.files[0];
@@ -30,7 +32,23 @@ function AddSongPage() {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImageFile(file);
+
+        // Preview the image
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const button = document.querySelector('.cover-art button');
+                button.style.backgroundImage = `url(${reader.result})`;
+                setIsImageUploaded(true);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (e, navigateToTrackCreator = true) => {
         e.preventDefault();
 
         const validationErrors = {};
@@ -79,12 +97,14 @@ function AddSongPage() {
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className='art'>
                         <label className='cover-art'>
-                            <h4>UPLOAD COVER ART</h4>
+                            {/* <h4>UPLOAD COVER ART</h4> */}
                             <input
                                 type='file'
                                 accept='image/*'
-                                onChange={(e) => setImageFile(e.target.files[0])}
+                                onChange={handleImageChange}
+                                ref={fileInputRef}
                             />
+                            <button type="button" className={isImageUploaded ? 'image-uploaded' : ''} onClick={() => fileInputRef.current.click()}>{isImageUploaded ? '' : 'Upload cover art'}</button>
                         </label>
                     </div>
                     <div className='name-artist'>
@@ -134,7 +154,7 @@ function AddSongPage() {
                 <button type='submit'>Continue to Track Creator</button>
             </div>
             <div className='pick-song-section'>
-
+                <h1>Pick a song</h1>
             </div>
         </div>
     )

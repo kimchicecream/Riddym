@@ -32,10 +32,14 @@ function Navigation() {
     navigate(`/add-song`);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <div className="navigation-container">
       <div className="logo-container">
-          <img src="../../../riddym-logo.png" />
+          <img src="../../../riddym-logo.png" onClick={handleLogoClick}/>
       </div>
       <div className="nav-menu">
         {sessionUser && (

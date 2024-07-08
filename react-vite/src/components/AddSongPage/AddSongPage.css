@@ -4,6 +4,8 @@
     align-items: center;
     justify-content: center;
 
+    flex-direction: column;
+
     padding-top: 120px;
     /* height: 700px; */
 
@@ -38,6 +40,29 @@
     border-radius: 5px;
 }
 
+.add-song-page .cover-art input {
+    display: none;
+}
+
+.cover-art button {
+    all: unset;
+
+    height: 100px;
+    width: 100px;
+
+    border: 2px dotted red;
+
+    text-align: center;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.add-song-page .cover-art button.image-uploaded {
+    border: none; /* Remove border when image is uploaded */
+}
+
 .add-song-page p {
     color: rgb(255, 106, 106);
 }
@@ -50,6 +75,4 @@
 .add-song-page .add-song-section h1 {
     display: flex;
     justify-content: space-between;
-
-
 }

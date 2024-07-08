@@ -60,7 +60,7 @@ function AddSongPage() {
             validationErrors.songFile = 'An MP3 file is required.';
         }
         if (!artistName) {
-            validationErrors.artistName = "Song name field can't be empty.";
+            validationErrors.artistName = "Song artist field can't be empty.";
         }
 
         if (Object.keys(validationErrors).length > 0) {
@@ -83,18 +83,20 @@ function AddSongPage() {
         } else {
             console.log('Song created:', result);
             if (navigateToTrackCreator) {
-                navigate(`/track-creator/${result.id}`);
+                navigate(`/track-creator/${result.song.id}`);
             } else {
                 navigate(`/session-overview/${sessionUser.username}`);
             }
         }
     }
 
+    const handleFormSubmit = (e) => handleSubmit(e, true);
+
     return (
         <div className='add-song-page'>
             <div className='add-song-section'>
                 <h1>Add a new song <i className="fa-solid fa-angle-down"></i></h1>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <form onSubmit={handleFormSubmit} encType="multipart/form-data">
                     <div className='art'>
                         <label className='cover-art'>
                             {/* <h4>UPLOAD COVER ART</h4> */}
@@ -106,26 +108,26 @@ function AddSongPage() {
                             />
                             <button type="button" className={isImageUploaded ? 'image-uploaded' : ''} onClick={() => fileInputRef.current.click()}>{isImageUploaded ? '' : 'Upload cover art'}</button>
                         </label>
-                    </div>
-                    <div className='name-artist'>
-                        <label className='name'>
-                            <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
-                            <input
-                                type='text'
-                                value={songName}
-                                onChange={(e) => setSongName(e.target.value)}
-                                required
-                            />
-                        </label>
-                        <label className='artist'>
-                            <h4>ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
-                            <input
-                                type='text'
-                                value={artistName}
-                                onChange={(e) => setArtistName(e.target.value)}
-                                required
-                            />
-                        </label>
+                        <div className='name-artist'>
+                            <label className='name'>
+                                <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
+                                <input
+                                    type='text'
+                                    value={songName}
+                                    onChange={(e) => setSongName(e.target.value)}
+                                    required
+                                />
+                            </label>
+                            <label className='artist'>
+                                <h4>ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
+                                <input
+                                    type='text'
+                                    value={artistName}
+                                    onChange={(e) => setArtistName(e.target.value)}
+                                    required
+                                />
+                            </label>
+                        </div>
                     </div>
                     <div className='file-duration'>
                         <label className='file'>
@@ -148,13 +150,15 @@ function AddSongPage() {
                         </label>
                     </div>
                 </form>
-                <button className='add-song-button' type='button' onClick={(e) => handleSubmit(e, false)}>
-                    Only Add Song
-                </button>
-                <button type='submit'>Continue to Track Creator</button>
+                <div className='buttons'>
+                    <button className='add-song-button' type='button' onClick={(e) => handleSubmit(e, false)}>
+                        Only Add Song
+                    </button>
+                    <button type='submit' className='continue-button'>Continue to Track Creator</button>
+                </div>
             </div>
             <div className='pick-song-section'>
-                <h1>Pick a song</h1>
+                <h1>Pick a song <i className="fa-solid fa-angle-down"></i></h1>
             </div>
         </div>
     )

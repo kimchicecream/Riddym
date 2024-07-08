@@ -43,7 +43,7 @@ function SessionOverview() {
                     <h3>Your Songs</h3>
                     <div className='song-card-container'>
                     <div className='add-song-button' onClick={handleAddSongClick}>
-                            <i class="fa-solid fa-plus"></i>
+                            <i className="fa-solid fa-plus"></i>
                             <span className='tooltip'>Add a new song</span>
                         </div>
                         {Object.values(songs).map(song => (

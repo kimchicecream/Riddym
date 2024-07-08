@@ -1,42 +1,101 @@
 .add-song-page {
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
 
     flex-direction: column;
 
     padding-top: 120px;
-    /* height: 700px; */
 
-    border: 2px solid red;
+    /* border: 2px solid red; */
+
+    gap: 10px;
 }
 
 .add-song-page form {
-    margin-top: 20px;
+    /* margin-top: 20px; */
 
     display: flex;
+    flex-direction: column;
     gap: 20px;
 
     padding: 10px;
+
+    /* border: 1px solid red; */
+}
+
+.add-song-page form .art {
+    display: flex;
+    gap: 20px;
+
+    justify-content: center;
+}
+
+.add-song-page form .name-artist {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.add-song-page form .file-duration {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.add-song-page form h4 {
+    color: aquamarine;
+}
+
+.add-song-page .add-song-section .buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
 }
 
 .add-song-page button {
     all: unset;
 
-    padding: 10px;
-
-    background-color: aquamarine;
-    color: black;
+    font-size: 20px;
     font-weight: bold;
 
-    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.add-song-page button:hover {
+    background-color: aquamarine;
+    color: black;
+}
+
+.add-song-page .add-song-section .buttons .add-song-button {
+    background-color: rgb(96, 96, 96);
+
+    transition: 0.2s ease;
+}
+
+.add-song-page .add-song-section .buttons .add-song-button:hover {
+    background-color: aquamarine;
+}
+
+.add-song-page .add-song-section .buttons .continue-button {
+    background-color: rgb(96, 96, 96);
+
+    transition: 0.2s ease;
+}
+
+.add-song-page .add-song-section .buttons .continue-button:hover {
+    background-color: aquamarine;
 }
 
 .add-song-page input {
     all: unset;
     padding: 5px;
-    background-color: gray;
+    background-color: rgb(41, 60, 54);
+    border: 1px solid aquamarine;
     border-radius: 5px;
 }
 
@@ -47,20 +106,34 @@
 .cover-art button {
     all: unset;
 
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
 
-    border: 2px dotted red;
+    border: 4px solid aquamarine;
 
     text-align: center;
+
+    background-color: rgb(41, 60, 54);
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    color: aquamarine;
+
+    transition: 0.2s ease;
+}
+
+.cover-art button:hover {
+    border: 4px solid white;
+
+    color: white;
+
+    background-color: gray;
 }
 
 .add-song-page .cover-art button.image-uploaded {
-    border: none; /* Remove border when image is uploaded */
+    border: none;
 }
 
 .add-song-page p {
@@ -68,11 +141,44 @@
 }
 
 .add-song-page .add-song-section {
-    padding: 10px;
-    border: 2px solid red;
+    /* padding: 10px; */
+    width: 1100px;
+    /* border: 2px solid red;-0 */
+    background-color: rgb(53, 53, 53);
 }
 
 .add-song-page .add-song-section h1 {
     display: flex;
+
+    padding: 10px 20px;
+
+    background-color: aquamarine;
+    color: black;
     justify-content: space-between;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+.add-song-page .pick-song-section {
+    /* padding: 10px; */
+    width: 1100px;
+    /* border: 2px solid red;-0 */
+    background-color: rgb(53, 53, 53);
+}
+
+.add-song-page .pick-song-section h1 {
+    display: flex;
+
+    padding: 10px 20px;
+
+    background-color: aquamarine;
+    color: black;
+    justify-content: space-between;
+    align-items: center;
 }

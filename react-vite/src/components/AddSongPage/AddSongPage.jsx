@@ -21,6 +21,9 @@ function AddSongPage() {
     const [mp3FileName, setMp3FileName] = useState('Choose MP3 to Upload');
     const songs = useSelector(state => state.songs.allSongs);
     const [selectedSong, setSelectedSong] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isFormVisible, setIsFormVisible] = useState(true);
+    const [isPickVisible, setIsPickVisible] = useState(false);
 
     const handleMP3Change = (e) => {
         const file = e.target.files[0];
@@ -114,121 +117,156 @@ function AddSongPage() {
         handleSubmit(e, true);
     };
 
+    const handleContinueClick = () => {
+        if (selectedSong) {
+            navigate(`/track-creator/${selectedSong.id}`);
+        }
+    };
+
+    const filteredSongs = Object.values(songs).filter(song =>
+        song.song_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        song.artist_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const toggleFormVisibility = () => {
+        setIsFormVisible(!isFormVisible);
+        setIsPickVisible(false);
+    };
+
+    const togglePickVisibility = () => {
+        setIsPickVisible(!isPickVisible);
+        setIsFormVisible(false);
+    };
+
     return (
         <div className='add-song-page'>
             <div className='add-song-section'>
-                <h1>Add a new song <i className="fa-solid fa-angle-down"></i></h1>
-                <form onSubmit={handleFormSubmit} encType="multipart/form-data">
-                    <div className='form'>
-                        <div className='art'>
-                            <label className='cover-art'>
-                                {/* <h4>UPLOAD COVER ART</h4> */}
-                                <input
-                                    type='file'
-                                    accept='image/*'
-                                    onChange={handleImageChange}
-                                    ref={imageInputRef}
-                                />
-                                <button type="button" className={isImageUploaded ? 'image-uploaded' : ''} onClick={() => imageInputRef.current.click()}>
-                                    {isImageUploaded ? '' : 'Upload cover art'}
-                                </button>
-                            </label>
-                            <div className='name-artist'>
-                                <label className='name'>
-                                    <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
+                <h1 onClick={toggleFormVisibility}>Add a new song <i className="fa-solid fa-angle-down"></i></h1>
+                {isFormVisible && (
+                    <form onSubmit={handleFormSubmit} encType="multipart/form-data">
+                        <div className='form'>
+                            <div className='art'>
+                                <label className='cover-art'>
+                                    {/* <h4>UPLOAD COVER ART</h4> */}
                                     <input
-                                        type='text'
-                                        value={songName}
-                                        onChange={(e) => setSongName(e.target.value)}
-                                        required
+                                        type='file'
+                                        accept='image/*'
+                                        onChange={handleImageChange}
+                                        ref={imageInputRef}
                                     />
+                                    <button type="button" className={isImageUploaded ? 'image-uploaded' : ''} onClick={() => imageInputRef.current.click()}>
+                                        {isImageUploaded ? '' : 'Upload cover art'}
+                                    </button>
                                 </label>
-                                <label className='artist'>
-                                    <h4>ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
+                                <div className='name-artist'>
+                                    <label className='name'>
+                                        <h4>SONG NAME</h4> {errors.songName && <p className="error">{errors.songName}</p>}
+                                        <input
+                                            type='text'
+                                            value={songName}
+                                            onChange={(e) => setSongName(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+                                    <label className='artist'>
+                                        <h4>ARTIST</h4> {errors.artistName && <p className="error">{errors.artistName}</p>}
+                                        <input
+                                            type='text'
+                                            value={artistName}
+                                            onChange={(e) => setArtistName(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                            <div className='file-duration'>
+                                <label className='file'>
+                                    {errors.songFile && <p className="error">{errors.songFile}</p>}
                                     <input
-                                        type='text'
-                                        value={artistName}
-                                        onChange={(e) => setArtistName(e.target.value)}
+                                        type='file'
+                                        accept='audio/mp3'
+                                        onChange={handleMP3Change}
                                         required
+                                        ref={mp3InputRef}
                                     />
+                                    <button type="button" className='upload-button' onClick={() => mp3InputRef.current.click()}>
+                                        <i className="fa-solid fa-arrow-up-from-bracket"></i>{mp3FileName}
+                                    </button>
                                 </label>
+                                {songFile && (
+                                    <label className='duration'>
+                                        <h4>DURATION</h4>
+                                        <input
+                                            type='text'
+                                            value={`${duration} seconds`}
+                                            onChange={(e) => setDuration(e.target.value)}
+                                            readOnly
+                                        />
+                                    </label>
+                                )}
                             </div>
                         </div>
-                        <div className='file-duration'>
-                            <label className='file'>
-                                {errors.songFile && <p className="error">{errors.songFile}</p>}
-                                <input
-                                    type='file'
-                                    accept='audio/mp3'
-                                    onChange={handleMP3Change}
-                                    required
-                                    ref={mp3InputRef}
-                                />
-                                <button type="button" className='upload-button' onClick={() => mp3InputRef.current.click()}>
-                                    <i className="fa-solid fa-arrow-up-from-bracket"></i>{mp3FileName}
-                                </button>
-                            </label>
-                            {songFile && (
-                                <label className='duration'>
-                                    <h4>DURATION</h4>
-                                    <input
-                                        type='text'
-                                        value={`${duration} seconds`}
-                                        onChange={(e) => setDuration(e.target.value)}
-                                        readOnly
-                                    />
-                                </label>
-                            )}
+                        <div className='buttons'>
+                            <button className='add-song-button' type='button' onClick={(e) => handleSubmit(e, false)}>
+                                Add Song
+                            </button>
+                            <button type='submit' className='continue-button'>
+                                Continue to Track Creator
+                            </button>
                         </div>
-                    </div>
-                    <div className='buttons'>
-                        <button className='add-song-button' type='button' onClick={(e) => handleSubmit(e, false)}>
-                            Add Song
-                        </button>
-                        <button type='submit' className='continue-button'>
-                            Continue to Track Creator
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                )}
             </div>
             <div className='pick-song-section'>
-                <h1>Pick a song <i className="fa-solid fa-angle-down"></i></h1>
-                <div className='pick-song-container'>
-                    <div className='search-bar'></div>
-                    <div className='all-songs-container'>
-                            {Object.values(songs).map(song => (
-                                <div
-                                    className={`song-card ${selectedSong?.id === song.id ? 'selected' : ''}`}
-                                    key={song.id}
-                                    onClick={() => setSelectedSong(song)}
-                                >
-                                    <img src={song.image_url} />
-                                    <div className='song-details'>
-                                        <h4>{song.song_name}</h4>
-                                        <p>{song.artist_name}</p>
-                                        <p>{formatDuration(song.duration)}</p>
+                <h1 onClick={togglePickVisibility}>Pick a song <i className="fa-solid fa-angle-down"></i></h1>
+                {isPickVisible && (
+                    <div className='pick-song-container'>
+                        <div className='search-bar'>
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                            <input
+                                type='text'
+                                placeholder='Search by song name or artist'
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <div className='all-songs-container'>
+                                {filteredSongs.map(song => (
+                                    <div
+                                        className={`song-card ${selectedSong?.id === song.id ? 'selected' : ''}`}
+                                        key={song.id}
+                                        onClick={() => setSelectedSong(song)}
+                                    >
+                                        <img src={song.image_url} />
+                                        <div className='song-details'>
+                                            <h4>{song.song_name}</h4>
+                                            <p>{song.artist_name}</p>
+                                            <p>{formatDuration(song.duration)}</p>
+                                        </div>
                                     </div>
+                                ))}
+                        </div>
+                        <div className='buttons'>
+                                <div className='selected-display'>
+                                    Selected
+                                    {selectedSong && (
+                                        <div className='mini-song-card'>
+                                            <div className='mini-img'>
+                                                <img src={selectedSong.image_url} />
+                                            </div>
+                                            <div className='mini-song-details'>
+                                                <p>{selectedSong.song_name}</p>
+                                                <p>{selectedSong.artist_name}</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            ))}
+                            <button className='pick-song-continue' onClick={handleContinueClick}>
+                                Continue to Track Creator
+                            </button>
+                        </div>
                     </div>
-                    <div className='buttons'>
-                        {selectedSong && (
-                            <div className='selected-display'>
-                                Selected
-                                <div className='mini-song-card'>
-                                    <div className='mini-img'>
-                                        <img src={selectedSong.image_url} />
-                                    </div>
-                                    <div className='mini-song-details'>
-                                        <p>{selectedSong.song_name}</p>
-                                        <p>{selectedSong.artist_name}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        <button>Continue to Track Creator</button>
-                    </div>
-                </div>
+                )}
             </div>
         </div>
     )

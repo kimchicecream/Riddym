@@ -5,11 +5,11 @@
 
     flex-direction: column;
 
-    padding-top: 140px;
+    padding-top: 130px;
 
     /* border: 2px solid red; */
 
-    gap: 30px;
+    gap: 10px;
 }
 
 .add-song-page form {
@@ -249,7 +249,7 @@
 
     gap: 10px;
 
-    height: 600px;
+    height: 400px;
 
     overflow: hidden;
     overflow-y: auto;
@@ -264,6 +264,7 @@
     background-color: rgb(49, 88, 75);
     padding: 10px;
     width: 250px;
+    height: 125px;
 
     border: 2px solid rgb(70, 127, 108);
 
@@ -299,8 +300,24 @@
     align-items: center;
 
     padding: 10px;
+    height: 90px;
 
     background-color: rgb(73, 73, 73);
+}
+
+.add-song-page .pick-song-container .buttons button {
+    display: flex;
+    justify-content: end;
+
+    background-color: rgb(71, 103, 93);
+    color: aquamarine;
+
+    transition: 0.2s ease;
+}
+
+.add-song-page .pick-song-container .buttons button:hover {
+    background-color: aquamarine;
+    color: black;
 }
 
 .add-song-page .selected-display {
@@ -308,6 +325,7 @@
     align-items: center;
     font-size: 25px;
     font-weight: bold;
+    padding-left: 20px;
 
     gap: 20px;
 
@@ -340,4 +358,34 @@
 
     display: flex;
     align-self: center;
+}
+
+.pick-song-container .search-bar {
+    display: flex;
+    /* gap: 10px; */
+    margin-top: 10px;
+
+    align-items: center;
+    padding: 10px 40px;
+}
+
+.pick-song-container .search-bar i {
+    background-color: rgb(41, 41, 41);
+
+    padding: 10px;
+    position: absolute;
+    /* left: 100px; */
+    border-radius: 10px;
+}
+
+.pick-song-container .search-bar input {
+    all: unset;
+
+    width: 100%;
+    padding: 10px;
+    padding-left: 40px;
+
+    background-color: rgb(41, 41, 41);
+
+    border-radius: 10px;
 }

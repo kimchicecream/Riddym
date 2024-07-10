@@ -61,7 +61,7 @@
 
     gap: 10px;
 
-    width: 200px;
+    /* width: 500px; */
 
     background-color: black;
     border-radius: 10px;
@@ -143,8 +143,8 @@
 .session-overview-page .add-song-button .tooltip {
     visibility: hidden;
     width: 100px;
-    background-color: black;
-    color: #fff;
+    background-color: aquamarine;
+    color: black;
     text-align: center;
     border-radius: 5px;
     padding: 5px;
@@ -165,7 +165,7 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: aquamarine transparent transparent transparent;
 }
 
 .session-overview-page .add-song-button:hover .tooltip {

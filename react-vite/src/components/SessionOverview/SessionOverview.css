@@ -209,7 +209,7 @@
     border-radius: 5px;
     padding: 5px;
     position: absolute;
-    bottom: 125%; /* Position above the button */
+    bottom: 125%; /* position above the button */
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -220,7 +220,7 @@
 .session-overview-page .add-song-button .tooltip::after {
     content: '';
     position: absolute;
-    top: 100%; /* Bottom of the tooltip */
+    top: 100%; /* bottom of the tooltip */
     left: 50%;
     margin-left: -5px;
     border-width: 5px;

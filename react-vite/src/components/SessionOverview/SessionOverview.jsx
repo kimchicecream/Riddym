@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTracksByUser } from '../../redux/tracks';
 import { fetchSongsByUser } from '../../redux/songs';
 import OpenModalButton from "../OpenModalButton";
+import ConfirmSongDelete from '../ConfirmSongDelete/ConfirmSongDelete';
 import TrackModal from '../TrackModal';
+import EditSongModal from '../EditSongModal/EditSongModal';
 import './SessionOverview.css';
 
 function SessionOverview() {
@@ -57,12 +59,16 @@ function SessionOverview() {
                                     </div>
                                 </div>
                                 <div className='buttons'>
-                                    <button className='edit-button'>
-                                        <i className="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <button className='delete-button'>
-                                        <i className="fa-solid fa-trash-can"></i>
-                                    </button>
+                                    <OpenModalButton
+                                        buttonText={<i className="fa-solid fa-pen-to-square"></i>}
+                                        modalComponent={<EditSongModal song={song} />}
+                                        className="edit-button"
+                                    />
+                                    <OpenModalButton
+                                        buttonText={<i className="fa-solid fa-trash-can"></i>}
+                                        modalComponent={<ConfirmSongDelete song={song} />}
+                                        className="delete-button"
+                                    />
                                 </div>
                             </div>
                         ))}

@@ -48,11 +48,21 @@ function SessionOverview() {
                         </div>
                         {Object.values(songs).map(song => (
                             <div className='song-card' key={song.id}>
-                                <img src={song.image_url} />
-                                <div className='song-details'>
-                                    <h4>{song.song_name}</h4>
-                                    <p>{song.artist_name}</p>
-                                    <p>{formatDuration(song.duration)}</p>
+                                <div className='song-info'>
+                                    <img src={song.image_url} />
+                                    <div className='song-details'>
+                                        <h4>{song.song_name}</h4>
+                                        <p>{song.artist_name}</p>
+                                        <p>{formatDuration(song.duration)}</p>
+                                    </div>
+                                </div>
+                                <div className='buttons'>
+                                    <button className='edit-button'>
+                                        <i className="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button className='delete-button'>
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </button>
                                 </div>
                             </div>
                         ))}

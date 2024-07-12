@@ -14,7 +14,7 @@ function TrackCreator() {
     const { songId, trackId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const notes = useSelector(state => state.notes.trackNotes);
+    const notes = useSelector(state => state.tracks.trackNotes);
     // const track = useSelector(state => state.tracks.userTracks[trackId]);
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);

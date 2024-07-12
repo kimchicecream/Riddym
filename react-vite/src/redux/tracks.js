@@ -90,6 +90,7 @@ export const fetchTrackById = trackId => async dispatch => {
     }
     const data = await response.json();
     dispatch(getTrackById(data));
+    // dispatch(setTrackNotes(Object.values(data.notes)));
     return data;
   };
 
@@ -143,7 +144,8 @@ export const removeTrack = trackId => async dispatch => {
 
 const initialState = {
     allTracks: {},
-    userTracks: {}
+    userTracks: {},
+    trackNotes: {}
 };
 
 const tracksReducer = (state = initialState, action) => {
@@ -179,6 +181,14 @@ const tracksReducer = (state = initialState, action) => {
             newState = { ...state };
             delete newState.allTracks[action.payload];
             delete newState.userTracks[action.payload];
+            return newState;
+        }
+        case SET_TRACK_NOTES: {
+            newState = { ...state, trackNotes: action.payload };
+            return newState;
+        }
+        case CLEAR_TRACK_NOTES: {
+            newState = { ...state, trackNotes: {} };
             return newState;
         }
         default:

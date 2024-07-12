@@ -1,16 +1,17 @@
 import './ConfirmSongDelete.css';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeSong, fetchSongsByUser } from '../../redux/songs';
 import { useModal } from "../../context/Modal";
 
 function ConfirmSongDelete({ song }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
+    const userId = useSelector(state => state.session.user.id);
 
     const handleDelete = async () => {
         await dispatch(removeSong(song.id));
-        dispatch(fetchSongsByUser(song.userId));
+        await dispatch(fetchSongsByUser(userId));
         closeModal();
     };
 

@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux';
-import { removeTrack } from '../../redux/tracks';
+import { useDispatch, useSelector  } from 'react-redux';
+import { fetchTracksByUser, removeTrack } from '../../redux/tracks';
 import { useModal } from "../../context/Modal";
 
 import './ConfirmDelete.css';
@@ -7,9 +7,11 @@ import './ConfirmDelete.css';
 function ConfirmDelete({ track }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
+    const userId = useSelector(state => state.session.user.id);
 
     const handleDelete = async () => {
         await dispatch(removeTrack(track.id));
+        await dispatch(fetchTracksByUser(userId));
         closeModal();
     };
 

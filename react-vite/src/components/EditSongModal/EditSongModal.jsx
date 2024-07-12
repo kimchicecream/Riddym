@@ -1,7 +1,7 @@
 import './EditSongModal.jsx';
 import { editSong, fetchSongsByUser } from '../../redux/songs.js';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal.jsx';
 
 function EditSongModal({ song }) {
@@ -10,6 +10,7 @@ function EditSongModal({ song }) {
     const [songName, setSongName] = useState(song.song_name);
     const [artistName, setArtistName] = useState(song.artist_name);
     const [errors, setErrors] = useState({});
+    const userId = useSelector(state => state.session.user.id);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +34,7 @@ function EditSongModal({ song }) {
         if (result.errors) {
             setErrors(result.errors);
         } else {
-            fetchSongsByUser();
+            await dispatch(fetchSongsByUser(userId));
             closeModal();
         }
     }

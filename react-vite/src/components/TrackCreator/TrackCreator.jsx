@@ -5,8 +5,8 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { createNote, editNote, removeNote, /* updateTrackIdThunk */ } from '../../redux/notes';
-import { createTrack, fetchTrackById, editTrack, clearTrackNotes, setTrackNotes } from '../../redux/tracks';
+import { createNote, editNote, removeNote, clearTrackNotes, setTrackNotes } from '../../redux/notes';
+import { createTrack, fetchTrackById, editTrack } from '../../redux/tracks';
 // import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
 
@@ -14,8 +14,10 @@ function TrackCreator() {
     const { songId, trackId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const notes = useSelector(state => state.tracks.trackNotes);
-    // const track = useSelector(state => state.tracks.userTracks[trackId]);
+    // const notesFromStore = useSelector(state => trackId ? state.tracks.trackNotes : state.notes.trackNotes);
+    // const notes = useSelector(state => state.tracks.trackNotes);
+    // const notes = useSelector(state => state.notes.trackNotes);
+    const [notes, setNotes] = useState({});
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -64,10 +66,11 @@ function TrackCreator() {
             dispatch(fetchTrackById(trackId)).then((trackData) => {
                 setIsEditMode(true);
                 if (trackData && trackData.song) {
-                    const songDetails = trackData.song;
-                    setSong(songDetails);
-                    // Set track notes into state as an array
-                    dispatch(setTrackNotes(Object.values(trackData.notes)));
+                    // const songDetails = trackData.song;
+                    setSong(trackData.song);
+                    setNotes(trackData.notes);
+                    // set track notes into state as an array
+                    // dispatch(setTrackNotes(Object.values(trackData.notes)));
                 } else {
                     console.error('Failed to get song details from track data');
                 }
@@ -79,6 +82,7 @@ function TrackCreator() {
 
         return () => {
             controller.abort();
+            dispatch(clearTrackNotes());
         };
     }, [songId, trackId, dispatch]);
 
@@ -138,7 +142,7 @@ function TrackCreator() {
             });
 
             wavesurferRef.current.on('error', (e) => {
-                console.error('WaveSurfer error:', e); // Log errors properly
+                console.error('WaveSurfer error:', e);
             });
 
             wavesurferRef.current.on('finish', () => {
@@ -146,6 +150,10 @@ function TrackCreator() {
             });
         }
     }, [song]);
+
+    useEffect(() => {
+        console.log("Notes updated:", notes);
+    }, [notes]);
 
     // play button
     const handlePlay = useCallback(() => {
@@ -238,13 +246,23 @@ function TrackCreator() {
         }
 
         if (noteId === 'new') {
+            const uniqueId = `temp-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
             const newNote = {
+                id: uniqueId,
                 time: timestamp,
                 lane: laneNumber,
                 note_type: 'tap',
             };
 
-            dispatch(createNote(newNote));
+            // const result = await dispatch(createNote(newNote));
+            // if (result.errors) {
+            //     console.error('Error creating note:', result.errors);
+            // } else {
+            //     console.log('Note created:', result);
+            //     setDraggedNoteId(null);
+            //     dispatch(setTrackNotes({ ...notes, [result.id]: result }));
+            // }
+            setNotes({ ...notes, [`temp-${Date.now()}`]: newNote });
         } else {
             const existingNote = notes[noteId];
             const updatedNote = {
@@ -253,7 +271,16 @@ function TrackCreator() {
                 lane: laneNumber,
             };
 
-            dispatch(editNote(noteId, updatedNote));
+            // dispatch editNote and check the result
+            // const result = await dispatch(editNote(noteId, updatedNote));
+            // if (result.errors) {
+            //     console.error('Error updating note:', result.errors);
+            // } else {
+            //     console.log('Note updated:', result);
+            //     setDraggedNoteId(null);
+            //     dispatch(setTrackNotes({ ...notes, [noteId]: updatedNote }));
+            // }
+            setNotes({ ...notes, [noteId]: updatedNote });
         }
         setDraggedNoteId(null);
     };
@@ -266,11 +293,17 @@ function TrackCreator() {
     const handleDragEnd = (e) => {
         const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
         if (e.clientY < lanesBoundingBox.top || e.clientY > lanesBoundingBox.bottom) {
-            // If the drag ends outside the lanes container, remove the note
+            // if the drag ends outside the lanes container, remove the note
+            // if (draggedNoteId && draggedNoteId !== 'new') {
+            //     console.log(`Removing note with ID: ${draggedNoteId}`);
+            //     dispatch(removeNote(draggedNoteId));
+            //     setDraggedNoteId(null);
+            // }
             if (draggedNoteId && draggedNoteId !== 'new') {
                 console.log(`Removing note with ID: ${draggedNoteId}`);
-                dispatch(removeNote(draggedNoteId));
-                setDraggedNoteId(null);
+                const updatedNotes = { ...notes };
+                delete updatedNotes[draggedNoteId];
+                setNotes(updatedNotes); // Use local notes state
             }
         }
     };
@@ -295,6 +328,7 @@ function TrackCreator() {
             if (result.errors) {
                 console.error('Errors:', result.errors);
             } else {
+                dispatch(setTrackNotes(notes));
                 navigate(`/track-overview/${trackId}`);
             }
         } else {
@@ -308,6 +342,7 @@ function TrackCreator() {
     };
 
     const handleHome = async () => {
+        dispatch(clearTrackNotes());
         navigate('/');
     }
 

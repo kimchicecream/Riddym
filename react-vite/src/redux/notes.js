@@ -3,6 +3,8 @@ const ADD_NOTE = 'notes/addNote';
 const UPDATE_NOTE = 'notes/updateNote';
 const DELETE_NOTE = 'notes/deleteNote';
 const UPDATE_TRACK_ID = 'notes/updateTrackId';
+export const CLEAR_TRACK_NOTES = 'notes/clearTrackNotes';
+export const SET_TRACK_NOTES = 'notes/setTrackNotes';
 
 const getNotesByTrack = notes => ({
     type: GET_NOTES_BY_TRACK,
@@ -27,6 +29,15 @@ const deleteNote = noteId => ({
 const updateTrackIdAction = (tempTrackId, trackId) => ({
     type: UPDATE_TRACK_ID,
     payload: { tempTrackId, trackId },
+});
+
+export const clearTrackNotes = () => ({
+    type: CLEAR_TRACK_NOTES,
+});
+
+export const setTrackNotes = (notes) => ({
+    type: SET_TRACK_NOTES,
+    payload: notes,
 });
 
 // Get notes by track thunk
@@ -114,6 +125,7 @@ export const updateTrackIdThunk = (data) => async dispatch => {
 
 const initialState = {
     trackNotes: {},
+    editNotes: {}
 };
 
 const notesReducer = (state = initialState, action) => {
@@ -148,6 +160,14 @@ const notesReducer = (state = initialState, action) => {
                     note.track_id = action.payload.trackId;
                 }
             });
+            return newState;
+        }
+        case SET_TRACK_NOTES: {
+            newState = { ...state, trackNotes: action.payload };
+            return newState;
+        }
+        case CLEAR_TRACK_NOTES: {
+            newState = { ...state, trackNotes: {} };
             return newState;
         }
         default:

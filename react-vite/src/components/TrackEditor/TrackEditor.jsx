@@ -14,6 +14,7 @@ function TrackEditor() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
+    const [localNotes, setLocalNotes] = useState({});
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -43,10 +44,12 @@ function TrackEditor() {
         dispatch(fetchTrackById(trackId)).then((trackData) => {
             if (trackData && trackData.song) {
                 setSong(trackData.song);
-                dispatch(setTrackNotes(Object.values(trackData.notes).reduce((acc, note) => {
+                const notesMap = Object.values(trackData.notes).reduce((acc, note) => {
                     acc[note.id] = note;
                     return acc;
-                }, {})));
+                }, {});
+                setLocalNotes(notesMap);
+                dispatch(setTrackNotes(notesMap));
             } else {
                 console.error('Failed to get song details from track data');
             }
@@ -219,33 +222,21 @@ function TrackEditor() {
 
         if (noteId === 'new') {
             const newNote = {
+                id: `temp-${Date.now()}`,
                 time: timestamp,
                 lane: lane,
                 note_type: 'tap',
             };
-
-            dispatch(createNote(newNote)).then(result => {
-                if (!result.errors) {
-                    dispatch(setTrackNotes({ ...notes, [result.id]: result }));
-                } else {
-                    console.error('Error creating note:', result.errors);
-                }
-            });
+            setLocalNotes(prevNotes => ({ ...prevNotes, [newNote.id]: newNote }));
         } else {
-            const existingNote = notes[noteId];
-            const updatedNote = {
-                ...existingNote,
-                time: timestamp,
-                lane: lane,
-            };
-
-            dispatch(editNote(noteId, updatedNote)).then(result => {
-                if (!result.errors) {
-                    dispatch(setTrackNotes({ ...notes, [noteId]: updatedNote }));
-                } else {
-                    console.error('Error updating note:', result.errors);
+            setLocalNotes(prevNotes => ({
+                ...prevNotes,
+                [noteId]: {
+                    ...prevNotes[noteId],
+                    time: timestamp,
+                    lane: lane,
                 }
-            });
+            }));
         }
 
         setDraggedNoteId(null);
@@ -261,7 +252,11 @@ function TrackEditor() {
             // if the drag ends outside the lanes container, remove the note
             if (draggedNoteId && draggedNoteId !== 'new') {
                 console.log(`Removing note with ID: ${draggedNoteId}`);
-                dispatch(removeNote(draggedNoteId));
+                setLocalNotes(prevNotes => {
+                    const newNotes = { ...prevNotes };
+                    delete newNotes[draggedNoteId];
+                    return newNotes;
+                });
                 setDraggedNoteId(null);
             }
         }
@@ -278,7 +273,7 @@ function TrackEditor() {
     const handlePublish = async () => {
         const trackData = {
             song_id: song.id,
-            notes: Object.values(notes),
+            notes: Object.values(localNotes),
             duration: duration,
         };
 
@@ -334,7 +329,7 @@ function TrackEditor() {
                     <div className='timestamp'>
                         <p>{formatTime(currentTime)}</p>
                     </div>
-                    <p>{Object.keys(notes).length} note{Object.keys(notes).length !== 1 ? 's' : ''}</p>
+                    <p>{Object.keys(localNotes).length} note{Object.keys(localNotes).length !== 1 ? 's' : ''}</p>
                 </div>
                 <div className='wavesurfer-track'>
                     <div ref={waveformRef} id="waveform"></div>
@@ -347,7 +342,7 @@ function TrackEditor() {
                                 onDrop={(e) => handleDrop(e, lane)}
                                 onDragOver={handleDragOver}
                             >
-                                {Object.values(notes).filter(note => note.lane === lane).map(note => (
+                                {Object.values(localNotes).filter(note => note.lane === lane).map(note => (
                                     <div
                                         key={note.id}
                                         className='note'

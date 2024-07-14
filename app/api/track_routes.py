@@ -66,9 +66,40 @@ def update_track(id):
     track = Track.query.get_or_404(id)
     if track.creator_id != current_user.id:
         return jsonify({'error': 'Unauthorized'}), 403
+
     track.song_id = data.get('song_id', track.song_id)
     track.difficulty = data.get('difficulty', track.difficulty)
     track.duration = data.get('duration', track.duration)
+
+    # handle notes
+    notes_data = data.get('notes', [])
+    existing_notes = Note.query.filter_by(track_id=id).all()
+    existing_notes_dict = {note.id: note for note in existing_notes}
+
+    updated_note_ids = set()
+
+    for note_data in notes_data:
+        if 'id' in note_data and note_data['id'] in existing_notes_dict:
+            # update existing note
+            note = existing_notes_dict[note_data['id']]
+            note.time = note_data['time']
+            note.lane = note_data['lane']
+            note.note_type = note_data['note_type']
+            updated_note_ids.add(note.id)
+        else:
+            # Create new note
+            new_note = Note(
+                track_id=track.id,
+                time=note_data['time'],
+                lane=note_data['lane'],
+                note_type=note_data['note_type']
+            )
+            db.session.add(new_note)
+
+    for note_id, note in existing_notes_dict.items():
+        if note_id not in updated_note_ids:
+            db.session.delete(note)
+
     db.session.commit()
     return jsonify(track.to_dict()), 200
 

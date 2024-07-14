@@ -124,6 +124,11 @@ export const editTrack = (trackId, trackData) => async dispatch => {
     }
     const data = await response.json();
 
+    // Ensure data contains notes as an array
+    if (!Array.isArray(data.notes)) {
+        data.notes = [];
+    }
+
     dispatch(updateTrack(data));
     return data;
 };
@@ -159,24 +164,32 @@ const tracksReducer = (state = initialState, action) => {
             newState = { ...state, userTracks: action.payload };
             return newState;
         }
-        case GET_TRACK_BY_ID: {
+        case GET_TRACK_BY_ID:
             newState = { ...state };
             newState.allTracks[action.payload.id] = action.payload;
             newState.userTracks[action.payload.id] = action.payload;
+            if (Array.isArray(action.payload.notes)) {
+                newState.trackNotes = action.payload.notes.reduce((acc, note) => {
+                    acc[note.id] = note;
+                    return acc;
+                }, {});
+            }
             return newState;
-        }
         case ADD_TRACK: {
             newState = { ...state };
             newState.allTracks[action.payload.id] = action.payload;
             newState.userTracks[action.payload.id] = action.payload;
             return newState;
         }
-        case UPDATE_TRACK: {
+        case UPDATE_TRACK:
             newState = { ...state };
             newState.allTracks[action.payload.id] = action.payload;
             newState.userTracks[action.payload.id] = action.payload;
+            newState.trackNotes = action.payload.notes.reduce((acc, note) => {
+                acc[note.id] = note;
+                return acc;
+            }, {});
             return newState;
-        }
         case DELETE_TRACK: {
             newState = { ...state };
             delete newState.allTracks[action.payload];

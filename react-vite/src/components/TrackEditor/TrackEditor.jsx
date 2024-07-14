@@ -43,7 +43,10 @@ function TrackEditor() {
         dispatch(fetchTrackById(trackId)).then((trackData) => {
             if (trackData && trackData.song) {
                 setSong(trackData.song);
-                dispatch(setTrackNotes(Object.values(trackData.notes)));
+                dispatch(setTrackNotes(Object.values(trackData.notes).reduce((acc, note) => {
+                    acc[note.id] = note;
+                    return acc;
+                }, {})));
             } else {
                 console.error('Failed to get song details from track data');
             }

@@ -87,10 +87,12 @@ export const editNote = (noteId, noteData) => async dispatch => {
         return { errors: errorData.errors || errorData };
     }
     const data = await response.json();
-
-    dispatch(updateNote(data));
+    dispatch(updateNote({
+        id: noteId,
+        ...noteData,
+    }));
     return data;
-  };
+};
 
 // Delete note thunk
 export const removeNote = noteId => async dispatch => {
@@ -124,8 +126,7 @@ export const updateTrackIdThunk = (data) => async dispatch => {
 };
 
 const initialState = {
-    trackNotes: {},
-    editNotes: {}
+    trackNotes: {}
 };
 
 const notesReducer = (state = initialState, action) => {
@@ -142,11 +143,14 @@ const notesReducer = (state = initialState, action) => {
             }
             return newState;
         }
-        case UPDATE_NOTE: {
-            newState = { ...state };
-            newState.trackNotes = { ...newState.trackNotes, [action.payload.id]: { ...action.payload } };
-            return newState;
-        }
+        case UPDATE_NOTE:
+            return {
+                ...state,
+                trackNotes: {
+                    ...state.trackNotes,
+                    [action.payload.id]: action.payload,
+                },
+            };
         case DELETE_NOTE: {
             newState = { ...state };
             newState.trackNotes = { ...newState.trackNotes };
@@ -176,6 +180,3 @@ const notesReducer = (state = initialState, action) => {
 };
 
 export default notesReducer;
-
-
-// daily commit

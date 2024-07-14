@@ -6,6 +6,7 @@ import TrackCreator from '../components/TrackCreator/TrackCreator';
 import TrackOverview from '../components/TrackOverview/TrackOverview';
 import Gameplay from '../components/Gameplay';
 import SessionOverview from '../components/SessionOverview/SessionOverview';
+import TrackEditor from '../components/TrackEditor';
 
 export const router = createBrowserRouter([
   {
@@ -34,8 +35,8 @@ export const router = createBrowserRouter([
     element: <TrackCreator />
   },
   {
-    path: '/track-creator/edit/:trackId',
-    element: <TrackCreator />
+    path: '/track-editor/:trackId',
+    element: <TrackEditor />
   },
   {
     path: '/play/:trackId',

@@ -6,12 +6,11 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { createNote, editNote, removeNote, clearTrackNotes } from '../../redux/notes';
-import { createTrack, fetchTrackById, editTrack, setTrackNotes } from '../../redux/tracks';
-// import { v4 as uuidv4 } from 'uuid';
-import './TrackCreator.css';
+import { fetchTrackById, editTrack, setTrackNotes } from '../../redux/tracks';
+import './TrackEditor.css';
 
-function TrackCreator() {
-    const { songId } = useParams();
+function TrackEditor() {
+    const { trackId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
@@ -36,35 +35,25 @@ function TrackCreator() {
         };
     }, []);
 
-    // fetch song
+    // fetch track and song details
     useEffect(() => {
-        const controller = new AbortController(); // helps prevent memory leaks
+        const controller = new AbortController();
         const signal = controller.signal;
 
-        const fetchSong = async (id) => {
-            try {
-                const response = await fetch(`/api/songs/${id}`, { signal });
-                if (response.ok) {
-                    const data = await response.json();
-                    setSong(data);
-                } else {
-                    console.error('Failed to fetch song details');
-                }
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    console.error('Error fetching song details:', error);
-                }
+        dispatch(fetchTrackById(trackId)).then((trackData) => {
+            if (trackData && trackData.song) {
+                setSong(trackData.song);
+                dispatch(setTrackNotes(Object.values(trackData.notes)));
+            } else {
+                console.error('Failed to get song details from track data');
             }
-        };
-
-        dispatch(clearTrackNotes());
-        fetchSong(songId);
+        });
 
         return () => {
             controller.abort();
             dispatch(clearTrackNotes());
         };
-    }, [songId, dispatch]);
+    }, [trackId, dispatch]);
 
     // ****** wavesurfer ******
     useEffect(() => {
@@ -201,21 +190,21 @@ function TrackCreator() {
         }
     }, [duration]);
 
-    const handleDragStart = (e, noteId) => {
+    const handleDragStart = useCallback((e, noteId) => {
         console.log(`Dragging note with ID: ${noteId}`);
-        e.dataTransfer.setData('note-id', noteId);
         setDraggedNoteId(noteId);
-    };
+        e.dataTransfer.setData('note-id', noteId);
+    }, []);
 
     // actions for where the note is dropped
-    const handleDrop = async (e, laneNumber) => {
+    const handleDrop = useCallback((e, lane) => {
         e.preventDefault();
         const noteId = e.dataTransfer.getData('note-id');
         let timestamp = (e.clientX - e.target.getBoundingClientRect().left) / minPxPerSec;
 
         for (let i = 1; i <= 5; i++) {
-            if (i !== laneNumber) {
-                const adjacentNotes = Object.values(notes).filter((note) => note.lane === i);
+            if (i !== lane) {
+                const adjacentNotes = Object.values(notes).filter(note => note.lane === i);
                 for (let note of adjacentNotes) {
                     if (Math.abs(note.time - timestamp) < snapThreshold) {
                         timestamp = note.time;
@@ -228,44 +217,41 @@ function TrackCreator() {
         if (noteId === 'new') {
             const newNote = {
                 time: timestamp,
-                lane: laneNumber,
+                lane: lane,
                 note_type: 'tap',
             };
 
-            const result = await dispatch(createNote(newNote));
-            if (result.errors) {
-                console.error('Error creating note:', result.errors);
-            } else {
-                console.log('Note created:', result);
-                // setDraggedNoteId(null);
-                dispatch(setTrackNotes({ ...notes, [result.id]: result }));
-            }
+            dispatch(createNote(newNote)).then(result => {
+                if (!result.errors) {
+                    dispatch(setTrackNotes({ ...notes, [result.id]: result }));
+                } else {
+                    console.error('Error creating note:', result.errors);
+                }
+            });
         } else {
             const existingNote = notes[noteId];
             const updatedNote = {
                 ...existingNote,
                 time: timestamp,
-                lane: laneNumber,
+                lane: lane,
             };
 
-            // dispatch editNote and check the result
-            const result = await dispatch(editNote(noteId, updatedNote));
-            if (result.errors) {
-                console.error('Error updating note:', result.errors);
-            } else {
-                console.log('Note updated:', result);
-                // setDraggedNoteId(null);
-                dispatch(setTrackNotes({ ...notes, [noteId]: updatedNote }));
-            }
+            dispatch(editNote(noteId, updatedNote)).then(result => {
+                if (!result.errors) {
+                    dispatch(setTrackNotes({ ...notes, [noteId]: updatedNote }));
+                } else {
+                    console.error('Error updating note:', result.errors);
+                }
+            });
         }
+
         setDraggedNoteId(null);
-    };
+    }, [draggedNoteId, minPxPerSec, notes, dispatch]);
 
-    const handleDragOver = (e) => {
+    const handleDragOver = useCallback((e) => {
         e.preventDefault();
-    };
+    }, []);
 
-    // recognizes when a note is dragged outside the lanes
     const handleDragEnd = (e) => {
         const lanesBoundingBox = lanesRef.current.getBoundingClientRect();
         if (e.clientY < lanesBoundingBox.top || e.clientY > lanesBoundingBox.bottom) {
@@ -288,16 +274,16 @@ function TrackCreator() {
     // when publish-button is clicked
     const handlePublish = async () => {
         const trackData = {
-            song_id: songId,
+            song_id: song.id,
             notes: Object.values(notes),
             duration: duration,
         };
 
-        const result = await dispatch(createTrack(trackData));
+        const result = await dispatch(editTrack(trackId, trackData));
         if (result.errors) {
             console.error('Errors:', result.errors);
         } else {
-            navigate(`/track-overview/${result.id}`);
+            navigate(`/track-overview/${trackId}`);
         }
     };
 
@@ -314,7 +300,7 @@ function TrackCreator() {
         <div className='track-creator-page'>
             <div className='nav-bar'>
                     <button onClick={handleHome}>Home</button>
-                    <button onClick={handlePublish}>Publish</button>
+                    <button onClick={handlePublish}>Confirm Changes</button>
             </div>
             <div className='track-creator'>
                 <div className='song-details-container'>
@@ -378,4 +364,4 @@ function TrackCreator() {
 
 }
 
-export default TrackCreator;
+export default TrackEditor;

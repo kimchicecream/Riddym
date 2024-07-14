@@ -27,7 +27,7 @@ function TrackModal({ track }) {
 
     const handleEdit = (e) => {
         e.preventDefault();
-        navigate(`/track-creator/edit/${track.id}`);
+        navigate(`/track-editor/${track.id}`);
         closeModal();
     };
 

@@ -15,6 +15,7 @@ function TrackCreator() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const notes = useSelector(state => state.notes.trackNotes);
+    const sessionUser = useSelector((state) => state.session.user);
     const [song, setSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -303,7 +304,7 @@ function TrackCreator() {
 
     const handleHome = async () => {
         dispatch(clearTrackNotes());
-        navigate('/');
+        navigate(`/session-overview/${sessionUser.username}`);
     }
 
     if (!song) {
@@ -313,7 +314,7 @@ function TrackCreator() {
     return (
         <div className='track-creator-page'>
             <div className='nav-bar'>
-                    <button onClick={handleHome}>Home</button>
+                    <button onClick={handleHome}>Back to Overview</button>
                     <button onClick={handlePublish}>Publish</button>
             </div>
             <div className='track-creator'>

@@ -128,12 +128,12 @@ function Gameplay() {
             console.log(`Hit note in lane ${laneIndex + 1}`);
             setFallingNotes(prevNotes => {
                 const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
-                console.log('Updated falling notes after hit:', updatedNotes); // Logging updated notes
+                console.log('Updated falling notes after hit:', updatedNotes); // logging updated notes
                 return updatedNotes;
             });
         } else {
             console.log(`Missed note in lane ${laneIndex + 1}`);
-            setMultiplier(1); // Reset multiplier on miss
+            setMultiplier(1); // reset multiplier on miss
         }
 
         // Activate hit zone
@@ -143,14 +143,14 @@ function Gameplay() {
             return newZones;
         });
 
-        // Deactivate hit zone after a short delay
+        // deactivate hit zone after a short delay
         setTimeout(() => {
             setActiveZones(zones => {
                 const newZones = [...zones];
                 newZones[laneIndex] = false;
                 return newZones;
             });
-        }, 100); // Change this value to adjust how long the hit zone stays active
+        }, 100); // value to adjust how long the hit zone stays active
     };
 
     useEffect(() => {

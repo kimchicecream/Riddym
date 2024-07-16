@@ -24,8 +24,56 @@ function SignupFormModal() {
   //   setImageFile(file);
   // };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const newErrors = {};
+
+    if (username.length <= 3) {
+      newErrors.username = "Username must be more than 3 characters";
+    }
+
+    if (!validateEmail(email)) {
+      newErrors.email = "Invalid email address";
+    }
+
+    if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    }
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password field must be the same as the Password field";
+    }
+
+    if (!firstName.trim()) {
+      newErrors.first_name = "First name is required";
+    }
+
+    if (!lastName.trim()) {
+      newErrors.last_name = "Last name is required";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!username.trim()) {
+      newErrors.username = "Username is required";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     const newuser = {
       email,
@@ -55,7 +103,7 @@ function SignupFormModal() {
 
   return (
     <div className="signup-modal-container">
-      <h1>Sign Up</h1>
+      <h1>Join Riddym and Play!</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
         <label>
@@ -64,7 +112,6 @@ function SignupFormModal() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -73,7 +120,6 @@ function SignupFormModal() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -82,7 +128,6 @@ function SignupFormModal() {
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -91,7 +136,6 @@ function SignupFormModal() {
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -100,7 +144,6 @@ function SignupFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             autoComplete="current-password"
           />
         </label>
@@ -110,7 +153,6 @@ function SignupFormModal() {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
             autoComplete="current-password"
           />
         </label>

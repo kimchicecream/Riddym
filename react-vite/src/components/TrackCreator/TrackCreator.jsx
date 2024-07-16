@@ -6,7 +6,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { createNote, editNote, removeNote, clearTrackNotes } from '../../redux/notes';
-import { createTrack, fetchTrackById, editTrack, setTrackNotes } from '../../redux/tracks';
+import { createTrack, setTrackNotes } from '../../redux/tracks';
 // import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
 

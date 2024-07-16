@@ -65,7 +65,7 @@ function LoginFormModal() {
         <label>
           <h4>PASSWORD</h4> {errors.password && <p>{errors.password}</p>}
           <input
-            type="text"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

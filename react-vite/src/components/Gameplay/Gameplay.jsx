@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
 import './Gameplay.css';
@@ -7,7 +7,9 @@ import './Gameplay.css';
 function Gameplay() {
     const { trackId } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const track = useSelector(state => state.tracks.allTracks[trackId]);
+    const sessionUser = useSelector((state) => state.session.user);
     const [fallingNotes, setFallingNotes] = useState([]);
     const [activeZones, setActiveZones] = useState([false, false, false, false, false]);
     const [gameStarted, setGameStarted] = useState(false);
@@ -57,6 +59,14 @@ function Gameplay() {
                 console.error('WaveSurfer error:', e);
             });
         }
+
+        return () => {
+            if (waveSurferRef.current) {
+                waveSurferRef.current.stop();
+                waveSurferRef.current.destroy();
+                waveSurferRef.current = null;
+            }
+        };
     }, [track]);
 
     // the notes & when they start falling
@@ -184,11 +194,20 @@ function Gameplay() {
         };
     }, [gameStarted, fallingNotes, hitNotes, multiplier]);
 
+    const handleBack = async () => {
+        if (!sessionUser) {
+            console.error('Session user is not defined.');
+            return;
+        }
+        navigate(`/session-overview/${sessionUser.username}`);
+    }
+
     return (
         <div className='gameplay'>
                 {!gameStarted && (
                     <div className='start-game-modal'>
-                        <button onClick={handleStartGame}>Start Track</button>
+                        <button className="start-track" onClick={handleStartGame}>Start</button>
+                        <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                     </div>
                 )}
             {/* <audio ref={audioRef} src={track?.song?.audio_url} preload="auto" /> */}

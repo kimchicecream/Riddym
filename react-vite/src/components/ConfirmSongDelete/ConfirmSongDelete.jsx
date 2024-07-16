@@ -3,6 +3,7 @@ import './ConfirmSongDelete.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeSong, fetchSongsByUser } from '../../redux/songs';
 import { useModal } from "../../context/Modal";
+import { fetchTracksByUser } from '../../redux/tracks';
 
 function ConfirmSongDelete({ song }) {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function ConfirmSongDelete({ song }) {
     const handleDelete = async () => {
         await dispatch(removeSong(song.id));
         await dispatch(fetchSongsByUser(userId));
+        await dispatch(fetchTracksByUser(userId));
         closeModal();
     };
 

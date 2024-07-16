@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
@@ -10,6 +10,8 @@ function TrackOverview() {
     const { trackId } = useParams();
     const dispatch = useDispatch();
     const track = useSelector(state => state.tracks.userTracks[trackId]);
+    const sessionUser = useSelector((state) => state.session.user);
+    const navigate = useNavigate();
 
     // fetch the track created
     useEffect(() => {
@@ -36,6 +38,14 @@ function TrackOverview() {
         return <div>Loading track details...</div>;
     }
 
+    const handleRedirect = async () => {
+        if (!sessionUser) {
+            console.error('Session user is not defined.');
+            return;
+        }
+        navigate(`/session-overview/${sessionUser.username}`);
+    }
+
     const { song, notes } = track;
     const noteCount = notes ? Object.keys(notes).length : 0;
 
@@ -54,7 +64,7 @@ function TrackOverview() {
                 </div>
             </div>
             <div className='buttons-container'>
-                <button className='overview-button'>Account Overview</button>
+                <button onClick={handleRedirect} className='overview-button'>Account Overview</button>
                 <OpenModalButton
                     buttonText='Play'
                     modalComponent={<TrackPreviewModal />}

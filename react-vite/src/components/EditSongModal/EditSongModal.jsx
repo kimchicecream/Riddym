@@ -3,6 +3,7 @@ import { editSong, fetchSongsByUser } from '../../redux/songs.js';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal.jsx';
+import { fetchTracksByUser } from '../../redux/tracks';
 
 function EditSongModal({ song }) {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function EditSongModal({ song }) {
             setErrors(result.errors);
         } else {
             await dispatch(fetchSongsByUser(userId));
+            await dispatch(fetchTracksByUser(userId));
             closeModal();
         }
     }

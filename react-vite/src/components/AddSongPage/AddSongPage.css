@@ -198,6 +198,13 @@
     color: black;
     justify-content: space-between;
     align-items: center;
+
+    transition: 0.3s ease;
+}
+
+.add-song-page .add-song-section h1:hover {
+    background-color: rgba(127, 255, 212, 0.481);
+    color: aquamarine;
 }
 
 .add-song-page .file button {
@@ -238,6 +245,13 @@
     color: black;
     justify-content: space-between;
     align-items: center;
+
+    transition: 0.3s ease;
+}
+
+.add-song-page .pick-song-section h1:hover {
+    background-color: rgba(127, 255, 212, 0.481);
+    color: aquamarine;
 }
 
 .add-song-page .all-songs-container {

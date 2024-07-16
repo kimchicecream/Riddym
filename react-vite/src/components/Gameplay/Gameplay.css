@@ -114,17 +114,24 @@
     justify-content: center;
     height: 100%;
     width: 100%;
+
+    /* border: 2px solid red; */
 }
 
 .gameplay .center .track-lanes .lanes {
-    width: 70px;
+    width: 100%;
     border-right: 2px solid rgba(128, 128, 128, 0.436);
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .gameplay .center .track-lanes .lanes:first-child {
     border-left: 2px solid rgba(128, 128, 128, 0.436);
+}
+
+.gameplay .center .track-lanes .lanes:nth-child(2) {
+    border-right: 2px solid rgba(128, 128, 128, 0.613);
 }
 
 /* .note {
@@ -162,7 +169,7 @@
 }
 
 .gameplay .note.missed {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.604);
 }
 
 
@@ -202,15 +209,14 @@
     color: aquamarine;
 }
 
-/*
 .gameplay .center .track-lanes .falling-line {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: gray;
-    animation: fall-line 4s linear infinite;
+    background-color: rgba(128, 128, 128, 0.455);
+    animation: fall-line 1s linear infinite;
 }
 
 @keyframes fall-line {
@@ -220,4 +226,4 @@
     100% {
         top: 100%;
     }
-} */
+}

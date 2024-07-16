@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
+import { thunkAuthenticate } from '../../redux/session';
 import './Gameplay.css';
 
 function Gameplay() {
@@ -42,6 +43,12 @@ function Gameplay() {
             dispatch(fetchTrackById(trackId));
         }
     }, [dispatch, trackId]);
+
+    useEffect(() => {
+        if (!sessionUser) {
+            dispatch(thunkAuthenticate());
+        }
+    }, [dispatch, sessionUser]);
 
     // the song
     useEffect(() => {
@@ -223,7 +230,6 @@ function Gameplay() {
             </div>
             <div className='center'>
                 <div className='track-lanes'>
-                    {/* <div className='falling-line'></div> */}
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
                             {fallingNotes.filter(note => note.lane === laneIndex + 1).map(note => (
@@ -237,6 +243,7 @@ function Gameplay() {
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}
+                    <div className='falling-line'></div>
                 </div>
             </div>
             <div className='right'>

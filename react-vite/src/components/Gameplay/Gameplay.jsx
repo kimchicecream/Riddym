@@ -202,23 +202,28 @@ function Gameplay() {
         navigate(`/session-overview/${sessionUser.username}`);
     }
 
+    const handleEnd = async () => {
+        navigate(`/session-overview/${sessionUser.username}`);
+    }
+
     return (
         <div className='gameplay'>
                 {!gameStarted && (
                     <div className='start-game-modal'>
-                        <button className="start-track" onClick={handleStartGame}>Start</button>
+                        <button className="start-track" onClick={handleStartGame}>Start Track</button>
                         <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                     </div>
                 )}
             {/* <audio ref={audioRef} src={track?.song?.audio_url} preload="auto" /> */}
             <div className='left'>
-                <i className="fa-solid fa-chevron-left"></i>
+                <i onClick={handleEnd} className="fa-solid fa-chevron-left"></i>
                 <div className='multiplier'>
                     Multiplier: x{multiplier}
                 </div>
             </div>
             <div className='center'>
                 <div className='track-lanes'>
+                    {/* <div className='falling-line'></div> */}
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
                             {fallingNotes.filter(note => note.lane === laneIndex + 1).map(note => (

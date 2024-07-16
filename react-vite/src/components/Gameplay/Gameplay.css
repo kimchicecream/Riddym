@@ -36,6 +36,7 @@
 
 .gameplay .start-game-modal .start-track:hover {
     background-color: white;
+    box-shadow: 0px -1px 69px -1px rgba(255, 255, 255, 0.652);
 }
 
 .gameplay .start-game-modal .back {
@@ -61,19 +62,49 @@
     cursor: pointer;
 }
 
+.gameplay .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+}
+
+.gameplay .left i {
+    font-size: 30px;
+    /* background-color: gray; */
+    height: 50px;
+    width: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    transition: 0.3s ease;
+}
+
+.gameplay .left i:hover {
+    background-color: rgba(128, 128, 128, 0.288);
+}
+
+.gameplay .right {
+    display: flex;
+    padding: 20px;
+}
+
 .gameplay .left,
 .gameplay .center,
 .gameplay .right {
     flex: 1;
     height: 100%;
-    border: 2px solid red;
 }
 
 .gameplay .center {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgb(0, 4, 255);
+    /* border: 2px solid rgb(0, 4, 255); */
     position: relative;
 }
 
@@ -87,9 +118,13 @@
 
 .gameplay .center .track-lanes .lanes {
     width: 70px;
-    border: 2px solid red;
+    border-right: 2px solid rgba(128, 128, 128, 0.436);
     position: relative;
     overflow: hidden;
+}
+
+.gameplay .center .track-lanes .lanes:first-child {
+    border-left: 2px solid rgba(128, 128, 128, 0.436);
 }
 
 /* .note {
@@ -104,7 +139,7 @@
 .gameplay .note {
     width: 100%;
     height: 30px;
-    background-color: yellow;
+    background-color: aquamarine;
     position: absolute;
     top: -30px;
 }
@@ -114,10 +149,12 @@
     bottom: 0;
     width: 100%;
     height: 30px;
-    border-top: 2px solid green;
-    background-color: rgba(0, 255, 0, 0.2);
+    border-top: 2px solid rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.2);
 
     margin-bottom: 40px;
+
+    /* transition: 0.1s ease; */
 }
 
 .gameplay .note.hit {
@@ -130,7 +167,9 @@
 
 
 .hit-zone.active {
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: rgba(127, 255, 212, 0.419);
+    box-shadow: 0px -30px 69px -1px rgba(127, 255, 212, 0.682);
+
 }
 
 @keyframes fall {
@@ -162,3 +201,23 @@
 
     color: aquamarine;
 }
+
+/*
+.gameplay .center .track-lanes .falling-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: gray;
+    animation: fall-line 4s linear infinite;
+}
+
+@keyframes fall-line {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 100%;
+    }
+} */

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTracksByUser } from '../../redux/tracks';
 import { fetchSongsByUser } from '../../redux/songs';
@@ -16,6 +16,7 @@ function SessionOverview() {
     const songs = useSelector(state => state.songs.userSongs);
     const tracks = useSelector(state => state.tracks.userTracks);
     const userId = useSelector(state => state.session.user.id);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         if (userId) {
@@ -24,7 +25,21 @@ function SessionOverview() {
         }
     }, [dispatch, userId]);
 
-    // testing
+    useEffect(() => {
+        const spans = containerRef.current.querySelectorAll('.scrolling-text');
+        const applyScrollClass = () => {
+            spans.forEach(span => {
+                if (span.scrollWidth > span.clientWidth) {
+                    span.classList.add('scroll');
+                } else {
+                    span.classList.remove('scroll');
+                }
+            });
+        };
+
+        // Apply the scroll class after rendering
+        applyScrollClass();
+    }, [songs, tracks]);
 
     const formatDuration = (duration) => {
         const roundedDuration = Math.floor(duration);
@@ -38,7 +53,7 @@ function SessionOverview() {
     };
 
     return (
-        <div className='session-overview-page'>
+        <div className='session-overview-page' ref={containerRef}>
             <h1>Welcome, {username}</h1>
             <div className='song-tracks'>
                 <div className='your-songs'>
@@ -53,8 +68,8 @@ function SessionOverview() {
                                 <div className='song-info'>
                                     <img src={song.image_url} />
                                     <div className='song-details'>
-                                        <h4>{song.song_name}</h4>
-                                        <p>{song.artist_name}</p>
+                                        <h4><span className='scrolling-text'>{song.song_name}</span></h4>
+                                        <p><span className='scrolling-text'>{song.artist_name}</span></p>
                                         <p>{formatDuration(song.duration)}</p>
                                     </div>
                                 </div>
@@ -86,7 +101,7 @@ function SessionOverview() {
                                             <img src={track.song?.image_url} alt={track.song?.song_name} />
                                         </div>
                                         <div className='track-details'>
-                                            <h4>{track.song?.song_name}</h4>
+                                            <h4><span className='scrolling-text'>{track.song?.song_name}</span></h4>
                                             <p>{formatDuration(track.duration)}</p>
                                             <p>{Object.values(track.notes).length} {Object.values(track.notes).length === 1 ? 'note' : 'notes'}</p>
                                         </div>

@@ -26,6 +26,12 @@
 
 .session-overview-page .your-songs h4 {
     overflow-x: auto;
+    width: 120px;
+}
+
+.session-overview-page .your-songs p {
+    overflow-x: auto;
+    width: 120px;
 }
 
 .session-overview-page .your-songs .song-card-container {
@@ -50,7 +56,11 @@
     align-items: center;
 }
 
-.session-overview-page .your-songs .song-card-container::-webkit-scrollbar {
+.session-overview-page .your-songs .song-card-container::-webkit-scrollbar,
+.song-card h4::-webkit-scrollbar,
+.song-card p::-webkit-scrollbar,
+.track-card h4::-webkit-scrollbar,
+.track-card p::-webkit-scrollbar {
     display: none;
 }
 
@@ -64,9 +74,13 @@
     background-color: black;
     border-radius: 10px;
 
+    width: 140px;
+
     /* border: 1px solid red; */
 
     position: relative;
+
+    overflow: hidden;
 }
 
 .session-overview-page .song-card .buttons {
@@ -150,10 +164,17 @@
     padding: 5px 10px;
     background-color: aquamarine;
     color: black;
+    width: 250px;
 
     border-radius: 10px;
 
     transition: 0.3s ease;
+}
+
+.session-overview-page .track-card-container .track-card h4 {
+    width: 100px;
+    overflow-x: auto;
+    text-wrap: nowrap;
 }
 
 .session-overview-page .track-card-container .track-card .track-image {
@@ -231,4 +252,31 @@
 .session-overview-page .add-song-button:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+
+/* Define the keyframes for the scrolling animation */
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Apply the scrolling animation to the span elements when the class 'scroll' is added */
+.scroll {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll 10s linear infinite; /* Adjust the duration as needed */
+    position: relative;
+    will-change: transform;
+}
+
+/* Ensure the parent elements hide the overflow */
+.session-overview-page .song-details,
+.session-overview-page .track-details {
+    overflow-x: auto;
+    width: 120px; /* Adjust the width as needed */
 }

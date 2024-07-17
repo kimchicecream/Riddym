@@ -16,7 +16,6 @@ function SessionOverview() {
     const songs = useSelector(state => state.songs.userSongs);
     const tracks = useSelector(state => state.tracks.userTracks);
     const userId = useSelector(state => state.session.user.id);
-    const containerRef = useRef(null);
 
     useEffect(() => {
         if (userId) {
@@ -24,22 +23,6 @@ function SessionOverview() {
           dispatch(fetchSongsByUser(userId));
         }
     }, [dispatch, userId]);
-
-    useEffect(() => {
-        const spans = containerRef.current.querySelectorAll('.scrolling-text');
-        const applyScrollClass = () => {
-            spans.forEach(span => {
-                if (span.scrollWidth > span.clientWidth) {
-                    span.classList.add('scroll');
-                } else {
-                    span.classList.remove('scroll');
-                }
-            });
-        };
-
-        // Apply the scroll class after rendering
-        applyScrollClass();
-    }, [songs, tracks]);
 
     const formatDuration = (duration) => {
         const roundedDuration = Math.floor(duration);
@@ -53,7 +36,7 @@ function SessionOverview() {
     };
 
     return (
-        <div className='session-overview-page' ref={containerRef}>
+        <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>
             <div className='song-tracks'>
                 <div className='your-songs'>
@@ -63,13 +46,13 @@ function SessionOverview() {
                             <i className="fa-solid fa-plus"></i>
                             <span className='tooltip'>Add a new song</span>
                         </div>
-                        {Object.values(songs).map(song => (
+                        {Object.values(songs).reverse().map(song => (
                             <div className='song-card' key={song.id}>
                                 <div className='song-info'>
                                     <img src={song.image_url} />
                                     <div className='song-details'>
-                                        <h4><span className='scrolling-text'>{song.song_name}</span></h4>
-                                        <p><span className='scrolling-text'>{song.artist_name}</span></p>
+                                        <h4><span>{song.song_name}</span></h4>
+                                        <p><span>{song.artist_name}</span></p>
                                         <p>{formatDuration(song.duration)}</p>
                                     </div>
                                 </div>
@@ -92,7 +75,11 @@ function SessionOverview() {
                 <div className='your-tracks'>
                     <h3>Your Tracks</h3>
                     <div className='track-card-container'>
-                        {Object.values(tracks).map(track => (
+                        <div className='add-song-button' onClick={handleAddSongClick}>
+                            <i className="fa-solid fa-plus"></i>
+                            <span className='tooltip'>Make a new track</span>
+                        </div>
+                        {Object.values(tracks).reverse().map(track => (
                             <OpenModalButton
                                 key={track.id}
                                 buttonText={
@@ -101,7 +88,7 @@ function SessionOverview() {
                                             <img src={track.song?.image_url} alt={track.song?.song_name} />
                                         </div>
                                         <div className='track-details'>
-                                            <h4><span className='scrolling-text'>{track.song?.song_name}</span></h4>
+                                            <h4><span>{track.song?.song_name}</span></h4>
                                             <p>{formatDuration(track.duration)}</p>
                                             <p>{Object.values(track.notes).length} {Object.values(track.notes).length === 1 ? 'note' : 'notes'}</p>
                                         </div>

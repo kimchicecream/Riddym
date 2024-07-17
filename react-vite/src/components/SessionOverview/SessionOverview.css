@@ -38,6 +38,7 @@
     display: flex;
 
     width: 100vw;
+    height: 254px;
 
     gap: 10px;
 
@@ -57,6 +58,7 @@
 }
 
 .session-overview-page .your-songs .song-card-container::-webkit-scrollbar,
+.session-overview-page .your-tracks .track-card-container::-webkit-scrollbar,
 .song-card h4::-webkit-scrollbar,
 .song-card p::-webkit-scrollbar,
 .track-card h4::-webkit-scrollbar,
@@ -144,15 +146,31 @@
 }
 
 .session-overview-page .track-open-modal .track-card:hover {
-    background-color: rgba(127, 255, 212, 0.702);
+    background-color: aquamarine;
+    color: black;
 }
 
 .session-overview-page .your-tracks .track-card-container {
     display: flex;
 
-    gap: 20px;
+    width: 100vw;
+    height: 172px;
 
-    overflow-y: auto;
+    gap: 10px;
+
+    overflow-x: auto;
+
+    position: relative;
+    right: 0;
+
+    padding: 20px;
+    padding-right: 150px;
+    background-color: rgb(35, 43, 45);
+    border-radius: 10px;
+
+    border: 1px solid aquamarine;
+
+    align-items: center;
 }
 
 .session-overview-page .track-card-container .track-card {
@@ -161,9 +179,9 @@
     align-items: center;
     gap: 10px;
 
-    padding: 5px 10px;
-    background-color: aquamarine;
-    color: black;
+    padding: 10px 10px;
+    background-color: rgba(0, 0, 0, 0.672);
+    color: rgb(255, 255, 255);
     width: 250px;
 
     border-radius: 10px;
@@ -186,6 +204,7 @@
 .session-overview-page .your-tracks img {
     height: 120px;
     width: 120px;
+    border-radius: 10px;
 }
 
 
@@ -228,7 +247,7 @@
     color: black;
     text-align: center;
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px 5px;
     position: absolute;
     bottom: 125%; /* position above the button */
     left: 50%;
@@ -236,6 +255,7 @@
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 1;
+    line-height: 0.9;
 }
 
 .session-overview-page .add-song-button .tooltip::after {
@@ -252,31 +272,4 @@
 .session-overview-page .add-song-button:hover .tooltip {
     visibility: visible;
     opacity: 1;
-}
-
-
-/* Define the keyframes for the scrolling animation */
-@keyframes scroll {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-/* Apply the scrolling animation to the span elements when the class 'scroll' is added */
-.scroll {
-    display: inline-block;
-    white-space: nowrap;
-    animation: scroll 10s linear infinite; /* Adjust the duration as needed */
-    position: relative;
-    will-change: transform;
-}
-
-/* Ensure the parent elements hide the overflow */
-.session-overview-page .song-details,
-.session-overview-page .track-details {
-    overflow-x: auto;
-    width: 120px; /* Adjust the width as needed */
 }

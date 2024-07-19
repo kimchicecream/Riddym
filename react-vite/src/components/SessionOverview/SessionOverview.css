@@ -92,7 +92,7 @@
     justify-content: center;
     position: absolute;
     top: 50%;
-    right: 0px; /* Start the buttons off-screen */
+    right: 0px;
     transform: translateY(-50%);
     transition: opacity 0.3s ease-in-out, right 0.3s ease-in-out;
 
@@ -101,7 +101,7 @@
 
 .session-overview-page .song-card:hover .buttons {
     opacity: 1;
-    right: 10px; /* Move the buttons into view */
+    right: 10px;
 }
 
 .session-overview-page .song-card .buttons button {

@@ -123,17 +123,25 @@
 .session-overview-page .song-card .buttons .edit-button {
     background-color: rgb(71, 103, 93);
 
-    border-top-right-radius: 5px;
+    border-radius: 5px;
+
+    border: 1px solid aquamarine;
 }
 
 .session-overview-page .song-card .buttons .edit-button:hover {
-    background-color: rgb(104, 179, 155);
+    background-color: rgb(139, 238, 206);
+    color: black;
 }
 
 .session-overview-page .song-card .buttons .delete-button {
     background-color: rgb(255, 87, 87);
 
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid red;
+}
+
+.session-overview-page .song-card .buttons .delete-button:hover {
+    background-color: red;
 }
 
 .session-overview-page .song-card .song-details {

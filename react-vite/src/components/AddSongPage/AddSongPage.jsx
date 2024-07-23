@@ -12,6 +12,7 @@ function AddSongPage() {
     const [imageFile, setImageFile] = useState(null);
     const [artistName, setArtistName] = useState('');
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const sessionUser = useSelector(state => state.session.user);
@@ -64,6 +65,7 @@ function AddSongPage() {
 
     const handleSubmit = async (e, navigateToTrackCreator = true) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const validationErrors = {};
 
@@ -80,6 +82,7 @@ function AddSongPage() {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             console.log('Validation errors:', validationErrors);
+            setIsLoading(false);
             return;
         }
 
@@ -94,6 +97,8 @@ function AddSongPage() {
         // const result = await dispatch(createSong(formData));
 
         const result = await dispatch(createSong(formData));
+
+        setIsLoading(false);
 
         if (result.errors) {
             console.error('Errors:', result.errors);
@@ -140,6 +145,13 @@ function AddSongPage() {
 
     return (
         <div className='add-song-page'>
+            {isLoading && (
+                <div className="loader">
+                    <span className="bar"></span>
+                    <span className="bar"></span>
+                    <span className="bar"></span>
+                </div>
+            )}
             <div className='add-song-section'>
                 <h1 onClick={toggleFormVisibility}>Add a new song <i className="fa-solid fa-angle-down"></i></h1>
                 {isFormVisible && (

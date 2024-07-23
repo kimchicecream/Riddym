@@ -283,6 +283,8 @@
     border: 2px solid rgb(70, 127, 108);
 
     border-radius: 10px;
+
+    overflow: hidden;
 }
 
 .add-song-page .all-songs-container .song-card:hover {
@@ -299,8 +301,18 @@
     object-fit: cover;
 }
 
+.add-song-page .all-songs-container .song-card .song-details h4 {
+    width: 111px;
+    overflow-x: scroll;
+
+    text-wrap: nowrap;
+}
+
 .add-song-page .all-songs-container .song-card .song-details p {
     color: white;
+    width: 111px;
+    overflow-x: scroll;
+    text-wrap: nowrap;
 }
 
 .add-song-page .all-songs-container .song-card.selected {

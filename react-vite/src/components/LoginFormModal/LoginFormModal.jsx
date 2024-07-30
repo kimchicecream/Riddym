@@ -16,6 +16,13 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  useEffect(() => {
+    if (currentUser) {
+      navigate(`/session-overview/${currentUser.username}`);
+      closeModal();
+    }
+  }, [currentUser, navigate, closeModal]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,12 +35,6 @@ function LoginFormModal() {
 
     if (serverResponse) {
       setErrors(serverResponse);
-    } else {
-      closeModal();
-
-      if (currentUser) {
-        navigate(`/session-overview/${currentUser.username}`);
-      }
     }
   };
 
@@ -44,9 +45,6 @@ function LoginFormModal() {
         password: "password",
       })
     );
-
-    closeModal();
-    navigate(`/session-overview/${sessionUser.username}`);
   };
 
   return (

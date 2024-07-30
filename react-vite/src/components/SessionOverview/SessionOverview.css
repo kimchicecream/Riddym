@@ -77,6 +77,7 @@
     border-radius: 10px;
 
     width: 140px;
+    height: 212px;
     flex-shrink: 0;
 
     /* border: 1px solid red; */
@@ -147,6 +148,18 @@
 
 .session-overview-page .song-card .song-details {
     margin-top: 10px;
+}
+
+.session-overview-page .song-card .song-details h4 span {
+    width: 120px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.session-overview-page .song-card .song-details p span {
+    width: 120px;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .session-overview-page .track-open-modal {

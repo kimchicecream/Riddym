@@ -61,7 +61,7 @@ function Navigation() {
                   className="login-button"
               />
               <OpenModalButton
-                  buttonText="Sign Up"
+                  buttonText="Play Now"
                   modalComponent={<SignupFormModal />}
                   className="signup-button"
               />

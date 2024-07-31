@@ -14,12 +14,15 @@ function Gameplay() {
     const [fallingNotes, setFallingNotes] = useState([]);
     const [activeZones, setActiveZones] = useState([false, false, false, false, false]);
     const [gameStarted, setGameStarted] = useState(false);
+    const [gameEnded, setGameEnded] = useState(false);
     const [hitNotes, setHitNotes] = useState(new Set());
     const [score, setScore] = useState(0);
     const [multiplier, setMultiplier] = useState(1);
     const [missedNotes, setMissedNotes] = useState(new Set());
+    const [processedNotes, setProcessedNotes] = useState(0);
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
+    // const lastNoteRef = useRef(false);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -105,19 +108,53 @@ function Gameplay() {
                 position: (elapsedTime - note.time) * 100
             }));
 
-            const hitZoneBottom = HIT_ZONE_POSITION;
+            const hitZoneBottom = HIT_ZONE_POSITION + HIT_ZONE_HEIGHT;
+
             updatedNotes.forEach(note => {
-                if (note.position > hitZoneBottom + HIT_ZONE_HEIGHT && !hitNotes.has(note.uniqueId) && !missedNotes.has(note.uniqueId)) {
-                    setMissedNotes(prevMissedNotes => new Set(prevMissedNotes).add(note.uniqueId));
+                if (note.position > hitZoneBottom && !hitNotes.has(note.uniqueId) && !missedNotes.has(note.uniqueId)) {
+                    setMissedNotes(prevMissedNotes => {
+                        const newMissedNotes = new Set(prevMissedNotes);
+                        newMissedNotes.add(note.uniqueId);
+                        return newMissedNotes;
+                    });
+                    setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
+                    console.log(`Note missed: ${note.uniqueId}`);
                 }
             });
 
-            return updatedNotes;
+            if (updatedNotes.length === 1 && updatedNotes[0].position > 100) {
+                setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
+                console.log('Last note processed. Ending game.');
+                endGame();
+            }
+
+            return updatedNotes.filter(note => note.position <= 100);
         });
 
         if (gameStarted) {
             requestAnimationFrame(updateNotesPosition);
         }
+    };
+
+    useEffect(() => {
+        const totalNotes = Object.values(track?.notes || {}).length;
+        if (processedNotes === totalNotes && gameStarted) {
+            console.log('All notes processed. Ending game.');
+            endGame();
+        }
+    }, [processedNotes, gameStarted, track?.notes]);
+
+    const endGame = () => {
+        console.log('Triggering endGame');
+        setTimeout(() => {
+            if (waveSurferRef.current) {
+                fadeOutAudio(waveSurferRef.current, 2000); // 2 seconds fade out
+            }
+            setTimeout(() => {
+                setGameEnded(true);
+                console.log('Game ended');
+            }, 2000); // show game over overlay after the fade-out
+        }, 1000); // delay of 1 second before starting the fade-out
     };
 
     const handleStartGame = async () => {
@@ -139,9 +176,14 @@ function Gameplay() {
         );
 
         if (hitNote) {
-            setHitNotes(prevHitNotes => new Set(prevHitNotes).add(hitNote.uniqueId));
+            setHitNotes(prevHitNotes => {
+                const newHitNotes = new Set(prevHitNotes);
+                newHitNotes.add(hitNote.uniqueId);
+                return newHitNotes;
+            });
             setScore(prevScore => prevScore + 300 * multiplier);
             setMultiplier(prevMultiplier => prevMultiplier + 1);
+            setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
             console.log(`Hit note in lane ${laneIndex + 1}`);
             setFallingNotes(prevNotes => {
                 const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
@@ -149,7 +191,7 @@ function Gameplay() {
                 return updatedNotes;
             });
         } else {
-            console.log(`Missed note in lane ${laneIndex + 1}`);
+            console.log(`Lane key pressed at ${laneIndex + 1}`);
             setMultiplier(1); // reset multiplier on miss
         }
 
@@ -201,6 +243,23 @@ function Gameplay() {
         };
     }, [gameStarted, fallingNotes, hitNotes, multiplier]);
 
+    // useEffect to end game properly
+    const fadeOutAudio = (waveSurfer, duration = 2000) => {
+        const fadeOutInterval = 50;
+        const steps = duration / fadeOutInterval;
+        const volumeStep = waveSurfer.getVolume() / steps;
+
+        const fadeAudio = setInterval(() => {
+            const currentVolume = waveSurfer.getVolume();
+            if (currentVolume <= volumeStep) {
+                clearInterval(fadeAudio);
+                waveSurfer.setVolume(0);
+            } else {
+                waveSurfer.setVolume(currentVolume - volumeStep);
+            }
+        }, fadeOutInterval);
+    };
+
     const handleBack = async () => {
         if (!sessionUser) {
             console.error('Session user is not defined.');
@@ -215,10 +274,19 @@ function Gameplay() {
 
     return (
         <div className='gameplay'>
-                {!gameStarted && (
+                {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>
                         <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
+                    </div>
+                )}
+                {gameEnded && (
+                    <div className='end-game-modal'>
+                        <div className='container'>
+                            <h1>Game Over</h1>
+                            <p>Your Score: {score}</p>
+                            <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
+                        </div>
                     </div>
                 )}
             {/* <audio ref={audioRef} src={track?.song?.audio_url} preload="auto" /> */}

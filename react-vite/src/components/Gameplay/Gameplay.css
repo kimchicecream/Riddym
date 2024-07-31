@@ -56,7 +56,7 @@
 }
 
 .gameplay .start-game-modal .back:hover {
-    background-color: rgba(128, 128, 128, 0.497);
+    background-color: rgba(255, 255, 255, 0.134);
     color: aquamarine;
 
     cursor: pointer;
@@ -226,4 +226,33 @@
     100% {
         top: 100%;
     }
+}
+
+/* ------- GAME OVER SCREEN -------- */
+.end-game-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    gap: 30px;
+
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    backdrop-filter: blur(5px);
+}
+
+.end-game-modal .container {
+    background-color: rgb(23, 46, 38);
+}
+
+.end-game-modal .container h1 {
+    padding: 10px;
+
+    background-color: aquamarine;
 }

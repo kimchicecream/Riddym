@@ -15,6 +15,7 @@ function Gameplay() {
     const [activeZones, setActiveZones] = useState([false, false, false, false, false]);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameEnded, setGameEnded] = useState(false);
+    const [gameEnding, setGameEnding] = useState(false);
     const [hitNotes, setHitNotes] = useState(new Set());
     const [score, setScore] = useState(0);
     const [multiplier, setMultiplier] = useState(1);
@@ -22,7 +23,7 @@ function Gameplay() {
     const [processedNotes, setProcessedNotes] = useState(0);
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
-    // const lastNoteRef = useRef(false);
+    const lastNoteRef = useRef(false);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -84,16 +85,25 @@ function Gameplay() {
         if (gameStarted && track && track.notes) {
             const startTime = Date.now();
             startTimeRef.current = startTime + 1070;
-            setFallingNotes(Object.values(track.notes).map(note => ({
+            const notes = Object.values(track.notes).map(note => ({
                 ...note,
                 uniqueId: `${note.id}-${Date.now()}-${Math.random()}`
-            })));
-            console.log("Falling notes initialized:", Object.values(track.notes));
+            }));
+            setFallingNotes(notes);
+            console.log("Falling notes initialized:", notes);
+
+            // Identify the last note
+            const lastNote = notes.reduce((prev, current) => (prev.time > current.time) ? prev : current);
+            lastNoteRef.current = lastNote;
+            console.log("Last note identified:", lastNote);
+
             requestAnimationFrame(updateNotesPosition);
         }
     }, [gameStarted, track]);
 
     const updateNotesPosition = () => {
+        if (gameEnding) return;
+
         const currentTime = Date.now();
         const elapsedTime = (currentTime - startTimeRef.current) / 1000; // in seconds
 
@@ -117,14 +127,13 @@ function Gameplay() {
                         newMissedNotes.add(note.uniqueId);
                         return newMissedNotes;
                     });
-                    setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
                     console.log(`Note missed: ${note.uniqueId}`);
                 }
             });
 
-            if (updatedNotes.length === 1 && updatedNotes[0].position > 100) {
-                setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
+            if (!gameEnding && (updatedNotes.length === 0 || (updatedNotes[0].uniqueId === lastNoteRef.current.uniqueId && updatedNotes[0].position > 100))) {
                 console.log('Last note processed. Ending game.');
+                setGameEnding(true);
                 endGame();
             }
 
@@ -136,16 +145,18 @@ function Gameplay() {
         }
     };
 
-    useEffect(() => {
-        const totalNotes = Object.values(track?.notes || {}).length;
-        if (processedNotes === totalNotes && gameStarted) {
-            console.log('All notes processed. Ending game.');
-            endGame();
-        }
-    }, [processedNotes, gameStarted, track?.notes]);
+    // useEffect(() => {
+    //     const totalNotes = Object.values(track?.notes || {}).length;
+    //     if (processedNotes === totalNotes && gameStarted) {
+    //         console.log('All notes processed. Ending game.');
+    //         endGame();
+    //     }
+    // }, [processedNotes, gameStarted, track?.notes]);
 
     const endGame = () => {
+        if (gameEnding) return; // Prevent multiple calls
         console.log('Triggering endGame');
+        setGameEnding(true);
         setTimeout(() => {
             if (waveSurferRef.current) {
                 fadeOutAudio(waveSurferRef.current, 2000); // 2 seconds fade out
@@ -154,7 +165,7 @@ function Gameplay() {
                 setGameEnded(true);
                 console.log('Game ended');
             }, 2000); // show game over overlay after the fade-out
-        }, 1000); // delay of 1 second before starting the fade-out
+        }, 2000); // delay before starting the fade-out
     };
 
     const handleStartGame = async () => {
@@ -183,7 +194,6 @@ function Gameplay() {
             });
             setScore(prevScore => prevScore + 300 * multiplier);
             setMultiplier(prevMultiplier => prevMultiplier + 1);
-            setProcessedNotes(prevProcessedNotes => prevProcessedNotes + 1);
             console.log(`Hit note in lane ${laneIndex + 1}`);
             setFallingNotes(prevNotes => {
                 const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);

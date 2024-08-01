@@ -25,6 +25,7 @@ function Gameplay() {
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
     const lastNoteRef = useRef(false);
+    const [displayedScore, setDisplayedScore] = useState(0);
 
     const [currentStreak, setCurrentStreak] = useState(0);
     const [longestStreak, setLongestStreak] = useState(0);
@@ -178,6 +179,25 @@ function Gameplay() {
     //     }
     // }, [processedNotes, gameStarted, track?.notes]);
 
+    const animateScore = () => {
+        let start = 0;
+        const duration = 1000;
+        const startTime = performance.now();
+
+        const step = (currentTime) => {
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            const newDisplayedScore = Math.floor(progress * score);
+            console.log('Animating score:', newDisplayedScore);
+            setDisplayedScore(newDisplayedScore);
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            }
+        };
+
+        requestAnimationFrame(step);
+    };
+
     const endGame = () => {
         if (gameEnding) return; // prevent multiple calls (doesnt work)
         console.log('Triggering endGame');
@@ -187,11 +207,18 @@ function Gameplay() {
                 fadeOutAudio(waveSurferRef.current, 2000); // 2 seconds fade out
             }
             setTimeout(() => {
+                console.log('Game ended, score:', score); // Log the score
                 setGameEnded(true);
-                console.log('Game ended');
+                // animateScore();
             }, 2000); // show game over overlay after the fade-out
         }, 2000); // delay before starting the fade-out
     };
+
+    useEffect(() => {
+        if (gameEnded) {
+            animateScore();
+        }
+    }, [gameEnded, score]);
 
     const handleStartGame = async () => {
         setGameStarted(true);
@@ -334,7 +361,7 @@ function Gameplay() {
                         <div className='container'>
                             <h1>Game Over</h1>
                             <div className='score'>
-                                <h2>{score}</h2>
+                                <h2>{displayedScore}</h2>
                             </div>
                             <div className='hit'>
                                 <p>Notes Hit</p> <p>{hitNotes.size} / {totalNotes}</p>

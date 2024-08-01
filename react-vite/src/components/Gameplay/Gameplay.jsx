@@ -348,6 +348,10 @@ function Gameplay() {
         navigate(`/session-overview/${sessionUser.username}`);
     }
 
+    const handlePlayAgain = () => {
+        window.location.reload();
+    };
+
     return (
         <div className='gameplay'>
                 {!gameStarted && !gameEnded && (
@@ -371,7 +375,7 @@ function Gameplay() {
                             <div className='new-highscore'></div>
                             <div className='statistics'>
                                 <div className='hit stat'>
-                                    <p>Notes Hit</p> <p>{hitNotes.size} / {totalNotes}</p>
+                                    <p>Notes Hit</p> <p>{hitNotes.size}/{totalNotes}</p>
                                 </div>
                                 <div className='missed stat'>
                                 <p>Notes Missed</p> <p>{totalNotes - hitNotes.size}</p>
@@ -383,6 +387,7 @@ function Gameplay() {
                                     <p>Highest Multiplier</p> <p>x{highestMultiplier}</p>
                                 </div>
                             </div>
+                            <button className="play-again" onClick={handlePlayAgain}>Play Again</button>
                             <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                         </div>
                     </div>

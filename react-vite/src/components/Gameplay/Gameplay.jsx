@@ -363,17 +363,25 @@ function Gameplay() {
                             <div className='score'>
                                 <h2>{displayedScore}</h2>
                             </div>
-                            <div className='hit'>
-                                <p>Notes Hit</p> <p>{hitNotes.size} / {totalNotes}</p>
-                            </div>
-                            <div className='missed'>
-                            <p>Notes Missed</p> <p>{totalNotes - hitNotes.size}</p>
-                            </div>
-                            <div className='streak'>
-                                <p>Longest Streak</p> <p>{longestStreak}</p>
-                            </div>
-                            <div className='highest-multi'>
-                                <p>Highest Multiplier</p> <p>x{highestMultiplier}</p>
+                            {hitNotes.size === totalNotes && totalNotes > 0 && (
+                                <div className='perfect-score'>
+                                    <p>Perfect Score</p>
+                                </div>
+                            )}
+                            <div className='new-highscore'></div>
+                            <div className='statistics'>
+                                <div className='hit stat'>
+                                    <p>Notes Hit</p> <p>{hitNotes.size} / {totalNotes}</p>
+                                </div>
+                                <div className='missed stat'>
+                                <p>Notes Missed</p> <p>{totalNotes - hitNotes.size}</p>
+                                </div>
+                                <div className='streak stat'>
+                                    <p>Longest Streak</p> <p>{longestStreak}</p>
+                                </div>
+                                <div className='highest-multi stat'>
+                                    <p>Highest Multiplier</p> <p>x{highestMultiplier}</p>
+                                </div>
                             </div>
                             <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                         </div>

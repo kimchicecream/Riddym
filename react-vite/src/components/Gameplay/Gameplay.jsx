@@ -217,7 +217,7 @@ function Gameplay() {
                 newHitNotes.add(hitNote.uniqueId);
                 return newHitNotes;
             });
-            setScore(prevScore => prevScore + 300 * multiplier);
+            setScore(prevScore => prevScore + 150 * multiplier);
             setMultiplier(prevMultiplier => {
                 const newMultiplier = prevMultiplier + 1;
                 if (newMultiplier > highestMultiplier) {

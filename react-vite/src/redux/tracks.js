@@ -48,21 +48,29 @@ export const setTrackNotes = (notes) => ({
 
 // Get all tracks thunk
 export const fetchTracks = () => async dispatch => {
-  const response = await fetch('/api/tracks/all');
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+    try {
+        console.log("Fetching tracks..."); // Log start of fetch
+        const response = await fetch('/api/tracks/all');
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Error fetching tracks:", errorData); // Log any errors
+            return { errors: errorData.errors || errorData };
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data); // Log fetched data
 
-  const objectData = data.reduce((acc, track) => {
-      acc[track.id] = track;
-      return acc;
-  }, {});
+        const objectData = data.reduce((acc, track) => {
+            acc[track.id] = track;
+            return acc;
+        }, {});
+        console.log("Formatted object data:", objectData); // Log formatted data
 
-  dispatch(getAllTracks(objectData));
-  return data;
-};
+        dispatch(getAllTracks(objectData));
+        return data;
+    } catch (error) {
+        console.error("Failed to fetch tracks:", error);
+    }
+  };
 
 // Get all tracks by user thunk
 export const fetchTracksByUser = userId => async dispatch => {
@@ -157,7 +165,9 @@ const tracksReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case GET_ALL_TRACKS: {
+            console.log("Reducer GET_ALL_TRACKS action:", action.payload); // Log the action payload
             newState = { ...state, allTracks: action.payload };
+            console.log("New state after GET_ALL_TRACKS:", newState); // Log new state
             return newState;
         }
         case GET_ALL_TRACKS_BY_USER: {

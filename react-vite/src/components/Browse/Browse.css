@@ -1,0 +1,111 @@
+.browse-page {
+    /* border: 2px solid red; */
+
+    display: flex;
+    flex-direction: row;
+
+    height: 100vh;
+
+    padding-top: 120px;
+    padding: 120px 100px 0px 100px;
+}
+
+.browse-page .track-list {
+    /* border: 2px solid blue; */
+    background-color: rgba(128, 128, 128, 0.151);
+    border-top-left-radius: 10px;
+
+    width: 50vw;
+    height: calc(100vh - 120px);
+
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.browse-page .selected-track {
+    /* border: 2px solid green; */
+    background-color: rgba(128, 128, 128, 0.105);
+    border-top-right-radius: 10px;
+
+    width: 50vw;
+}
+
+/* --------- Search Bar ---------- */
+.browse-page .search-bar {
+    width: 100%;
+    position: relative;
+
+    padding: 0 10px 0 0;
+
+    /* border: 2px solid red; */
+
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+.browse-page .search-bar i {
+    background-color: rgb(41, 41, 41);
+
+    padding: 10px;
+    position: absolute;
+}
+
+.browse-page .search-bar input {
+    all: unset;
+
+    width: 100%;
+    padding: 10px;
+    padding-left: 40px;
+
+    background-color: rgb(41, 41, 41);
+
+    border-radius: 10px;
+}
+
+/* --------- Individual Tracks ---------- */
+.browse-page .tracks {
+    overflow-y: auto;
+    margin-top: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    gap: 10px;
+}
+
+.browse-page .tracks .track-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    /* border: 1px solid red; */
+    background-color: aquamarine;
+    color: black;
+
+    gap: 10px;
+
+    border-radius: 10px;
+
+    transition: 0.3s ease;
+}
+
+.browse-page .tracks .track-card:hover {
+    background-color: whitesmoke;
+}
+
+.browse-page .tracks .track-card img {
+    height: 80px;
+    width: 80px;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+/* --------- Selected Track ---------- */
+.browse-page .selected-track {
+
+}

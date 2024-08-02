@@ -32,6 +32,10 @@ function Navigation() {
     navigate(`/add-song`);
   };
 
+  const handleBrowse = () => {
+    navigate('/browse');
+  };
+
   const handleLogoClick = () => {
     navigate('/');
   };
@@ -44,6 +48,7 @@ function Navigation() {
       <div className="nav-menu">
         {sessionUser && (
           <>
+            <button className="browse-button" onClick={handleBrowse}>Browse Tracks</button>
             <button className="overview-button" onClick={handleSessionOverview}>Session Overview</button>
             <button className="creator-button" onClick={handleCreateTrack}>Create a Track</button>
           </>

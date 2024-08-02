@@ -7,6 +7,7 @@ import TrackOverview from '../components/TrackOverview/TrackOverview';
 import Gameplay from '../components/Gameplay';
 import SessionOverview from '../components/SessionOverview/SessionOverview';
 import TrackEditor from '../components/TrackEditor';
+import Browse from '../components/Browse';
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "/add-song",
         element: <AddSongPage />
+      },
+      {
+        path: "/browse",
+        element: <Browse />
       },
       {
         path: '/track-overview/:trackId',

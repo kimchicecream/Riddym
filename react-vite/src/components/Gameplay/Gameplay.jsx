@@ -31,6 +31,7 @@ function Gameplay() {
     const [longestStreak, setLongestStreak] = useState(0);
     const [highestMultiplier, setHighestMultiplier] = useState(1);
     const [multiplierReset, setMultiplierReset] = useState(false);
+    const cursorTimer = useRef(null);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -45,6 +46,24 @@ function Gameplay() {
 
         return () => {
           document.body.style.overflow = "auto";
+        };
+    }, []);
+
+    // handle cursor visibility
+    useEffect(() => {
+        const handleMouseMove = () => {
+            clearTimeout(cursorTimer.current);
+            document.body.classList.remove('hidden-cursor');
+            cursorTimer.current = setTimeout(() => {
+                document.body.classList.add('hidden-cursor');
+            }, 300); // Hide cursor after 2 seconds of inactivity
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+            clearTimeout(cursorTimer.current);
+            document.removeEventListener('mousemove', handleMouseMove);
         };
     }, []);
 

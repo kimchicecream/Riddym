@@ -500,3 +500,7 @@
 
     cursor: pointer;
 }
+
+.hidden-cursor {
+    cursor: none !important;
+}

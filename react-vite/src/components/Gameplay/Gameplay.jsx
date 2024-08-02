@@ -269,8 +269,8 @@ function Gameplay() {
         } else {
             console.log(`Lane key pressed at ${laneIndex + 1}`);
             if (multiplier > 1) {
-                setMultiplierReset(true); // Trigger multiplier reset animation
-                setTimeout(() => setMultiplierReset(false), 300); // Reset the state after the animation
+                setMultiplierReset(true); // trigger multiplier reset animation
+                setTimeout(() => setMultiplierReset(false), 300); // reset the state after the animation
             }
             setMultiplier(1); // reset multiplier on miss
             setCurrentStreak(0); // reset current streak on miss

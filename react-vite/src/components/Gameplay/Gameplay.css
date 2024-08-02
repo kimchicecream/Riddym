@@ -115,8 +115,19 @@
     justify-content: center;
     height: 100%;
     width: 100%;
+    overflow: hidden;
+
+
 
     /* border: 2px solid red; */
+}
+
+.gameplay .center .track-lanes::-webkit-scrollbar {
+    display: none;
+}
+
+.gameplay .center .lanes::-webkit-scrollbar {
+    display: none;
 }
 
 .gameplay .center .track-lanes .lanes {

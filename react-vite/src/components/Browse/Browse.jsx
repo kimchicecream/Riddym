@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { fetchTracks } from '../../redux/tracks';
 
@@ -9,6 +10,8 @@ function Browse() {
     const dispatch = useDispatch();
     const tracks = useSelector(state => state.tracks.allTracks);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedTrack, setSelectedTrack] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -37,6 +40,17 @@ function Browse() {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const handleTrackClick = (track) => {
+        setSelectedTrack(track);
+    };
+
+    const handlePlay = (e) => {
+        e.preventDefault();
+        if (selectedTrack) {
+            navigate(`/play/${selectedTrack.id}`);
+        }
+    };
+
     return (
         <div className="browse-page">
             <div className="track-list">
@@ -44,14 +58,18 @@ function Browse() {
                     <i className="fa-solid fa-magnifying-glass"></i>
                         <input
                             type='text'
-                            placeholder='Search tracks by song name or artist'
+                            placeholder='Search tracks by name'
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                 </div>
                 <div className='tracks'>
                     {filteredTracks.reverse().map(track => (
-                        <div className='track-card' key={track.id}>
+                        <div
+                            key={track.id}
+                            className={`track-card ${selectedTrack && selectedTrack.id === track.id ? 'selected' : ''}`}
+                            onClick={() => handleTrackClick(track)}
+                        >
                             <img src={track.song?.image_url} alt={track.song?.song_name} />
                             <div className='track-details'>
                                 <h4><span>{track.song?.song_name}</span></h4>
@@ -64,7 +82,17 @@ function Browse() {
                 </div>
             </div>
             <div className="selected-track">
-
+                {selectedTrack && (
+                    <div className='track-info'>
+                        <h1>{selectedTrack.song?.song_name}</h1>
+                        <div className='scores'>
+                            <h2>Scores</h2>
+                        </div>
+                        <div className='play'>
+                            <button className='play-button' onClick={handlePlay}>Play Track</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

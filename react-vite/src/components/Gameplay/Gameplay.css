@@ -90,7 +90,8 @@
 
 .gameplay .right {
     display: flex;
-    padding: 20px;
+    /* flex-direction: row; */
+    padding: 15px;
 }
 
 .gameplay .left,
@@ -190,24 +191,94 @@
 
 .key-label {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 13px;
     margin-top: 10px;
     color: #fff;
+    padding: 2px 0;
+
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+
+    /* border: 1px solid rgb(55, 55, 55); */
 }
 
-.multiplier {
+.gameplay .left .multiplier {
     font-weight: bold;
     font-size: 50px;
 
-    color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    justify-content: space-between;
+    background-color: aquamarine;
+    padding: 10px 20px;
+
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gameplay .left .multiplier .multiplier-word {
+    font-size: 40px;
+}
+
+.gameplay .left .multiplier p {
+    color: black
+}
+
+.multiplier-reset {
+    background-color: red !important;
+    /* color: white !important; */
+    animation: jitter 0.3s ease;
+}
+
+.multiplier-reset p {
+    color: white !important;
+    animation: jitter 0.3s ease;
+}
+
+@keyframes jitter {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
 }
 
 .gameplay .right .score {
     font-weight: bold;
     font-size: 50px;
 
-    color: aquamarine;
+    width: 100%;
+    height: 55px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    color: black;
+    background-color: aquamarine;
+    border-radius: 10px;
 }
+
+/* .gameplay .right .score p {
+    border: 2px solid red;
+} */
+
+.gameplay .right .score .word-score {
+    font-size: 30px;
+    display: flex;
+    align-self: flex-end;
+}
+
+.gameplay .right .score .number-score {
+    font-size: 40px;
+    display: flex;
+    align-self: flex-end;
+}
+
 
 .gameplay .center .track-lanes .falling-line {
     position: absolute;
@@ -216,6 +287,10 @@
     width: 100%;
     height: 1px;
     background-color: rgba(128, 128, 128, 0.455);
+    /* animation: fall-line 1s linear infinite; */
+}
+
+.gameplay .center .track-lanes .falling-line.active {
     animation: fall-line 1s linear infinite;
 }
 
@@ -249,7 +324,7 @@
 
 .end-game-modal .container {
     /* border: 2px solid red; */
-    background-color: rgba(255, 255, 255, 0.195);
+    background-color: rgba(255, 255, 255, 0.136);
     border-radius: 10px;
     backdrop-filter: blur(10px);
     padding: 20px;
@@ -288,6 +363,7 @@
 .end-game-modal .perfect-score {
     display: flex;
     justify-content: center;
+    /* align-items: center; */
     opacity: 0; /* Start hidden */
     transform: translateY(20px); /* Start from below */
     animation: fadeInUp 0.5s forwards;
@@ -295,12 +371,14 @@
 }
 
 .end-game-modal .perfect-score p {
+    display: flex;
+    align-items: center;
     background-color: rgb(196, 160, 71);
     color: rgb(255, 249, 136);
     font-size: 14px;
-    font-style: italic;
+    /* font-style: italic; */
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 10px;
     animation: movingShadow 1s infinite;
 }

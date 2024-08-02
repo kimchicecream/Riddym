@@ -30,13 +30,14 @@ function Gameplay() {
     const [currentStreak, setCurrentStreak] = useState(0);
     const [longestStreak, setLongestStreak] = useState(0);
     const [highestMultiplier, setHighestMultiplier] = useState(1);
+    const [multiplierReset, setMultiplierReset] = useState(false);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
     const NOTE_HEIGHT = 30; // height of a note
     const HIT_OFFSET = 25; // amount of note that must be above the hit zone to count as a hit
 
-    const KEY_LABELS = ['A', 'S', 'J', 'K', 'L'];
+    const KEY_LABELS = ['D', 'F', 'J', 'K', 'L'];
 
     // keep page static
     useEffect(() => {
@@ -267,6 +268,10 @@ function Gameplay() {
             });
         } else {
             console.log(`Lane key pressed at ${laneIndex + 1}`);
+            if (multiplier > 1) {
+                setMultiplierReset(true); // Trigger multiplier reset animation
+                setTimeout(() => setMultiplierReset(false), 300); // Reset the state after the animation
+            }
             setMultiplier(1); // reset multiplier on miss
             setCurrentStreak(0); // reset current streak on miss
         }
@@ -292,10 +297,10 @@ function Gameplay() {
         const keyHandler = (e) => {
             if (gameStarted) {
                 switch (e.key) {
-                    case 'a':
+                    case 'd':
                         handleKeyPress(0);
                         break;
-                    case 's':
+                    case 'f':
                         handleKeyPress(1);
                         break;
                     case 'j':
@@ -369,7 +374,7 @@ function Gameplay() {
                             </div>
                             {hitNotes.size === totalNotes && totalNotes > 0 && (
                                 <div className='perfect-score'>
-                                    <p>Perfect Score</p>
+                                    <p>PERFECT SCORE</p>
                                 </div>
                             )}
                             <div className='new-highscore'></div>
@@ -378,7 +383,7 @@ function Gameplay() {
                                     <p>Notes Hit</p> <p>{hitNotes.size}/{totalNotes}</p>
                                 </div>
                                 <div className='missed stat'>
-                                <p>Notes Missed</p> <p>{totalNotes - hitNotes.size}</p>
+                                    <p>Notes Missed</p> <p>{totalNotes - hitNotes.size}</p>
                                 </div>
                                 <div className='streak stat'>
                                     <p>Longest Streak</p> <p>{longestStreak}</p>
@@ -395,8 +400,8 @@ function Gameplay() {
             {/* <audio ref={audioRef} src={track?.song?.audio_url} preload="auto" /> */}
             <div className='left'>
                 <i onClick={handleEnd} className="fa-solid fa-chevron-left"></i>
-                <div className='multiplier'>
-                    Multiplier: x{multiplier}
+                <div className={`multiplier ${multiplierReset ? 'multiplier-reset' : ''}`}>
+                    <p className='multiplier-word'>Multiplier</p><p>x{multiplier}</p>
                 </div>
             </div>
             <div className='center'>
@@ -414,12 +419,12 @@ function Gameplay() {
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}
-                    <div className='falling-line'></div>
+                    <div className={`falling-line ${gameStarted && !gameEnded ? 'active' : ''}`}></div>
                 </div>
             </div>
             <div className='right'>
                 <div className='score'>
-                    Score: {score}
+                    <p className='word-score'>Score</p><p className='number-score'>{score}</p>
                 </div>
             </div>
         </div>

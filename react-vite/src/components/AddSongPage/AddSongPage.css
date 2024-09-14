@@ -187,6 +187,7 @@
     width: 1100px;
     /* border: 2px solid red;-0 */
     background-color: rgb(53, 53, 53);
+    border-radius: 20px;
 }
 
 .add-song-page .add-song-section h1 {
@@ -200,6 +201,8 @@
     align-items: center;
 
     transition: 0.3s ease;
+
+    border-radius: 20px;
 }
 
 .add-song-page .add-song-section h1:hover {
@@ -234,6 +237,8 @@
     /* border: 2px solid red;-0 */
     background-color: rgb(53, 53, 53);
     /* height: 600px; */
+
+    border-radius: 20px;
 }
 
 .add-song-page .pick-song-section h1 {
@@ -247,6 +252,8 @@
     align-items: center;
 
     transition: 0.3s ease;
+
+    border-radius: 20px;
 }
 
 .add-song-page .pick-song-section h1:hover {
@@ -329,6 +336,7 @@
     height: 90px;
 
     background-color: rgb(73, 73, 73);
+    border-radius: 20px;
 }
 
 .add-song-page .pick-song-container .buttons button {
@@ -339,6 +347,7 @@
     color: aquamarine;
 
     transition: 0.2s ease;
+    border-radius: 15px;
 }
 
 .add-song-page .pick-song-container .buttons button:hover {

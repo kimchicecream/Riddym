@@ -91,6 +91,8 @@
     font-weight: bold;
 
     padding: 10px 20px;
+
+    border-radius: 15px;
 }
 
 .add-song-page button:hover {
@@ -175,7 +177,6 @@
 
 .add-song-page .file button {
     all: unset;
-
 }
 
 .add-song-page p {
@@ -203,6 +204,7 @@
     transition: 0.3s ease;
 
     border-radius: 20px;
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.42);
 }
 
 .add-song-page .add-song-section h1:hover {
@@ -222,10 +224,12 @@
     color: black;
 
     transition: 0.2s ease;
+
+    border-radius: 15px;
 }
 
 .add-song-page .file button:hover {
-    background-color: aqua;
+    background-color: rgb(255, 255, 255);
 }
 
 
@@ -254,6 +258,7 @@
     transition: 0.3s ease;
 
     border-radius: 20px;
+    box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.42);
 }
 
 .add-song-page .pick-song-section h1:hover {

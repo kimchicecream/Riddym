@@ -7,10 +7,12 @@ import './Gameplay.css';
 
 function Gameplay() {
     const { trackId } = useParams();
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const track = useSelector(state => state.tracks.allTracks[trackId]);
     const sessionUser = useSelector((state) => state.session.user);
+
     const [totalNotes, setTotalNotes] = useState(0);
     const [fallingNotes, setFallingNotes] = useState([]);
     const [activeZones, setActiveZones] = useState([false, false, false, false, false]);
@@ -21,17 +23,17 @@ function Gameplay() {
     const [score, setScore] = useState(0);
     const [multiplier, setMultiplier] = useState(1);
     const [missedNotes, setMissedNotes] = useState(new Set());
-    // const [processedNotes, setProcessedNotes] = useState(0);
-    const waveSurferRef = useRef(null);
-    const startTimeRef = useRef(null);
-    const lastNoteRef = useRef(false);
     const [displayedScore, setDisplayedScore] = useState(0);
-
     const [currentStreak, setCurrentStreak] = useState(0);
     const [longestStreak, setLongestStreak] = useState(0);
     const [highestMultiplier, setHighestMultiplier] = useState(1);
     const [multiplierReset, setMultiplierReset] = useState(false);
+
+    const waveSurferRef = useRef(null);
+    const startTimeRef = useRef(null);
+    const lastNoteRef = useRef(false);
     const cursorTimer = useRef(null);
+    const gameplayRef = useRef(null);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -53,10 +55,14 @@ function Gameplay() {
     useEffect(() => {
         const handleMouseMove = () => {
             clearTimeout(cursorTimer.current);
-            document.body.classList.remove('hidden-cursor');
+            if (gameplayRef.current) {
+                gameplayRef.current.classList.remove('hidden-cursor');
+            }
             cursorTimer.current = setTimeout(() => {
-                document.body.classList.add('hidden-cursor');
-            }, 300); // Hide cursor after 2 seconds of inactivity
+                if (gameplayRef.current) {
+                    gameplayRef.current.classList.add('hidden-cursor');
+                }
+            }, 300); // Hide cursor after 300ms of inactivity
         };
 
         document.addEventListener('mousemove', handleMouseMove);
@@ -377,7 +383,7 @@ function Gameplay() {
     };
 
     return (
-        <div className='gameplay'>
+        <div className='gameplay' ref={gameplayRef}>
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>

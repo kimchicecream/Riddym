@@ -502,5 +502,5 @@
 }
 
 .hidden-cursor {
-    cursor: none !important;
+    cursor: none;
 }

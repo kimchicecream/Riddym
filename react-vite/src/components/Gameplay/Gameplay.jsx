@@ -36,6 +36,7 @@ function Gameplay() {
     const cursorTimer = useRef(null);
     const gameplayRef = useRef(null);
     const gameEndingRef = useRef(false);
+    const scoreRef = useRef(0);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -232,26 +233,29 @@ function Gameplay() {
         gameEndingRef.current = true;
         setGameEnding(true);
 
+        const finalScore = scoreRef.current;
+        const finalAccuracy = totalNotes > 0 ? (hitNotes.size / totalNotes) * 100 : 0;
+
         setTimeout(() => {
             if (waveSurferRef.current) {
                 fadeOutAudio(waveSurferRef.current, 2000); // 2 seconds fade out
             }
 
             setTimeout(() => {
-                console.log('Game ended, score:', score); // Log the score
+                console.log('Game ended, score:', finalScore)// Log the score
                 setGameEnded(true);
 
                 if (sessionUser) {
                     console.log('Dispatching createScore with:', {
                         track_id: trackId,
-                        score,
-                        accuracy: (hitNotes.size / totalNotes) * 100,
+                        score: finalScore,
+                        accuracy: finalAccuracy,
                         difficulty: track.difficulty || 'Unknown',
                     });
                     dispatch(createScore({
                         track_id: trackId,
-                        score,
-                        accuracy: (hitNotes.size / totalNotes) * 100,
+                        score: finalScore,
+                        accuracy: finalAccuracy,
                         difficulty: track.difficulty || 'Unknown',
                     }));
                 }
@@ -289,7 +293,13 @@ function Gameplay() {
                 newHitNotes.add(hitNote.uniqueId);
                 return newHitNotes;
             });
-            setScore(prevScore => prevScore + 150 * multiplier);
+
+            // 1) Update scoreRef first
+            scoreRef.current += 150 * multiplier;
+            // 2) Then set state so the UI shows the updated score
+            setScore(scoreRef.current);
+
+            // Update multiplier
             setMultiplier(prevMultiplier => {
                 const newMultiplier = prevMultiplier + 1;
                 if (newMultiplier > highestMultiplier) {
@@ -297,6 +307,8 @@ function Gameplay() {
                 }
                 return newMultiplier;
             });
+
+            // Update streak
             setCurrentStreak(prevStreak => {
                 const newStreak = prevStreak + 1;
                 if (newStreak > longestStreak) {
@@ -304,20 +316,22 @@ function Gameplay() {
                 }
                 return newStreak;
             });
+
             console.log(`Hit note in lane ${laneIndex + 1}`);
+
             setFallingNotes(prevNotes => {
                 const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
-                console.log('Updated falling notes after hit:', updatedNotes); // logging updated notes
+                console.log('Updated falling notes after hit:', updatedNotes);
                 return updatedNotes;
             });
         } else {
             console.log(`Lane key pressed at ${laneIndex + 1}`);
             if (multiplier > 1) {
-                setMultiplierReset(true); // trigger multiplier reset animation
-                setTimeout(() => setMultiplierReset(false), 300); // reset the state after the animation
+                setMultiplierReset(true);
+                setTimeout(() => setMultiplierReset(false), 300);
             }
-            setMultiplier(1); // reset multiplier on miss
-            setCurrentStreak(0); // reset current streak on miss
+            setMultiplier(1);
+            setCurrentStreak(0);
         }
 
         // Activate hit zone

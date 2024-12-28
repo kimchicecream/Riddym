@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchTrackById } from '../../redux/tracks';
 import { thunkAuthenticate } from '../../redux/session';
 import './Gameplay.css';
+import { createScore } from '../../redux/scores';
 
 function Gameplay() {
     const { trackId } = useParams();
@@ -34,6 +35,7 @@ function Gameplay() {
     const lastNoteRef = useRef(false);
     const cursorTimer = useRef(null);
     const gameplayRef = useRef(null);
+    const gameEndingRef = useRef(false);
 
     const HIT_ZONE_POSITION = 90; // 90% from the top
     const HIT_ZONE_HEIGHT = 30; // height of the hit zone
@@ -136,7 +138,7 @@ function Gameplay() {
     }, [gameStarted, track]);
 
     const updateNotesPosition = () => {
-        if (gameEnding) return;
+        if (gameEndingRef.current || gameEnded) return;
 
         const currentTime = Date.now();
         const elapsedTime = (currentTime - startTimeRef.current) / 1000; // in seconds
@@ -183,16 +185,17 @@ function Gameplay() {
                 }
             });
 
-            if (!gameEnding && (updatedNotes.length === 0 || (updatedNotes[0].uniqueId === lastNoteRef.current.uniqueId && updatedNotes[0].position > 100))) {
+            const filteredNotes = updatedNotes.filter(note => note.position <= 100);
+
+            if (!gameEndingRef.current && filteredNotes.length === 0) {
                 console.log('Last note processed. Ending game.');
-                setGameEnding(true);
                 endGame();
             }
 
-            return updatedNotes.filter(note => note.position <= 100);
+            return filteredNotes;
         });
 
-        if (gameStarted) {
+        if (gameStarted && !gameEnding) {
             requestAnimationFrame(updateNotesPosition);
         }
     };
@@ -213,7 +216,6 @@ function Gameplay() {
         const step = (currentTime) => {
             const progress = Math.min((currentTime - startTime) / duration, 1);
             const newDisplayedScore = Math.floor(progress * score);
-            console.log('Animating score:', newDisplayedScore);
             setDisplayedScore(newDisplayedScore);
 
             if (progress < 1) {
@@ -225,17 +227,34 @@ function Gameplay() {
     };
 
     const endGame = () => {
-        if (gameEnding) return; // prevent multiple calls (doesnt work)
+        if (gameEndingRef.current || gameEnded) return; // prevent multiple calls (doesnt work)
         console.log('Triggering endGame');
+        gameEndingRef.current = true;
         setGameEnding(true);
+
         setTimeout(() => {
             if (waveSurferRef.current) {
                 fadeOutAudio(waveSurferRef.current, 2000); // 2 seconds fade out
             }
+
             setTimeout(() => {
                 console.log('Game ended, score:', score); // Log the score
                 setGameEnded(true);
-                // animateScore();
+
+                if (sessionUser) {
+                    console.log('Dispatching createScore with:', {
+                        track_id: trackId,
+                        score,
+                        accuracy: (hitNotes.size / totalNotes) * 100,
+                        difficulty: track.difficulty || 'Unknown',
+                    });
+                    dispatch(createScore({
+                        track_id: trackId,
+                        score,
+                        accuracy: (hitNotes.size / totalNotes) * 100,
+                        difficulty: track.difficulty || 'Unknown',
+                    }));
+                }
             }, 2000); // show game over overlay after the fade-out
         }, 2000); // delay before starting the fade-out
     };

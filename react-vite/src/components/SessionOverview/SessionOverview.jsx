@@ -3,11 +3,13 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTracksByUser } from '../../redux/tracks';
 import { fetchSongsByUser } from '../../redux/songs';
+import { fetchScoresByTrack } from '../../redux/scores';
 import OpenModalButton from "../OpenModalButton";
 import ConfirmSongDelete from '../ConfirmSongDelete/ConfirmSongDelete';
 import TrackModal from '../TrackModal';
 import EditSongModal from '../EditSongModal/EditSongModal';
 import './SessionOverview.css';
+import { fetchScoresByUser } from '../../redux/scores';
 
 function SessionOverview() {
     const { username } = useParams();
@@ -16,11 +18,13 @@ function SessionOverview() {
     const songs = useSelector(state => state.songs.userSongs);
     const tracks = useSelector(state => state.tracks.userTracks);
     const userId = useSelector(state => state.session.user.id);
+    const userScores = useSelector(state => state.scores.userScores);
 
     useEffect(() => {
         if (userId) {
           dispatch(fetchTracksByUser(userId));
           dispatch(fetchSongsByUser(userId));
+          dispatch(fetchScoresByUser(userId));
         }
     }, [dispatch, userId]);
 
@@ -39,6 +43,19 @@ function SessionOverview() {
         <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>
             <div className='song-tracks'>
+            <div className='your-scores'>
+    <h3>Your Scores</h3>
+    <div className='score-card-container'>
+        {Object.values(userScores).reverse().map(score => (
+            <div className='score-card' key={score.id}>
+                <p><strong>Track ID:</strong> {score.track_id}</p>
+                <p><strong>Score:</strong> {score.score}</p>
+                <p><strong>Accuracy:</strong> {score.accuracy.toFixed(2)}%</p>
+                <p><strong>Difficulty:</strong> {score.difficulty}</p>
+            </div>
+        ))}
+    </div>
+</div>
                 <div className='your-songs'>
                     <h3>Your Songs</h3>
                     <div className='song-card-container'>

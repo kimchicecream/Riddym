@@ -242,7 +242,6 @@ function Gameplay() {
             }
 
             setTimeout(() => {
-                console.log('Game ended, score:', finalScore)// Log the score
                 setGameEnded(true);
 
                 if (sessionUser) {

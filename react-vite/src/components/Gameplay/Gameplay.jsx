@@ -29,6 +29,7 @@ function Gameplay() {
     const [longestStreak, setLongestStreak] = useState(0);
     const [highestMultiplier, setHighestMultiplier] = useState(1);
     const [multiplierReset, setMultiplierReset] = useState(false);
+    const [backgroundPulse, setBackgroundPulse] = useState(false);
 
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
@@ -316,6 +317,11 @@ function Gameplay() {
                 return newStreak;
             });
 
+            setBackgroundPulse(true);
+            setTimeout(() => {
+                setBackgroundPulse(false);
+            }, 300);
+
             console.log(`Hit note in lane ${laneIndex + 1}`);
 
             setFallingNotes(prevNotes => {
@@ -415,7 +421,18 @@ function Gameplay() {
     };
 
     return (
-        <div className='gameplay' ref={gameplayRef}>
+        <div
+            className={`gameplay ${backgroundPulse ? 'pulse' : ''}`}
+            ref={gameplayRef}
+            style={{
+                backgroundImage: track?.song?.image_url
+                  ? `url(${track.song.image_url})`
+                  : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+        >
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>

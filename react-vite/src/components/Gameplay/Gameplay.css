@@ -133,8 +133,8 @@
 .gameplay .center .track-lanes .lanes {
     width: 100%;
     border-right: 2px solid rgba(128, 128, 128, 0.436);
-    background-color: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(30px);
+    background-color: rgba(0, 0, 0, 0.745);
+    backdrop-filter: blur(15px);
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
@@ -225,7 +225,8 @@
     align-items: flex-end;
 
     justify-content: space-between;
-    background-color: aquamarine;
+    background-color: rgba(0, 0, 0, 0.745);
+    backdrop-filter: blur(15px);
     padding: 10px 20px;
 
     border-radius: 10px;
@@ -237,7 +238,7 @@
 }
 
 .gameplay .left .multiplier p {
-    color: black
+    color: aquamarine;
 }
 
 .multiplier-reset {
@@ -272,13 +273,14 @@
     padding: 0 20px;
 
     color: black;
-    background-color: aquamarine;
+    background-color: rgba(0, 0, 0, 0.745);
+    backdrop-filter: blur(15px);
     border-radius: 10px;
 }
 
-/* .gameplay .right .score p {
-    border: 2px solid red;
-} */
+.gameplay .right .score p {
+    color: aquamarine;
+}
 
 .gameplay .right .score .word-score {
     font-size: 30px;

@@ -5,6 +5,7 @@ import { fetchTrackById } from '../../redux/tracks';
 import { thunkAuthenticate } from '../../redux/session';
 import './Gameplay.css';
 import { createScore } from '../../redux/scores';
+import ParticleBackground from './ParticleBackground';
 
 function Gameplay() {
     const { trackId } = useParams();
@@ -435,6 +436,7 @@ function Gameplay() {
                 backgroundRepeat: 'no-repeat',
               }}
         >
+            <ParticleBackground />
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>

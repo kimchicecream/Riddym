@@ -7,19 +7,19 @@ function ParticleBackground() {
 
     useEffect(() => {
         const newParticles = Array.from({ length: NUM_PARTICLES }, () => {
-            const size = Math.random() * 5 * 5;
+            const size = Math.random() * 5 + 5;
             const left = Math.random() * 100;
             const top = Math.random() * 100;
             const duration = Math.random() * 10 + 10;
             const delay = Math.random() * 5;
-            return ( size, left, top, duration, delay );
+            return { size, left, top, duration, delay };
         });
         setParticles(newParticles);
     }, []);
 
     return (
         <div className="particle-container">
-            {particles/map((particle, i) => (
+            {particles.map((particle, i) => (
                 <div
                     key={i}
                     className="particle"

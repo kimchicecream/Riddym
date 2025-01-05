@@ -3,7 +3,7 @@ import './ParticleBackground.css';
 
 function ParticleBackground() {
     const [particles, setParticles] = useState([]);
-    const NUM_PARTICLES = 500;
+    const NUM_PARTICLES = 250;
 
     useEffect(() => {
         const newParticles = Array.from({ length: NUM_PARTICLES }, () => {

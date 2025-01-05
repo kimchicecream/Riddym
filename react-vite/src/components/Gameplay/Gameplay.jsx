@@ -263,7 +263,7 @@ function Gameplay() {
         }, 2000); // delay before starting the fade-out
     };
 
-    // commit 10
+    // commit 11
 
     useEffect(() => {
         if (gameEnded) {

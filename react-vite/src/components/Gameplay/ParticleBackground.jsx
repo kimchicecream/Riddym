@@ -14,7 +14,7 @@ function ParticleBackground() {
             const delay = Math.random() * 5;
             const angle = Math.random() * 2 * Math.PI;
             const distance = Math.random() * 200 + 150;
-            // commit 5
+            // commit 6
 
             return { size, left, top, duration, delay, angle, distance };
         });

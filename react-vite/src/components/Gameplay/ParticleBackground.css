@@ -1,0 +1,45 @@
+/* ParticleBackground.css */
+
+.particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Ensures it stays behind the lanes, which will be a higher z-index. */
+    overflow: hidden;
+}
+
+/* Each .particle is a small circle that floats in a random direction. */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    opacity: 0; /* Start invisible and fade in. */
+    animation-name: float;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+/* Keyframes: pick a “float” pattern that suits your style.
+    Below is a simple example that:
+    - starts from its initial position
+    - drifts to some random offset
+    - disappears
+*/
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;  /* fade in */
+    }
+    90% {
+        opacity: 1;  /* stay visible almost the entire animation */
+    }
+    100% {
+        transform: translate(-100px, -200px); /* drift up/left (tweak as you like) */
+        opacity: 0;
+    }
+}

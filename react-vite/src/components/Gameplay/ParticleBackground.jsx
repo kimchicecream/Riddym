@@ -3,7 +3,7 @@ import './ParticleBackground.css';
 
 function ParticleBackground() {
     const [particles, setParticles] = useState([]);
-    const NUM_PARTICLES = 50;
+    const NUM_PARTICLES = 500;
 
     useEffect(() => {
         const newParticles = Array.from({ length: NUM_PARTICLES }, () => {
@@ -12,7 +12,10 @@ function ParticleBackground() {
             const top = Math.random() * 100;
             const duration = Math.random() * 10 + 10;
             const delay = Math.random() * 5;
-            return { size, left, top, duration, delay };
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = Math.random() * 200 + 150;
+
+            return { size, left, top, duration, delay, angle, distance };
         });
         setParticles(newParticles);
     }, []);
@@ -30,6 +33,9 @@ function ParticleBackground() {
                         top: `${particle.top}vh`,
                         animationDuration: `${particle.duration}s`,
                         animationDelay: `${particle.delay}s`,
+                        "--translateX": `${particle.distance * Math.cos(particle.angle)}px`,
+                        "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
+
                     }}
                 />
             ))}

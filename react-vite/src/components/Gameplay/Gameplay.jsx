@@ -429,8 +429,11 @@ function Gameplay() {
             ref={gameplayRef}
             style={{
                 backgroundImage: track?.song?.image_url
-                  ? `url(${track.song.image_url})`
-                  : 'none',
+                    ? `linear-gradient(
+                        rgba(0,0,0,0.5),
+                        rgba(0,0,0,0.5)
+                    ), url(${track.song.image_url})`
+                    : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',

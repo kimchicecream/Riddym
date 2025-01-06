@@ -12,26 +12,31 @@
     position: absolute;
     border-radius: 50%;
     background: white;
-    opacity: 0; /* start invisible, then fade in */
+    opacity: 0; /* start invisible, will fade in */
     animation-name: float;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
 
+  /* Use the custom properties to animate:
+     - fade in to var(--maxOpacity)
+     - remain visible
+     - fade out
+     - translate in a random direction
+  */
   @keyframes float {
     0% {
       transform: translate(0, 0);
       opacity: 0;
     }
     10% {
-      opacity: 1; /* fade in after a short delay */
+      opacity: var(--maxOpacity); /* fade in to the maximum random opacity */
     }
     90% {
-      opacity: 1; /* remain visible most of the way through */
+      opacity: var(--maxOpacity); /* stay at the max opacity */
     }
     100% {
-      /* Use the custom properties to move in random directions */
       transform: translate(var(--translateX), var(--translateY));
-      opacity: 0; /* fade out at the end */
+      opacity: 0; /* fade out */
     }
   }

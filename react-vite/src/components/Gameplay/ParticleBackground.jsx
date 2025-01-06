@@ -14,9 +14,10 @@ function ParticleBackground() {
             const delay = Math.random() * 5;
             const angle = Math.random() * 2 * Math.PI;
             const distance = Math.random() * 200 + 150;
-            // commit 10
 
-            return { size, left, top, duration, delay, angle, distance };
+            const maxOpacity = Math.random() * 0.6 + 0.3;
+
+            return { size, left, top, duration, delay, angle, distance, maxOpacity };
         });
         setParticles(newParticles);
     }, []);
@@ -36,7 +37,7 @@ function ParticleBackground() {
                         animationDelay: `${particle.delay}s`,
                         "--translateX": `${particle.distance * Math.cos(particle.angle)}px`,
                         "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
-
+                        "--maxOpacity": particle.maxOpacity,
                     }}
                 />
             ))}

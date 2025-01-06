@@ -41,7 +41,7 @@ function ParticleBackground({ hue }) {
             "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
             "--maxOpacity": particle.maxOpacity,
             backgroundColor: currentColor,
-            boxShadow: `0 0 10px 5px ${currentColor}`,
+            boxShadow: `0 0 20px 5px ${currentColor}`,
           }}
         />
       ))}

@@ -525,7 +525,7 @@
       filter: brightness(1);
     }
     50% {
-      filter: brightness(1.7); /* Slightly brighten the background */
+      filter: brightness(1.2); /* Slightly brighten the background */
     }
     100% {
       filter: brightness(1);

@@ -518,9 +518,9 @@
 
 .gameplay.pulse {
     animation: backgroundPulse 0.4s ease;
-  }
+}
 
-  @keyframes backgroundPulse {
+@keyframes backgroundPulse {
     0% {
       filter: brightness(1);
     }
@@ -530,4 +530,4 @@
     100% {
       filter: brightness(1);
     }
-  }
+}

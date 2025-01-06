@@ -32,7 +32,8 @@ function Gameplay() {
     const [multiplierReset, setMultiplierReset] = useState(false);
     const [backgroundPulse, setBackgroundPulse] = useState(false);
 
-    const [hitParticleFlash, setHitParticleFlash] = useState(false);
+    // const [hitParticleFlash, setHitParticleFlash] = useState(false);
+    const [hue, setHue] = useState(0);
 
     const waveSurferRef = useRef(null);
     const startTimeRef = useRef(null);
@@ -327,10 +328,9 @@ function Gameplay() {
                 setBackgroundPulse(false);
             }, 300);
 
-            setHitParticleFlash(true);
-            setTimeout(() => {
-                setHitParticleFlash(false);
-            }, 300);
+            // setHitParticleFlash(true);
+
+            setHue((prevHue) => (prevHue + 30) % 360);
 
             console.log(`Hit note in lane ${laneIndex + 1}`);
 
@@ -446,7 +446,7 @@ function Gameplay() {
                 backgroundRepeat: 'no-repeat',
               }}
         >
-            <ParticleBackground hitParticleFlash={hitParticleFlash}/>
+            <ParticleBackground hue={hue}/>
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>

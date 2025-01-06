@@ -22,8 +22,10 @@ function ParticleBackground({ hue }) {
         setParticles(newParticles);
     }, []);
 
+    const currentColor = `hsl(${hue}, 100%, 50%)`;
+
     return (
-        <div className="particle-container">
+    <div className="particle-container">
       {particles.map((particle, i) => (
         <div
           key={i}
@@ -35,11 +37,11 @@ function ParticleBackground({ hue }) {
             top: `${particle.top}vh`,
             animationDuration: `${particle.duration}s`,
             animationDelay: `${particle.delay}s`,
-            '--translateX': `${particle.distance * Math.cos(particle.angle)}px`,
-            '--translateY': `${particle.distance * Math.sin(particle.angle)}px`,
-            '--maxOpacity': particle.maxOpacity,
-            // 1) Use the hue prop to color each particle
-            backgroundColor: `hsl(${hue}, 100%, 50%)`,
+            "--translateX": `${particle.distance * Math.cos(particle.angle)}px`,
+            "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
+            "--maxOpacity": particle.maxOpacity,
+            backgroundColor: currentColor,
+            boxShadow: `0 0 10px 5px ${currentColor}`,
           }}
         />
       ))}

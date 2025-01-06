@@ -8,16 +8,16 @@
     height: 100%;
     z-index: 0;
     overflow: hidden;
-  }
+}
 
   /* When .blue-flash is present on .particle-container,
      override the color of .particle to blue.
   */
-  .particle-container.blue-flash .particle {
+/* .particle-container.blue-flash .particle {
     background-color: rgb(143, 143, 255) !important;
-  }
+} */
 
-  .particle {
+.particle {
     position: absolute;
     border-radius: 50%;
     background: white;
@@ -25,10 +25,12 @@
     animation-name: float;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-  }
+
+    /* transition: background-color 0.2s ease, box-shadow 0.2s ease; */
+}
 
   /* float animation is unchanged */
-  @keyframes float {
+@keyframes float {
     0% {
       transform: translate(0, 0);
       opacity: 0;
@@ -43,4 +45,4 @@
       transform: translate(var(--translateX), var(--translateY));
       opacity: 0;
     }
-  }
+}

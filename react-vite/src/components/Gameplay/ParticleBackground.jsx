@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import './ParticleBackground.css';
 
-function ParticleBackground() {
+function ParticleBackground({ hitParticleFlash }) {
     const [particles, setParticles] = useState([]);
     const NUM_PARTICLES = 250;
 
@@ -23,7 +23,9 @@ function ParticleBackground() {
     }, []);
 
     return (
-        <div className="particle-container">
+        <div
+            className={`particle-container ${hitParticleFlash ? 'blue-flash' : ''}`}
+        >
             {particles.map((particle, i) => (
                 <div
                     key={i}

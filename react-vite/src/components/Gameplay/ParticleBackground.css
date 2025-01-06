@@ -1,11 +1,20 @@
+/* ParticleBackground.css */
+
 .particle-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* behind your main gameplay elements */
+    z-index: 0;
     overflow: hidden;
+  }
+
+  /* When .blue-flash is present on .particle-container,
+     override the color of .particle to blue.
+  */
+  .particle-container.blue-flash .particle {
+    background-color: rgb(143, 143, 255) !important;
   }
 
   .particle {
@@ -18,25 +27,20 @@
     animation-iteration-count: infinite;
   }
 
-  /* Use the custom properties to animate:
-     - fade in to var(--maxOpacity)
-     - remain visible
-     - fade out
-     - translate in a random direction
-  */
+  /* float animation is unchanged */
   @keyframes float {
     0% {
       transform: translate(0, 0);
       opacity: 0;
     }
     10% {
-      opacity: var(--maxOpacity); /* fade in to the maximum random opacity */
+      opacity: var(--maxOpacity);
     }
     90% {
-      opacity: var(--maxOpacity); /* stay at the max opacity */
+      opacity: var(--maxOpacity);
     }
     100% {
       transform: translate(var(--translateX), var(--translateY));
-      opacity: 0; /* fade out */
+      opacity: 0;
     }
   }

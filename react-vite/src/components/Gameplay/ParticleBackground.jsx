@@ -25,27 +25,27 @@ function ParticleBackground({ hue }) {
     const currentColor = `hsl(${hue}, 100%, 50%)`;
 
     return (
-    <div className="particle-container">
-      {particles.map((particle, i) => (
-        <div
-          key={i}
-          className="particle"
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: `${particle.left}vw`,
-            top: `${particle.top}vh`,
-            animationDuration: `${particle.duration}s`,
-            animationDelay: `${particle.delay}s`,
-            "--translateX": `${particle.distance * Math.cos(particle.angle)}px`,
-            "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
-            "--maxOpacity": particle.maxOpacity,
-            backgroundColor: currentColor,
-            boxShadow: `0 0 20px 5px ${currentColor}`,
-          }}
-        />
-      ))}
-    </div>
+        <div className="particle-container">
+            {particles.map((particle, i) => (
+                <div
+                    key={i}
+                    className="particle"
+                    style={{
+                        width: particle.size,
+                        height: particle.size,
+                        left: `${particle.left}vw`,
+                        top: `${particle.top}vh`,
+                        animationDuration: `${particle.duration}s`,
+                        animationDelay: `${particle.delay}s`,
+                        "--translateX": `${particle.distance * Math.cos(particle.angle)}px`,
+                        "--translateY": `${particle.distance * Math.sin(particle.angle)}px`,
+                        "--maxOpacity": particle.maxOpacity,
+                        backgroundColor: currentColor,
+                        boxShadow: `0 0 20px 5px ${currentColor}`,
+                    }}
+                />
+            ))}
+        </div>
     );
 }
 

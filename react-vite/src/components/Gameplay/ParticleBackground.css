@@ -8,6 +8,7 @@
     height: 100%;
     z-index: 0;
     overflow: hidden;
+    opacity: 0; /* change to 1 to make particles visible */
 }
 
   /* When .blue-flash is present on .particle-container,

@@ -134,8 +134,8 @@
 .gameplay .center .track-lanes .lanes {
     width: 100%;
     border-right: 2px solid rgba(128, 128, 128, 0.436);
-    background-color: rgba(0, 0, 0, 0.745);
-    backdrop-filter: blur(15px);
+    background-color: rgba(0, 0, 0, 0.349);
+    backdrop-filter: blur(11px);
     position: relative;
     overflow: hidden;
     box-sizing: border-box;

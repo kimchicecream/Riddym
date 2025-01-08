@@ -531,3 +531,28 @@
       filter: brightness(1);
     }
 }
+
+.fullscreen-button {
+    all: unset;           /* remove default button styling (optional) */
+    cursor: pointer;
+    padding: 10px;
+    color: #fff;
+    font-size: 24px;      /* icon size */
+    transition: color 0.3s ease;
+    border-radius: 10px;   /* optional: give it a circular hover background */
+    display: flex;
+    align-items: center;
+    position: absolute;
+    justify-content: center;
+
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+
+    transition: 0.2s ease;
+}
+
+.fullscreen-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+
+}

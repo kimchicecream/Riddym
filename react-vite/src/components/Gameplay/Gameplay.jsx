@@ -31,6 +31,7 @@ function Gameplay() {
     const [highestMultiplier, setHighestMultiplier] = useState(1);
     const [multiplierReset, setMultiplierReset] = useState(false);
     const [backgroundPulse, setBackgroundPulse] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     // const [hitParticleFlash, setHitParticleFlash] = useState(false);
     const [hue, setHue] = useState(0);
@@ -51,22 +52,39 @@ function Gameplay() {
     const KEY_LABELS = ['D', 'F', 'J', 'K', 'L'];
 
     // Inside Gameplay component
-    const handleFullscreen = () => {
-        const el = gameplayRef.current;
+    useEffect(() => {
+        const onFullscreenChange = () => {
+          if (!document.fullscreenElement) {
+            // We are no longer in fullscreen
+            setIsFullscreen(false);
+          } else {
+            // We have entered fullscreen
+            setIsFullscreen(true);
+          }
+        };
 
-        if (!el) return;
+        document.addEventListener("fullscreenchange", onFullscreenChange);
 
-        // Cross-browser approach
-        if (el.requestFullscreen) {
-            el.requestFullscreen();
-        } else if (el.mozRequestFullScreen) { // Firefox
-            el.mozRequestFullScreen();
-        } else if (el.webkitRequestFullscreen) { // Safari / Chrome
-            el.webkitRequestFullscreen();
-        } else if (el.msRequestFullscreen) { // IE/Edge
-            el.msRequestFullscreen();
+        return () => {
+          document.removeEventListener("fullscreenchange", onFullscreenChange);
+        };
+      }, []);
+
+      const handleToggleFullscreen = () => {
+        // If there's no element in fullscreen, go fullscreen. Otherwise, exit fullscreen.
+        if (!document.fullscreenElement) {
+          // request fullscreen on the gameplay container
+          if (gameplayRef.current.requestFullscreen) {
+            gameplayRef.current.requestFullscreen();
+          }
+          // you could also do else if for webkitRequestFullscreen, etc. for older browsers if desired
+        } else {
+          // We are currently in fullscreen, so exit
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
         }
-    };
+      };
 
     // keep page static
     useEffect(() => {
@@ -467,8 +485,13 @@ function Gameplay() {
             <ParticleBackground hue={hue}/>
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
+                        <button className="fullscreen-button" onClick={handleToggleFullscreen}>
+                            {isFullscreen
+                                ? <i className="fa-solid fa-compress"></i>
+                                : <i className="fa-solid fa-expand"></i>
+                            }
+                        </button>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>
-                        <button className="fullscreen-button" onClick={handleFullscreen}>Go Fullscreen</button>
                         <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                     </div>
                 )}
@@ -502,6 +525,12 @@ function Gameplay() {
                             <button className="play-again" onClick={handlePlayAgain}>Play Again</button>
                             <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                         </div>
+                        <button className="fullscreen-button" onClick={handleToggleFullscreen}>
+                            {isFullscreen
+                                ? <i className="fa-solid fa-compress"></i>
+                                : <i className="fa-solid fa-expand"></i>
+                            }
+                        </button>
                     </div>
                 )}
             {/* <audio ref={audioRef} src={track?.song?.audio_url} preload="auto" /> */}

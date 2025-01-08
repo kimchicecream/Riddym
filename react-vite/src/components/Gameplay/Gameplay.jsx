@@ -466,6 +466,8 @@ function Gameplay() {
         window.location.reload();
     };
 
+    // commit 1
+
     return (
         <div
             className={`gameplay ${backgroundPulse ? 'pulse' : ''}`}

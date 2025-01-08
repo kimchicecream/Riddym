@@ -50,6 +50,24 @@ function Gameplay() {
 
     const KEY_LABELS = ['D', 'F', 'J', 'K', 'L'];
 
+    // Inside Gameplay component
+    const handleFullscreen = () => {
+        const el = gameplayRef.current;
+
+        if (!el) return;
+
+        // Cross-browser approach
+        if (el.requestFullscreen) {
+            el.requestFullscreen();
+        } else if (el.mozRequestFullScreen) { // Firefox
+            el.mozRequestFullScreen();
+        } else if (el.webkitRequestFullscreen) { // Safari / Chrome
+            el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) { // IE/Edge
+            el.msRequestFullscreen();
+        }
+    };
+
     // keep page static
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -450,6 +468,7 @@ function Gameplay() {
                 {!gameStarted && !gameEnded && (
                     <div className='start-game-modal'>
                         <button className="start-track" onClick={handleStartGame}>Start Track</button>
+                        <button className="fullscreen-button" onClick={handleFullscreen}>Go Fullscreen</button>
                         <button className="back" onClick={handleBack}><i className="fa-solid fa-angle-left"></i>Back to Overview</button>
                     </div>
                 )}

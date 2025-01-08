@@ -466,7 +466,7 @@ function Gameplay() {
         window.location.reload();
     };
 
-    // commit 6
+    // commit 7
 
     return (
         <div

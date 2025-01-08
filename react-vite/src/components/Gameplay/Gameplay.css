@@ -495,7 +495,6 @@
     align-items: center;
 
     margin-top: 20px;
-    margin-bottom: 10px;
 }
 
 .end-game-modal .container .play-again:hover {
@@ -554,5 +553,4 @@
 
 .fullscreen-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
-
 }

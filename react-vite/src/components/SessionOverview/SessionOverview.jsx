@@ -39,7 +39,7 @@ function SessionOverview() {
         navigate('/add-song');
     };
 
-    // commit 7
+    // commit 8
 
     return (
         <div className='session-overview-page'>

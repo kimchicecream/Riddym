@@ -39,6 +39,8 @@ function SessionOverview() {
         navigate('/add-song');
     };
 
+    // commit 1
+
     return (
         <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>

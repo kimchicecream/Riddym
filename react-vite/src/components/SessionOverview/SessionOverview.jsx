@@ -20,6 +20,8 @@ function SessionOverview() {
     const userId = useSelector(state => state.session.user.id);
     const userScores = useSelector(state => state.scores.userScores);
 
+    // commit 1
+
     useEffect(() => {
         if (userId) {
           dispatch(fetchTracksByUser(userId));

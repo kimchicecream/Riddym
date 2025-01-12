@@ -20,7 +20,7 @@ function SessionOverview() {
     const userId = useSelector(state => state.session.user.id);
     const userScores = useSelector(state => state.scores.userScores);
 
-    // commit 8
+    // commit 9
 
     useEffect(() => {
         if (userId) {

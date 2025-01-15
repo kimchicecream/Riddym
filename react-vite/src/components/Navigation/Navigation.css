@@ -28,9 +28,17 @@
   height: 40px;
 }
 
+.navigation-container .logo-container:hover {
+  cursor: pointer;
+}
+
 .navigation-container .logo-container img {
   height: 40px;
 }
+
+/* .navigation-container .logo-container img:hover {
+  cursor: pointer;
+} */
 
 .navigation-container .nav-menu {
   display: flex;

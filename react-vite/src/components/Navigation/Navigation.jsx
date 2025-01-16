@@ -24,6 +24,8 @@ function Navigation() {
   //   navigate(`/session-overview/${sessionUser.username}`);
   // };
 
+  //commit 1
+
   const handleSessionOverview = () => {
     navigate(`/session-overview/${sessionUser.username}`);
   };

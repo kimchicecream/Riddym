@@ -122,21 +122,17 @@
 .gameplay .center .track-lanes {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    /* align-items: center; */
+    /* justify-content: center;
+    align-items: center; */
     height: 100%;
-    width: 600px;
+    width: 700px;
     overflow: hidden;
     left: 50%;
     transform: translateX(-50%);
     /* border: 2px solid red; */
 
-    perspective: 500px;
+    perspective: 600px;
     transform-style: preserve-3d;
-
-    overflow: hidden;
-
-    /* position: relative; */
 }
 
 .gameplay .center .track-lanes::-webkit-scrollbar {
@@ -149,15 +145,19 @@
 
 .gameplay .center .track-lanes .lanes {
     width: 100%;
-    border-right: 2px solid rgb(62, 62, 62);
-    background-color: rgba(0, 0, 0, 0.349);
+    border-left: 1px solid rgb(62, 62, 62);
+    border-right: 1px solid rgb(62, 62, 62);
+    background-color: rgba(0, 0, 0, 0.697);
     /* backdrop-filter: blur(40px); */
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
 
     transform-origin: bottom center;
-    transform: rotateX(45deg);
+    transform: rotateX(50deg);
+
+    display: flex;
+    justify-content: center;
 }
 
 .gameplay .center .track-lanes .lanes::before {
@@ -168,7 +168,7 @@
     width: 100%;
     height: 100%;
 
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     z-index: -1;
 }
 
@@ -247,9 +247,19 @@
 
     position: absolute;
     bottom: 10px;
-    width: 100%;
+    /* width: 100%; */
 
-    /* border: 1px solid rgb(55, 55, 55); */
+
+    border: 1px solid rgb(255, 255, 255);
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 5px;
 }
 
 .gameplay .left .multiplier {

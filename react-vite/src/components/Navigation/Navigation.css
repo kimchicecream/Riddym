@@ -164,20 +164,24 @@
 
 .signup-login-container button {
   all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .signup-login-container .signup-button {
   padding: 10px;
-  background-color: rgba(59, 255, 190, 0.717);
+  background-color: aquamarine;
   border-radius: 10px;
-  color: white;
+  color: black;
   font-weight: bold;
 
   transition: 0.2s ease;
 }
 
 .signup-login-container .signup-button:hover {
-  background-color: aquamarine;
+  background-color: rgb(226, 255, 245);
+  box-shadow: 0px 0px 20px 1px rgb(195, 255, 235);
   color: black;
   cursor: pointer;
 }

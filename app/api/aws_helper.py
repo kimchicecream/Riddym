@@ -12,7 +12,7 @@ S3_LOCATION_MP3 = f"https://{BUCKET_NAME_MP3}.s3.amazonaws.com/"
 S3_LOCATION_IMG = f"https://{BUCKET_NAME_IMG}.s3.amazonaws.com/"
 
 ALLOWED_EXTENSIONS_MP3 = {"mp3"}
-ALLOWED_EXTENSIONS_IMG = {"jpg", "jpeg", "png", "gif"}
+ALLOWED_EXTENSIONS_IMG = {"jpg", "jpeg", "png", "gif", "webp"}
 
 s3 = boto3.client(
     "s3",

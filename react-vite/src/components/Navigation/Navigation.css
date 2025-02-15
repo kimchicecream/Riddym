@@ -179,14 +179,19 @@
 .signup-login-container .signup-button:hover {
   background-color: aquamarine;
   color: black;
+  cursor: pointer;
 }
 
 .signup-login-container .login-button {
   padding: 10px;
   border-radius: 10px;
   transition: 0.2s ease;
+
+  /* display: flex;
+  align-items: center; */
 }
 
 .signup-login-container .login-button:hover {
   background-color: rgba(128, 128, 128, 0.273);
+  cursor: pointer;
 }

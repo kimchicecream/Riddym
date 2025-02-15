@@ -50,10 +50,12 @@
   padding: 10px;
 
   border-radius: 10px;
+  transition: 0.3s ease;
 }
 
 .navigation-container .nav-menu button:hover {
   background-color: rgba(128, 128, 128, 0.263);
+  cursor: pointer;
 }
 
 .icon-container button {
@@ -175,8 +177,7 @@
   border-radius: 10px;
   color: black;
   font-weight: bold;
-
-  transition: 0.2s ease;
+  transition: 0.3s ease;
 }
 
 .signup-login-container .signup-button:hover {

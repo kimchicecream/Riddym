@@ -542,6 +542,7 @@ function Gameplay() {
             </div>
             <div className='center'>
                 <div className='track-lanes'>
+                    {/* <div className={`falling-line ${gameStarted && !gameEnded ? 'active' : ''}`}></div> */}
                     {[...Array(5)].map((_, laneIndex) => (
                         <div className='lanes' key={laneIndex}>
                             {fallingNotes.filter(note => note.lane === laneIndex + 1).map(note => (
@@ -555,7 +556,6 @@ function Gameplay() {
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}
-                    <div className={`falling-line ${gameStarted && !gameEnded ? 'active' : ''}`}></div>
                 </div>
             </div>
             <div className='right'>

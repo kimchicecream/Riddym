@@ -1,66 +1,24 @@
 .hit-effect {
     position: absolute;
     width: 80px;
-    height: 100px; /* Taller container to give room for animation */
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    top: -50px; /* Adjust position above hit zone */
-
-    border: 2px solid red;
-}
-
-.hit-effect.active {
     opacity: 1;
+    top: -30px;
+    overflow: visible;
 }
 
-/* Glowing effect */
-.glow {
+/* rising stars */
+.sparkle {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 10%, rgba(255, 255, 100, 0) 70%);
-    border-radius: 50%;
-    top: 40px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-}
-
-.hit-effect.active .glow {
-    opacity: 1;
-    animation: glow-fade 0.4s ease-out;
-}
-
-/* Stars rising in staggered vertical motion */
-.star {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    /* fill: gold; */
     opacity: 0;
     transform: scale(0.8);
+    animation: rise 0.3s ease-out forwards;
 }
 
-/* Randomized slight offsets for staggered rise */
-.star:nth-child(1) {
-    left: 0px;
-    animation: rise 0.6s ease-out 0s forwards;
-}
-
-.star:nth-child(2) {
-    left: -5px; /* Slight horizontal offset */
-    animation: rise 0.6s ease-out 0.1s forwards;
-}
-
-.star:nth-child(3) {
-    left: 5px; /* Slight horizontal offset */
-    animation: rise 0.6s ease-out 0.2s forwards;
-}
-
-/* Rising animation (purely vertical, staggered) */
+/* rising effect */
 @keyframes rise {
     0% {
         transform: translateY(0) scale(0.8);
@@ -73,17 +31,5 @@
     100% {
         transform: translateY(-80px) scale(1.2);
         opacity: 0;
-    }
-}
-
-/* Glow fade */
-@keyframes glow-fade {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.5);
     }
 }

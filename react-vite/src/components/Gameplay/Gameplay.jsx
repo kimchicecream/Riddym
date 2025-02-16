@@ -315,6 +315,8 @@ function Gameplay() {
     };
 
     const handleKeyPress = (laneIndex) => {
+        console.log(`Key pressed: Lane ${laneIndex + 1}`);
+
         const hitZoneTop = HIT_ZONE_POSITION;
         const hitZoneBottom = HIT_ZONE_POSITION + HIT_ZONE_HEIGHT;
         const hitNote = fallingNotes.find(note =>
@@ -325,6 +327,8 @@ function Gameplay() {
         );
 
         if (hitNote) {
+            console.log(`✅ Note Hit! Lane: ${laneIndex + 1}, Note ID: ${hitNote.uniqueId}`);
+
             setHitNotes(prevHitNotes => {
                 const newHitNotes = new Set(prevHitNotes);
                 newHitNotes.add(hitNote.uniqueId);
@@ -333,17 +337,17 @@ function Gameplay() {
 
             setLaneEffects(prev => {
                 const newEffects = [...prev];
-                newEffects[laneIndex] = true;
+                newEffects[laneIndex] = true; // Set to true
                 return newEffects;
             });
 
             setTimeout(() => {
                 setLaneEffects(prev => {
                     const newEffects = [...prev];
-                    newEffects[laneIndex] = false;
+                    newEffects[laneIndex] = false; // Reset after animation
                     return newEffects;
                 });
-            }, 300);
+            }, 600);
 
             // 1) Update scoreRef first
             scoreRef.current += 150 * multiplier;
@@ -550,7 +554,9 @@ function Gameplay() {
                                     style={{ top: `${note.position}%` }}
                                 ></div>
                             ))}
-                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}><HitEffect isActive={laneEffects[laneIndex]} /></div>
+                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}>
+                                {laneEffects[laneIndex] && <HitEffect key={laneIndex} />}
+                            </div>
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}

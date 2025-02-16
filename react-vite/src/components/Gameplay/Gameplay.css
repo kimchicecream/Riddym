@@ -237,6 +237,10 @@
 
     margin-bottom: 40px;
     transition: 0.2s ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .gameplay .note.hit {
@@ -250,7 +254,7 @@
 
 .hit-zone.active {
     border: 15px solid aquamarine;
-    box-shadow: 0px -30px 69px -1px rgb(127, 255, 212);
+    /* box-shadow: 0px -30px 69px -1px rgb(127, 255, 212); */
 }
 
 @keyframes fall {

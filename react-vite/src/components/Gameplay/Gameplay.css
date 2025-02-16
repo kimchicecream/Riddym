@@ -70,7 +70,7 @@
     padding: 20px;
     flex: 0.75;
 
-    /* border: 1px solid pink; */
+    /* border: 1px solid blue; */
 }
 
 .gameplay .left i {
@@ -106,24 +106,28 @@
 .gameplay .right {
     flex: 1;
     height: 100%;
-} */
+    } */
+
+.gameplay .center .track-lanes::-webkit-scrollbar {
+    display: none;
+}
+
+.gameplay .center .lanes::-webkit-scrollbar {
+    display: none;
+}
 
 .gameplay .center {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 2px solid rgb(0, 4, 255); */
-    position: relative;
 
+    position: relative;
     flex: 1.5;
-    /* border: 1px solid red; */
 }
 
 .gameplay .center .track-lanes {
     display: flex;
     flex-direction: row;
-    /* justify-content: center;
-    align-items: center; */
     height: 100%;
     width: 700px;
     overflow: hidden;
@@ -135,26 +139,17 @@
     transform-style: preserve-3d;
 }
 
-.gameplay .center .track-lanes::-webkit-scrollbar {
-    display: none;
-}
-
-.gameplay .center .lanes::-webkit-scrollbar {
-    display: none;
-}
-
 .gameplay .center .track-lanes .lanes {
     width: 100%;
     border-left: 1px solid rgb(62, 62, 62);
     border-right: 1px solid rgb(62, 62, 62);
     background-color: rgba(0, 0, 0, 0.697);
-    /* backdrop-filter: blur(40px); */
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
 
     transform-origin: bottom center;
-    transform: rotateX(50deg);
+    transform: rotateX(35deg);
 
     display: flex;
     justify-content: center;
@@ -174,6 +169,35 @@
 
 .gameplay .center .track-lanes .lanes:first-child {
     border-left: 2px solid rgb(62, 62, 62);
+}
+
+.gameplay .center .track-lanes .falling-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: rgba(128, 128, 128, 0.455);
+    z-index: 30;
+
+    transform-origin: top center;
+    transform: rotateX(45deg);
+}
+
+.gameplay .center .track-lanes .falling-line.active {
+    animation: fall-line 1s linear infinite;
+
+    transform-origin: bottom center;
+    transform: rotateX(50deg) scaleY(2);
+}
+
+@keyframes fall-line {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 100%;
+    }
 }
 
 /* .gameplay .center .track-lanes .lanes:nth-child(2) {
@@ -338,33 +362,6 @@
     font-size: 40px;
     display: flex;
     align-self: flex-end;
-}
-
-
-.gameplay .center .track-lanes .falling-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: rgba(128, 128, 128, 0.455);
-    z-index: 30;
-
-    transform-origin: bottom center;
-    transform: rotateX(45deg);
-}
-
-.gameplay .center .track-lanes .falling-line.active {
-    animation: fall-line 1s linear infinite;
-}
-
-@keyframes fall-line {
-    0% {
-        top: 0;
-    }
-    100% {
-        top: 100%;
-    }
 }
 
 /* ------- GAME OVER MODAL -------- */

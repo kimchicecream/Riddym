@@ -6,6 +6,7 @@ import { thunkAuthenticate } from '../../redux/session';
 import './Gameplay.css';
 import { createScore } from '../../redux/scores';
 import ParticleBackground from './ParticleBackground';
+import HitEffect from './HitEffect';
 
 function Gameplay() {
     const { trackId } = useParams();
@@ -32,6 +33,8 @@ function Gameplay() {
     const [multiplierReset, setMultiplierReset] = useState(false);
     const [backgroundPulse, setBackgroundPulse] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [laneEffects, setLaneEffects] = useState(new Array(5).fill(false));
+
 
     // const [hitParticleFlash, setHitParticleFlash] = useState(false);
     const [hue, setHue] = useState(0);
@@ -242,14 +245,6 @@ function Gameplay() {
         }
     };
 
-    // useEffect(() => {
-    //     const totalNotes = Object.values(track?.notes || {}).length;
-    //     if (processedNotes === totalNotes && gameStarted) {
-    //         console.log('All notes processed. Ending game.');
-    //         endGame();
-    //     }
-    // }, [processedNotes, gameStarted, track?.notes]);
-
     const animateScore = () => {
         let start = 0;
         const duration = 1000;
@@ -269,7 +264,7 @@ function Gameplay() {
     };
 
     const endGame = () => {
-        if (gameEndingRef.current || gameEnded) return; // prevent multiple calls (doesnt work)
+        if (gameEndingRef.current || gameEnded) return;
         console.log('Triggering endGame');
         gameEndingRef.current = true;
         setGameEnding(true);
@@ -335,6 +330,20 @@ function Gameplay() {
                 newHitNotes.add(hitNote.uniqueId);
                 return newHitNotes;
             });
+
+            setLaneEffects(prev => {
+                const newEffects = [...prev];
+                newEffects[laneIndex] = true;
+                return newEffects;
+            });
+
+            setTimeout(() => {
+                setLaneEffects(prev => {
+                    const newEffects = [...prev];
+                    newEffects[laneIndex] = false;
+                    return newEffects;
+                });
+            }, 300);
 
             // 1) Update scoreRef first
             scoreRef.current += 150 * multiplier;
@@ -406,23 +415,12 @@ function Gameplay() {
         const keyHandler = (e) => {
             if (gameStarted) {
                 switch (e.key) {
-                    case 'd':
-                        handleKeyPress(0);
-                        break;
-                    case 'f':
-                        handleKeyPress(1);
-                        break;
-                    case 'j':
-                        handleKeyPress(2);
-                        break;
-                    case 'k':
-                        handleKeyPress(3);
-                        break;
-                    case 'l':
-                        handleKeyPress(4);
-                        break;
-                    default:
-                        break;
+                    case 'd': handleKeyPress(0); break;
+                    case 'f': handleKeyPress(1); break;
+                    case 'j': handleKeyPress(2); break;
+                    case 'k': handleKeyPress(3); break;
+                    case 'l': handleKeyPress(4); break;
+                    default: break;
                 }
             }
         };
@@ -433,7 +431,9 @@ function Gameplay() {
         };
     }, [gameStarted, fallingNotes, hitNotes, multiplier]);
 
-    // useEffect to end game properly
+    /* ----------------------- */
+    /* -- END GAME PROPERLY -- */
+    /* ----------------------- */
     const fadeOutAudio = (waveSurfer, duration = 2000) => {
         const fadeOutInterval = 50;
         const steps = duration / fadeOutInterval;
@@ -462,9 +462,7 @@ function Gameplay() {
         navigate(`/session-overview/${sessionUser.username}`);
     }
 
-    const handlePlayAgain = () => {
-        window.location.reload();
-    };
+    const handlePlayAgain = () => { window.location.reload() };
 
     return (
         <div
@@ -552,7 +550,7 @@ function Gameplay() {
                                     style={{ top: `${note.position}%` }}
                                 ></div>
                             ))}
-                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}></div>
+                            <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}><HitEffect isActive={laneEffects[laneIndex]} /></div>
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>
                     ))}

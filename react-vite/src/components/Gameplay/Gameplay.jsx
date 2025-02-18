@@ -35,6 +35,9 @@ function Gameplay() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [laneEffects, setLaneEffects] = useState(new Array(5).fill(false));
 
+    const fallingNotesRef = useRef(fallingNotes);
+    const hitNotesRef = useRef(hitNotes);
+    const multiplierRef = useRef(multiplier);
 
     // const [hitParticleFlash, setHitParticleFlash] = useState(false);
     const [hue, setHue] = useState(0);
@@ -53,6 +56,18 @@ function Gameplay() {
     const HIT_OFFSET = 25; // amount of note that must be above the hit zone to count as a hit
 
     const KEY_LABELS = ['D', 'F', 'J', 'K', 'L'];
+
+    useEffect(() => {
+        fallingNotesRef.current = fallingNotes;
+      }, [fallingNotes]);
+
+      useEffect(() => {
+        hitNotesRef.current = hitNotes;
+      }, [hitNotes]);
+
+      useEffect(() => {
+        multiplierRef.current = multiplier;
+      }, [multiplier]);
 
     // Inside Gameplay component
     useEffect(() => {
@@ -315,125 +330,130 @@ function Gameplay() {
     };
 
     const handleKeyPress = (laneIndex) => {
+        // Use the ref values for the latest state
+        const notes = fallingNotesRef.current;
+        const currentHitNotes = hitNotesRef.current;
+        const currentMultiplier = multiplierRef.current;
+
         console.log(`Key pressed: Lane ${laneIndex + 1}`);
 
         const hitZoneTop = HIT_ZONE_POSITION;
         const hitZoneBottom = HIT_ZONE_POSITION + HIT_ZONE_HEIGHT;
-        const hitNote = fallingNotes.find(note =>
+        const hitNote = notes.find(note =>
             note.lane === laneIndex + 1 &&
             note.position + NOTE_HEIGHT >= hitZoneTop + HIT_OFFSET &&
             note.position <= hitZoneBottom &&
-            !hitNotes.has(note.uniqueId)
+            !currentHitNotes.has(note.uniqueId)
         );
 
         if (hitNote) {
-            console.log(`✅ Note Hit! Lane: ${laneIndex + 1}, Note ID: ${hitNote.uniqueId}`);
+          console.log(`✅ Note Hit! Lane: ${laneIndex + 1}, Note ID: ${hitNote.uniqueId}`);
 
-            setHitNotes(prevHitNotes => {
-                const newHitNotes = new Set(prevHitNotes);
-                newHitNotes.add(hitNote.uniqueId);
-                return newHitNotes;
-            });
+          setHitNotes(prevHitNotes => {
+            const newHitNotes = new Set(prevHitNotes);
+            newHitNotes.add(hitNote.uniqueId);
+            return newHitNotes;
+          });
 
+          setLaneEffects(prev => {
+            const newEffects = [...prev];
+            if (newEffects[laneIndex] === true) return prev; // Prevent duplicate updates
+            console.log(`🎇 Setting laneEffects[${laneIndex}] = true`);
+            newEffects[laneIndex] = true;
+            return newEffects;
+          });
+
+          setTimeout(() => {
             setLaneEffects(prev => {
-                const newEffects = [...prev];
-                newEffects[laneIndex] = true; // Set to true
-                return newEffects;
+              const newEffects = [...prev];
+              newEffects[laneIndex] = false; // reset after animation
+              return newEffects;
             });
+          }, 600);
 
-            setTimeout(() => {
-                setLaneEffects(prev => {
-                    const newEffects = [...prev];
-                    newEffects[laneIndex] = false; // Reset after animation
-                    return newEffects;
-                });
-            }, 600);
+          // 1) Update scoreRef first
+          scoreRef.current += 150 * currentMultiplier;
+          // 2) Then update state so the UI reflects the change
+          setScore(scoreRef.current);
 
-            // 1) Update scoreRef first
-            scoreRef.current += 150 * multiplier;
-            // 2) Then set state so the UI shows the updated score
-            setScore(scoreRef.current);
-
-            // Update multiplier
-            setMultiplier(prevMultiplier => {
-                const newMultiplier = prevMultiplier + 1;
-                if (newMultiplier > highestMultiplier) {
-                    setHighestMultiplier(newMultiplier);
-                }
-                return newMultiplier;
-            });
-
-            // Update streak
-            setCurrentStreak(prevStreak => {
-                const newStreak = prevStreak + 1;
-                if (newStreak > longestStreak) {
-                    setLongestStreak(newStreak);
-                }
-                return newStreak;
-            });
-
-            setBackgroundPulse(true);
-            setTimeout(() => {
-                setBackgroundPulse(false);
-            }, 300);
-
-            // setHitParticleFlash(true);
-
-            setHue((prevHue) => (prevHue + 30) % 360);
-
-            console.log(`Hit note in lane ${laneIndex + 1}`);
-
-            setFallingNotes(prevNotes => {
-                const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
-                console.log('Updated falling notes after hit:', updatedNotes);
-                return updatedNotes;
-            });
-        } else {
-            console.log(`Lane key pressed at ${laneIndex + 1}`);
-            if (multiplier > 1) {
-                setMultiplierReset(true);
-                setTimeout(() => setMultiplierReset(false), 300);
+          // Update multiplier
+          setMultiplier(prevMultiplier => {
+            const newMultiplier = prevMultiplier + 1;
+            if (newMultiplier > highestMultiplier) {
+              setHighestMultiplier(newMultiplier);
             }
-            setMultiplier(1);
-            setCurrentStreak(0);
+            return newMultiplier;
+          });
+
+          // Update streak
+          setCurrentStreak(prevStreak => {
+            const newStreak = prevStreak + 1;
+            if (newStreak > longestStreak) {
+              setLongestStreak(newStreak);
+            }
+            return newStreak;
+          });
+
+          setBackgroundPulse(true);
+          setTimeout(() => {
+            setBackgroundPulse(false);
+          }, 300);
+
+          setHue((prevHue) => (prevHue + 30) % 360);
+
+          console.log(`Hit note in lane ${laneIndex + 1}`);
+
+          setFallingNotes(prevNotes => {
+            const updatedNotes = prevNotes.filter(note => note.uniqueId !== hitNote.uniqueId);
+            console.log('Updated falling notes after hit:', updatedNotes);
+            return updatedNotes;
+          });
+        } else {
+          console.log(`Lane key pressed at ${laneIndex + 1}`);
+          if (currentMultiplier > 1) {
+            setMultiplierReset(true);
+            setTimeout(() => setMultiplierReset(false), 300);
+          }
+          setMultiplier(1);
+          setCurrentStreak(0);
         }
 
         // Activate hit zone
         setActiveZones(zones => {
-            const newZones = [...zones];
-            newZones[laneIndex] = true;
-            return newZones;
+          const newZones = [...zones];
+          newZones[laneIndex] = true;
+          return newZones;
         });
 
-        // deactivate hit zone after a short delay
+        // Deactivate hit zone after a short delay
         setTimeout(() => {
-            setActiveZones(zones => {
-                const newZones = [...zones];
-                newZones[laneIndex] = false;
-                return newZones;
-            });
-        }, 100); // value to adjust how long the hit zone stays active
-    };
+          setActiveZones(zones => {
+            const newZones = [...zones];
+            newZones[laneIndex] = false;
+            return newZones;
+          });
+        }, 100);
+      };
 
-    useEffect(() => {
+
+      useEffect(() => {
+        if (!gameStarted) return;
+
         const keyHandler = (e) => {
-            if (gameStarted) {
-                switch (e.key) {
-                    case 'd': handleKeyPress(0); break;
-                    case 'f': handleKeyPress(1); break;
-                    case 'j': handleKeyPress(2); break;
-                    case 'k': handleKeyPress(3); break;
-                    case 'l': handleKeyPress(4); break;
-                    default: break;
-                }
-            }
+          switch (e.key) {
+            case 'd': handleKeyPress(0); break;
+            case 'f': handleKeyPress(1); break;
+            case 'j': handleKeyPress(2); break;
+            case 'k': handleKeyPress(3); break;
+            case 'l': handleKeyPress(4); break;
+            default: break;
+          }
         };
 
         window.addEventListener('keydown', keyHandler);
-        return () => {
-            window.removeEventListener('keydown', keyHandler);
-        };
-    }, [gameStarted, fallingNotes, hitNotes, multiplier]);
+        return () => window.removeEventListener('keydown', keyHandler);
+      }, [gameStarted]);
+
 
     /* ----------------------- */
     /* -- END GAME PROPERLY -- */
@@ -555,7 +575,7 @@ function Gameplay() {
                                 ></div>
                             ))}
                             <div className={`hit-zone ${activeZones[laneIndex] ? 'active' : ''}`}>
-                                {laneEffects[laneIndex] && <HitEffect key={laneIndex} />}
+                                {laneEffects[laneIndex] && <HitEffect isActive={laneEffects[laneIndex]} />}
                             </div>
                             <div className="key-label">{KEY_LABELS[laneIndex]}</div>
                         </div>

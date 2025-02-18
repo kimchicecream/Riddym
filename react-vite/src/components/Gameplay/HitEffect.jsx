@@ -33,7 +33,7 @@ const HitEffect = ({ isActive }) => {
 
     return (
         <div className={`hit-effect ${active ? "active" : ""}`}>
-            <div className="glow"></div>
+            {/* <div className="glow"></div> */}
             {sparkles.map((sparkle) => (
                 <svg
                     key={sparkle.id}

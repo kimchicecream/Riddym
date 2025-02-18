@@ -15,17 +15,17 @@ const HitEffect = ({ isActive }) => {
             setActive(true);
 
             // Generate 3 sparkles
-            setSparkles([...Array(3)].map((_, i) => ({
+            setSparkles([...Array(4)].map((_, i) => ({
                 id: i,
-                size: Math.random() * 12 + 30,
+                size: Math.random() * 18 + 25,
                 left: Math.random() * 80,
-                delay: i * 0.1,
+                delay: i * 0.05,
             })));
 
             setTimeout(() => {
                 setActive(false);
                 setSparkles([]);
-            }, 1000);
+            }, 300);
         } else {
             didLogRef.current = false;
         }

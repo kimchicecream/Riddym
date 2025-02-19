@@ -43,19 +43,19 @@ function SessionOverview() {
         <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>
             <div className='song-tracks'>
-            <div className='your-scores'>
-    <h3>Your Scores</h3>
-    <div className='score-card-container'>
-        {Object.values(userScores).reverse().map(score => (
-            <div className='score-card' key={score.id}>
-                <p><strong>Track ID:</strong> {score.track_id}</p>
-                <p><strong>Score:</strong> {score.score}</p>
-                <p><strong>Accuracy:</strong> {score.accuracy.toFixed(2)}%</p>
-                <p><strong>Difficulty:</strong> {score.difficulty}</p>
-            </div>
-        ))}
-    </div>
-</div>
+                <div className='your-scores'>
+                    <h3>Your Scores</h3>
+                    <div className='score-card-container'>
+                        {Object.values(userScores).reverse().map(score => (
+                            <div className='score-card' key={score.id}>
+                                <p><strong>Track ID:</strong> {score.track_id}</p>
+                                <p><strong>Score:</strong> {score.score}</p>
+                                <p><strong>Accuracy:</strong> {score.accuracy.toFixed(2)}%</p>
+                                <p><strong>Difficulty:</strong> {score.difficulty}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
                 <div className='your-songs'>
                     <h3>Your Songs</h3>
                     <div className='song-card-container'>

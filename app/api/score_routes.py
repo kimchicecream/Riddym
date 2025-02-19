@@ -8,6 +8,10 @@ score_routes = Blueprint('scores', __name__)
 @score_routes.route('/', methods=['POST'])
 @login_required
 def create_score():
+    print("===== BACKEND REQUEST RECEIVED =====")
+    print("Authenticated user?", current_user.is_authenticated)
+    print("Current user ID:", current_user.id if current_user.is_authenticated else "None")
+
     data = request.get_json()
     new_score = Score(
         user_id=current_user.id,

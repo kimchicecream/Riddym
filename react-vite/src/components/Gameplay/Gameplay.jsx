@@ -220,6 +220,7 @@ function Gameplay() {
                 if (note.position > hitZoneBottom && !hitNotes.has(note.uniqueId) && !note.missed) {
                     // console.log(`Note went off screen without being hit: ${note.uniqueId}`);
                     note.missed = true;
+
                     setMissedNotes(prevMissedNotes => {
                         const newMissedNotes = new Set(prevMissedNotes);
                         newMissedNotes.add(note.uniqueId);
@@ -313,8 +314,6 @@ function Gameplay() {
         }, 2000); // delay before starting the fade-out
     };
 
-    // commit 11
-
     useEffect(() => {
         if (gameEnded) {
             animateScore();
@@ -347,8 +346,6 @@ function Gameplay() {
         );
 
         if (hitNote) {
-          console.log(`✅ Note Hit! Lane: ${laneIndex + 1}, Note ID: ${hitNote.uniqueId}`);
-
           setHitNotes(prevHitNotes => {
             const newHitNotes = new Set(prevHitNotes);
             newHitNotes.add(hitNote.uniqueId);
@@ -357,8 +354,7 @@ function Gameplay() {
 
           setLaneEffects(prev => {
             const newEffects = [...prev];
-            if (newEffects[laneIndex] === true) return prev; // Prevent duplicate updates
-            console.log(`🎇 Setting laneEffects[${laneIndex}] = true`);
+            if (newEffects[laneIndex] === true) return prev;
             newEffects[laneIndex] = true;
             return newEffects;
           });

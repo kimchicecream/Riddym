@@ -31,12 +31,14 @@ const deleteScore = scoreId => ({
 
 // Get scores by track thunk
 export const fetchScoresByTrack = trackId => async dispatch => {
-  const response = await fetch(`/api/tracks/${trackId}/scores`);
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+  const response = await fetch(`/api/tracks/${trackId}/scores`, {
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+    const data = await response.json();
 
   const objectData = data.reduce((acc, score) => {
       acc[score.id] = score;
@@ -49,10 +51,15 @@ export const fetchScoresByTrack = trackId => async dispatch => {
 
 // Get scores by user thunk
 export const fetchScoresByUser = userId => async dispatch => {
-  const response = await fetch(`/api/users/${userId}/scores`);
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
+    console.log(`Fetching scores for user ID: ${userId}`);
+
+    const response = await fetch(`/api/scores/user/${userId}`, {
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
   }
   const data = await response.json();
 
@@ -66,20 +73,23 @@ export const fetchScoresByUser = userId => async dispatch => {
 };
 
 // Create score thunk
-export const createScore = scoreData => async dispatch => {
-  const response = await fetch('/api/scores', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(scoreData),
-  });
-  if (!response.ok) {
-      const errorData = await response.json();
-      return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+export const createScore = scoreData => async (dispatch) => {
+    const response = await fetch('/api/scores/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(scoreData),
+        credentials: 'include'
+    });
 
-  dispatch(addScore(data));
-  return data;
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { errors: errorData.errors || errorData };
+    }
+
+    const data = await response.json();
+    console.log("Score successfully created:", data);
+    dispatch(addScore(data));
+    return data;
 };
 
 // Edit score thunk

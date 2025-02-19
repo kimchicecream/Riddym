@@ -88,7 +88,6 @@ export const createScore = scoreData => async (dispatch) => {
     }
 
     const data = await response.json();
-    console.log("Score successfully created:", data);
     dispatch(addScore(data));
     return data;
 };

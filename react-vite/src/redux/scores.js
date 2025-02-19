@@ -31,22 +31,23 @@ const deleteScore = scoreId => ({
 
 // Get scores by track thunk
 export const fetchScoresByTrack = trackId => async dispatch => {
-  const response = await fetch(`/api/tracks/${trackId}/scores`, {
+    const response = await fetch(`/api/tracks/${trackId}/scores`, {
         credentials: 'include'
     });
+
     if (!response.ok) {
         const errorData = await response.json();
         return { errors: errorData.errors || errorData };
     }
+
     const data = await response.json();
+    const objectData = data.reduce((acc, score) => {
+        acc[score.id] = score;
+        return acc;
+    }, {});
 
-  const objectData = data.reduce((acc, score) => {
-      acc[score.id] = score;
-      return acc;
-  }, {});
-
-  dispatch(getScoresByTrack(objectData));
-  return data;
+    dispatch(getScoresByTrack(objectData));
+    return data;
 };
 
 // Get scores by user thunk
@@ -60,16 +61,16 @@ export const fetchScoresByUser = userId => async dispatch => {
     if (!response.ok) {
         const errorData = await response.json();
         return { errors: errorData.errors || errorData };
-  }
-  const data = await response.json();
+    }
+    const data = await response.json();
 
-  const objectData = data.reduce((acc, score) => {
-      acc[score.id] = score;
-      return acc;
-  }, {});
+    const objectData = data.reduce((acc, score) => {
+        acc[score.id] = score;
+        return acc;
+    }, {});
 
-  dispatch(getScoresByUser(objectData));
-  return data;
+    dispatch(getScoresByUser(objectData));
+    return data;
 };
 
 // Create score thunk

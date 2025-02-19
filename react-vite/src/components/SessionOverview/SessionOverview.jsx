@@ -39,6 +39,16 @@ function SessionOverview() {
         navigate('/add-song');
     };
 
+    // Filter to keep only the highest score for each track_id
+    const highestScores = Object.values(userScores).reduce((acc, score) => {
+        if (!acc[score.track_id] || score.score > acc[score.track_id].score) {
+            acc[score.track_id] = score;
+        }
+        return acc;
+    }, {});
+
+    const highestScoresArray = Object.values(highestScores).reverse();
+
     return (
         <div className='session-overview-page'>
             <h1>Welcome, {username}</h1>
@@ -46,14 +56,15 @@ function SessionOverview() {
                 <div className='your-scores'>
                     <h3>Your Scores</h3>
                     <div className='score-card-container'>
-                        {Object.values(userScores).reverse().map(score => (
-                            <div className='score-card' key={score.id}>
-                                <p><strong>Track ID:</strong> {score.track_id}</p>
-                                <p><strong>Score:</strong> {score.score}</p>
-                                <p><strong>Accuracy:</strong> {score.accuracy.toFixed(2)}%</p>
-                                <p><strong>Difficulty:</strong> {score.difficulty}</p>
-                            </div>
-                        ))}
+                        {highestScoresArray.map(score => {
+                            const track = tracks[score.track_id];
+                            return (
+                                <div className='track-score' key={score.id}>
+                                    <p>Track: {track ? track.song?.song_name || 'Unknown Track' : 'Unknown Track'}</p>
+                                    <p>Score: {score.score}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
                 <div className='your-songs'>

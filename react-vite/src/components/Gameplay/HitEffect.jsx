@@ -4,17 +4,11 @@ import "./HitEffect.css";
 const HitEffect = ({ isActive }) => {
     const [active, setActive] = useState(false);
     const [sparkles, setSparkles] = useState([]);
-    const didLogRef = useRef(false);
 
     useEffect(() => {
         if (isActive) {
-            if (!didLogRef.current) {
-                console.log(`🔥 HitEffect Triggered for a note! (Lane Effect State: ${isActive})`);
-                didLogRef.current = true;
-            }
             setActive(true);
 
-            // Generate 3 sparkles
             setSparkles([...Array(4)].map((_, i) => ({
                 id: i,
                 size: Math.random() * 18 + 25,
@@ -26,8 +20,6 @@ const HitEffect = ({ isActive }) => {
                 setActive(false);
                 setSparkles([]);
             }, 300);
-        } else {
-            didLogRef.current = false;
         }
     }, [isActive]);
 

@@ -120,6 +120,9 @@ function SessionOverview() {
                                             <p>{formatDuration(track.duration)}</p>
                                             <p>{Object.values(track.notes).length} {Object.values(track.notes).length === 1 ? 'note' : 'notes'}</p>
                                         </div>
+                                        <div className='background-image'>
+                                            <img src={track.song?.image_url} alt={track.song?.song_name} />
+                                        </div>
                                     </div>
                                 }
                                 modalComponent={<TrackModal track={track} />}

@@ -1,6 +1,13 @@
 import boto3
 import os
 import uuid
+import ssl
+import certifi
+
+# print("SSL Certificate Path:", certifi.where())
+# print("Default OpenSSL Version:", ssl.OPENSSL_VERSION)
+
+ssl_context = ssl.create_default_context(cafile=certifi.where())
 
 BUCKET_NAME_MP3 = os.environ.get("S3_BUCKET_MP3")
 BUCKET_NAME_IMG = os.environ.get("S3_BUCKET_IMG")
@@ -12,12 +19,13 @@ S3_LOCATION_MP3 = f"https://{BUCKET_NAME_MP3}.s3.amazonaws.com/"
 S3_LOCATION_IMG = f"https://{BUCKET_NAME_IMG}.s3.amazonaws.com/"
 
 ALLOWED_EXTENSIONS_MP3 = {"mp3"}
-ALLOWED_EXTENSIONS_IMG = {"jpg", "jpeg", "png", "gif", "webp"}
+ALLOWED_EXTENSIONS_IMG = {"jpg", "jpeg", "png", "gif"}
 
 s3 = boto3.client(
     "s3",
     aws_access_key_id=os.environ.get("S3_KEY"),
-    aws_secret_access_key=os.environ.get("S3_SECRET")
+    aws_secret_access_key=os.environ.get("S3_SECRET"),
+    config=boto3.session.Config(signature_version='s3v4'),
 )
 
 def get_unique_filename(filename):

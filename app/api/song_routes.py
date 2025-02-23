@@ -34,7 +34,7 @@ def create_song():
                 return jsonify(image_upload), 400
             image_url = image_upload['url']
         else:
-            image_url = 'https://riddym-img.s3.us-west-1.amazonaws.com/ef3674d16efb4566b8faadd148776825.png'
+            image_url = 'https://riddym-img.s3.us-west-1.amazonaws.com/d4f5a3527fbb4fb5b88e8d2e9856bb6c.png'
 
         new_song = Song(
             creator_id=current_user.id,

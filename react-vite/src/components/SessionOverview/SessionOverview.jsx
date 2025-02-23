@@ -72,7 +72,7 @@ function SessionOverview() {
                     <div className='song-card-container'>
                         <div className='add-song-button' onClick={handleAddSongClick}>
                             <i className="fa-solid fa-plus"></i>
-                            <span className='tooltip'>Add a new song</span>
+                            {/* <span className='tooltip'>Add a new song</span> */}
                         </div>
                         {Object.values(songs).reverse().map(song => (
                             <div className='song-card' key={song.id}>
@@ -105,7 +105,7 @@ function SessionOverview() {
                     <div className='track-card-container'>
                         <div className='add-song-button' onClick={handleAddSongClick}>
                             <i className="fa-solid fa-plus"></i>
-                            <span className='tooltip'>Make a new track</span>
+                            {/* <span className='tooltip'>Make a new track</span> */}
                         </div>
                         {Object.values(tracks).reverse().map(track => (
                             <OpenModalButton

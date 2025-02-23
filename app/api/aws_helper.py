@@ -4,8 +4,9 @@ import uuid
 import ssl
 import certifi
 
-# print("SSL Certificate Path:", certifi.where())
-# print("Default OpenSSL Version:", ssl.OPENSSL_VERSION)
+print("SSL Certificate Path:", certifi.where())
+print("Default OpenSSL Version:", ssl.OPENSSL_VERSION)
+
 
 ssl_context = ssl.create_default_context(cafile=certifi.where())
 

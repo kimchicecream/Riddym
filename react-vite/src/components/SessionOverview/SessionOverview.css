@@ -331,3 +331,21 @@
     visibility: visible;
     opacity: 1;
 }
+
+
+/* ------------------------------ */
+/* -------- YOUR SCORES --------- */
+/* ------------------------------ */
+.your-scores {
+    /* border: 1px solid red; */
+}
+
+.your-scores .score-card-container {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(35, 35, 45);
+    border: 1px solid rgba(127, 161, 255, 0.532);
+
+    max-height: 300px;
+    /* border: 1px solid blue; */
+}

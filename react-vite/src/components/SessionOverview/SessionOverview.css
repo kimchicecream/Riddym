@@ -349,3 +349,11 @@
     max-height: 300px;
     /* border: 1px solid blue; */
 }
+
+.your-scores .score-card-container .track-score {
+    display: flex;
+    flex-direction: row;
+
+    gap: 10px;
+    border: 1px solid red;
+}

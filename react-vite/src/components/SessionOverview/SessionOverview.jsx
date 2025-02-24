@@ -60,8 +60,11 @@ function SessionOverview() {
                             const track = tracks[score.track_id];
                             return (
                                 <div className='track-score' key={score.id}>
-                                    <p>Track: {track ? track.song?.song_name || 'Unknown Track' : 'Unknown Track'}</p>
-                                    <p>Score: {score.score}</p>
+                                    <div className='image-score'>
+
+                                    </div>
+                                    <p>{track ? track.song?.song_name || 'Unknown Track' : 'Unknown Track'}</p>
+                                    <p>{score.score}</p>
                                 </div>
                             );
                         })}

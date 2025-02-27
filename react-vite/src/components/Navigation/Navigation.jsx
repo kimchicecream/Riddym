@@ -45,7 +45,7 @@ function Navigation() {
   return (
     <div className="navigation-container">
       <div className="logo-container">
-          <img src="../../../riddym-logo.png" onClick={handleLogoClick}/>
+          <img src="../../../public/full_size_logo.png" onClick={handleLogoClick}/>
       </div>
       <div className="nav-menu">
         {sessionUser && (

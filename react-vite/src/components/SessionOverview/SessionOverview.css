@@ -337,7 +337,7 @@
 /* -------- YOUR SCORES --------- */
 /* ------------------------------ */
 .your-scores {
-    /* border: 1px solid red; */
+    border: 1px solid red;
 }
 
 .your-scores .score-card-container {

@@ -1,4 +1,4 @@
-![melodica github](https://github.com/user-attachments/assets/6d6e2b68-392f-42c3-ae40-ff60ddaa72bf)
+![melodica github](https://github.com/user-attachments/assets/18df373e-dfc7-4dc2-b556-37bc2d37d498)
 
 **Melodica** is an interactive rhythm game inspired by Guitar Hero, where players hit falling notes in sync with music tracks. Built with a modern full-stack setup, the game allows users to play, create, and share custom beat maps using their own music.
 

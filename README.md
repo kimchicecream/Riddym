@@ -1,25 +1,49 @@
-![melodica github](https://github.com/user-attachments/assets/18df373e-dfc7-4dc2-b556-37bc2d37d498)
+![melodica github](https://github.com/user-attachments/assets/d5d437d8-f499-4835-8dee-abcc8b2f3596)
 
 **Melodica** is an interactive rhythm game inspired by Guitar Hero, where players hit falling notes in sync with music tracks. Built with a modern full-stack setup, the game allows users to play, create, and share custom beat maps using their own music.
 
-> ⚠️ Melodica is currently in its beta phase. Features and designs are subject to change as the game evolves.
-
 ---
 
+## Gameplay Overview
+Players press the D, F, J, K, and L keys to match falling notes in hitzones across 5 different lanes.
+- Real-time visual feedback on note hits/misses
+- Score tracking and high-score leaderboards
+- Support for user-curated tracks
 
-### 🛠️ Tech Stack
+## Features
+- Custom Track Editor: Upload your own .mp3 music file, drag notes on different lanes in the editor, and publish tracks.
+- Session Overview: View your songs and scores.
+- Global & Friends Leaderboards: Compete with yourself or others.
+- Responsive UI/UX: Desktop-first layout with animated transitions.
 
-**Frontend**  
+## Tech Stack
+Frontend 
 - React (Vite)
 - WaveSurfer.js for audio playback & waveform visualization  
 - Redux Toolkit for state management  
 
-**Backend**  
+Backend
 - Flask (Python)  
 - SQLAlchemy (ORM)  
 - PostgreSQL  
 - RESTful API design
 
-**Other Tools**  
-- GitHub Pages for deployment  
-- Docker (for local dev setup, optional)
+---
+
+## Frontend Setup
+First, start the frontend development by doing the following:
+
+```bash
+cd react-vite
+npm install
+npm run dev
+```
+
+## Backend Setup
+Then ``cd ..`` back into the root and install the requirements:
+
+```bash
+pip install -r requirements.txt
+pipenv shell
+flask run
+```

@@ -3,25 +3,22 @@
 }
 
 .navigation-container {
-  margin: 20px 100px;
+  /* margin: 20px; */
   padding: 0 30px;
 
   position: fixed;
   height: 80px;
-  width: calc(100vw - 200px);
+  width: 100%;
 
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.353);
-  border: 1px solid rgb(44, 44, 44);
-  /* border: 1px solid red; */
 
-  backdrop-filter: blur(20px);
-
-  z-index: 666;
+  z-index: 100;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  /* border: 1px solid red; */
 }
 
 .navigation-container .logo-container {
@@ -42,10 +39,6 @@
 .logo-container img:hover {
   filter: drop-shadow(0px 0px 25px rgba(127, 161, 255, 1));
 }
-
-/* .navigation-container .logo-container img:hover {
-  cursor: pointer;
-} */
 
 .navigation-container .nav-menu {
   display: flex;
@@ -180,7 +173,7 @@
 
 .signup-login-container .signup-button {
   padding: 10px;
-  background-color: aquamarine;
+  background-color: rgb(127, 176, 255);
   border-radius: 10px;
   color: black;
   font-weight: bold;
@@ -188,8 +181,8 @@
 }
 
 .signup-login-container .signup-button:hover {
-  background-color: rgb(226, 255, 245);
-  box-shadow: 0px 0px 20px 1px rgb(195, 255, 235);
+  background-color: rgb(223, 236, 255);
+  box-shadow: 0px 0px 20px 1px rgb(223, 236, 255);
   color: black;
   cursor: pointer;
 }

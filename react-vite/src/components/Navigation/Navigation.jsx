@@ -2,29 +2,13 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import ProfileButton from "./ProfileButton";
-import { useSelector, useDispatch } from "react-redux";
-import { thunkLogin } from "../../redux/session";
+import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from "react";
 import "./Navigation.css";
 
 function Navigation() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.session.user);
-
-  // const handleDemoLogin = async () => {
-  //   await dispatch(
-  //     thunkLogin({
-  //       email: "demo@aa.io",
-  //       password: "password",
-  //     })
-  //   );
-
-  //   navigate(`/session-overview/${sessionUser.username}`);
-  // };
-
-  //commit 1
 
   const handleSessionOverview = () => {
     navigate(`/session-overview/${sessionUser.username}`);
@@ -45,7 +29,7 @@ function Navigation() {
   return (
     <div className="navigation-container">
       <div className="logo-container">
-          <img src="/full_size_logo.png" onClick={handleLogoClick}/>
+          <img src="/logowithname.png" onClick={handleLogoClick}/>
       </div>
       <div className="nav-menu">
         {sessionUser && (

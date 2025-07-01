@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import WaveSurfer from 'wavesurfer.js';
-import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
-import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
-import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
 import { createNote, editNote, removeNote, clearTrackNotes } from '../../redux/notes';
 import { createTrack, setTrackNotes } from '../../redux/tracks';
-// import { v4 as uuidv4 } from 'uuid';
 import './TrackCreator.css';
+
+import WaveSurfer from 'wavesurfer.js';
+import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
+import MinimapPlugin from 'wavesurfer.js/dist/plugins/minimap.esm.js';
+import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
 
 function TrackCreator() {
     const { songId } = useParams();
@@ -87,7 +87,7 @@ function TrackCreator() {
                         container: timelineRef.current
                     }),
                     HoverPlugin.create(),
-                    Minimap.create({
+                    MinimapPlugin.create({
                         height: 150,
                         waveColor: '#d9dcff',
                         progressColor: '#4353ff',

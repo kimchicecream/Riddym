@@ -1,7 +1,8 @@
 {
   "dependencies": {
+    "gsap": "^3.13.0",
     "jsmediatags": "^3.9.7",
     "uuid": "^10.0.0",
-    "wavesurfer.js": "^7.7.15"
+    "wavesurfer.js": "^7.5.3"
   }
 }

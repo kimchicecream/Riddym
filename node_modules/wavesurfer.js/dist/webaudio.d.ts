@@ -31,8 +31,8 @@ declare class WebAudioPlayer extends EventEmitter<WebAudioPlayerEvents> {
     constructor(audioContext?: AudioContext);
     /** Subscribe to an event. Returns an unsubscribe function. */
     addEventListener: <EventName extends keyof WebAudioPlayerEvents>(event: EventName, listener: (...args: WebAudioPlayerEvents[EventName]) => void, options?: {
-        once?: boolean | undefined;
-    } | undefined) => () => void;
+        once?: boolean;
+    }) => () => void;
     /** Unsubscribe from an event */
     removeEventListener: <EventName extends keyof WebAudioPlayerEvents>(event: EventName, listener: (...args: WebAudioPlayerEvents[EventName]) => void) => void;
     load(): Promise<void>;

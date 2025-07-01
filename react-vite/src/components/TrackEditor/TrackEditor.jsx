@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm.js';
+import MinimapPlugin from 'wavesurfer.js/dist/plugins/minimap.esm.js';
 import HoverPlugin from 'wavesurfer.js/dist/plugins/hover.esm.js';
-import Minimap from 'wavesurfer.js/dist/plugins/minimap.esm.js'
-import { createNote, editNote, removeNote, clearTrackNotes } from '../../redux/notes';
+import { clearTrackNotes } from '../../redux/notes';
 import { fetchTrackById, editTrack, setTrackNotes } from '../../redux/tracks';
 import './TrackEditor.css';
 
@@ -40,7 +40,6 @@ function TrackEditor() {
     // fetch track and song details
     useEffect(() => {
         const controller = new AbortController();
-        const signal = controller.signal;
 
         dispatch(fetchTrackById(trackId)).then((trackData) => {
             if (trackData && trackData.song) {
@@ -82,7 +81,7 @@ function TrackEditor() {
                         container: timelineRef.current
                     }),
                     HoverPlugin.create(),
-                    Minimap.create({
+                    MinimapPlugin.create({
                         height: 150,
                         waveColor: '#d9dcff',
                         progressColor: '#4353ff',

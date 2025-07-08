@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import Aurora from '../Aurora/Aurora.jsx';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -20,6 +21,23 @@ function LandingPage() {
         duration: 1.8 + Math.random(),
         ease: 'power2.out'
       });
+
+      gsap.to('.hero-text .line', {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: 'power2.out',
+        stagger: 0.5, // Animate one after another
+        delay: 0.6,   // Wait a bit after load
+      });
+
+      gsap.to('.hero-text-glow', {
+        opacity: 1,
+        scale: 1.4,
+        duration: 1.5,
+        delay: 0.4,
+        ease: 'power2.out',
+      });
     });
 
     if (fadeRef.current) {
@@ -35,17 +53,32 @@ function LandingPage() {
   return (
     <div className="landing-page-container">
       <div className="hero-container">
-      <div className="mock-lanes-container">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="mock-lane"
-            ref={(el) => (laneRefs.current[i] = el)}
-          ></div>
-        ))}
+      {/* <div className="aurora-layer">
+        <Aurora
+          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          blend={0.5}
+          amplitude={0.9}
+          speed={0.5}
+        />
+      </div> */}
+        <div className="hero-text-glow" />
+        <div className="hero-text">
+          <h1>
+            <span className="line">Play through music,</span><br />
+            <span className="line">one note at a time.</span>
+          </h1>
+        </div>
+        <div className="mock-lanes-container">
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className="mock-lane"
+              ref={(el) => (laneRefs.current[i] = el)}
+            ></div>
+          ))}
+        </div>
+        <div className="fade-overlay" ref={fadeRef} />
       </div>
-      <div className="fade-overlay" ref={fadeRef} />
-    </div>
       <div className='second-block'>
 
       </div>

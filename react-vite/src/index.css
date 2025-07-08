@@ -4,7 +4,6 @@
     margin: 0;
     border: 0;
     box-sizing: border-box;
-    /* width: 100%; */
 }
 
 html, body {
@@ -12,7 +11,11 @@ html, body {
     color: white;
 }
 
-/* @font-face {
+:root {
+    --primary: rgb(127, 176, 255);
+}
+
+@font-face {
     font-family: 'Gilroy';
     src: url('../fonts/Gilroy-Thin.ttf') format('truetype');
     font-weight: thin;
@@ -28,4 +31,4 @@ html, body {
     font-family: 'Gilroy';
     src: url('../fonts/Gilroy-Bold.ttf') format('truetype');
     font-weight: bold;
-} */
+}

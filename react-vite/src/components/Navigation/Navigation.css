@@ -64,13 +64,14 @@
 
 .icon-container i {
   font-size: 30px;
-  border: 1px solid rgb(127, 255, 212);
   color: rgb(255, 255, 255);
   border-radius: 50%;
+  transition: 0.3s ease;
 }
 
 .icon-container button:hover i {
-  color: aquamarine;
+  color: rgba(127, 161, 255, 1);
+  cursor: pointer;
 }
 
 .profile-dropdown {

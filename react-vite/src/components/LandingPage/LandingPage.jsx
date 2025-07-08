@@ -37,6 +37,16 @@ function LandingPage() {
         duration: 1.5,
         delay: 0.4,
         ease: 'power2.out',
+        onComplete: () => {
+          gsap.to('.hero-text-glow', {
+            scale: 1.5,
+            opacity: 0.3,
+            duration: 2,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+          });
+        }
       });
     });
 
@@ -53,14 +63,14 @@ function LandingPage() {
   return (
     <div className="landing-page-container">
       <div className="hero-container">
-      {/* <div className="aurora-layer">
-        <Aurora
-          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+      <div className="aurora-layer">
+        {/* <Aurora
+          colorStops={["#5100ff", "#5f4aff", "#7370fa"]}
           blend={0.5}
-          amplitude={0.9}
-          speed={0.5}
-        />
-      </div> */}
+          amplitude={1}
+          speed={0.1}
+        /> */}
+      </div>
         <div className="hero-text-glow" />
         <div className="hero-text">
           <h1>

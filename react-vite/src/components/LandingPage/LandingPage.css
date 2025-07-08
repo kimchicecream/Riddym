@@ -40,7 +40,7 @@
 
 .hero-text {
     position: absolute;
-    top: 32%;
+    top: 25%;
     text-align: center;
     color: rgb(205, 227, 255);
     font-size: 40px;
@@ -49,6 +49,7 @@
     user-select: none;
 
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.144);
+    z-index: 100;
 }
 
 .hero-text .line {
@@ -71,8 +72,9 @@
 
 .mock-lane {
     width: 100%;
-    background-color: rgba(84, 84, 84, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: rgba(6, 6, 6, 0.435);
+    border-left: 1px solid rgb(58, 58, 58);
+    border-right: 1px solid rgb(58, 58, 58);
     position: relative;
     overflow: hidden;
 

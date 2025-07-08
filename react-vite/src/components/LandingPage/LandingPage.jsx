@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import Aurora from '../Aurora/Aurora.jsx';
+import Particles from '../Particles/Particles';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -28,7 +28,7 @@ function LandingPage() {
         duration: 1.5,
         ease: 'power2.out',
         stagger: 0.5, // Animate one after another
-        delay: 0.6,   // Wait a bit after load
+        delay: 1,   // Wait a bit after load
       });
 
       gsap.to('.hero-text-glow', {
@@ -48,6 +48,14 @@ function LandingPage() {
           });
         }
       });
+
+      gsap.to('.particles-layer', {
+        opacity: 1,
+        scale: 1.2,
+        duration: 1.5,
+        delay: 0.4,
+        ease: 'power2.out',
+      });
     });
 
     if (fadeRef.current) {
@@ -63,20 +71,22 @@ function LandingPage() {
   return (
     <div className="landing-page-container">
       <div className="hero-container">
-        <div className="aurora-layer">
-          {/* <Aurora
-            colorStops={["#5100ff", "#5f4aff", "#7370fa"]}
-            blend={0.5}
-            amplitude={1}
-            speed={0.1}
-          /> */}
+        <div className='particles-layer'>
+          <Particles
+            particleColors={['#ffffff', '#ffffff']}
+            particleCount={400}
+            particleSpread={20}
+            speed={0.2}
+            particleBaseSize={100}
+            moveParticlesOnHover={true}
+            alphaParticles={false}
+            disableRotation={false}
+          />
         </div>
         <div className="hero-text-glow" />
         <div className="hero-text">
-          <h1>
-            <span className="line">Play through music,</span><br />
-            <span className="line">one note at a time.</span>
-          </h1>
+          <h1><span className="line" id='one'>Play through music,</span></h1>
+          <h2><span className="line" id='two'>one note at a time.</span></h2>
         </div>
         <div className="mock-lanes-container">
           {[...Array(5)].map((_, i) => (
